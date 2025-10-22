@@ -9,7 +9,7 @@ Capacity factor,p_cap_in,Windfarm,core
 Enter estimated capacity factor (percentage efficiency),p_cap,Windfarm,core
 Please enter additional data in sheet: Forestry input data,NA,Windfarm,core
 Backup,NA,Windfarm,core
-Extra capacity required for backup (%),c_res,Windfarm,core
+Extra capacity required for backup (%),p_back,Windfarm,core
 Additional emissions due to reduced thermal efficiency of the reserve generation (%),p_therm,Windfarm,core
 "Carbon dioxide emissions from turbine life -                                   (eg. manufacture, construction, decommissioning)",L_life_in,Windfarm,core
 Total CO2 emission from turbine life (tCO2 MW-1)                    (if known use direct input of emissions from turbine life),L_life,Windfarm,core
