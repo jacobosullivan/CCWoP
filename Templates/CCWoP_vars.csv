@@ -1,0 +1,339 @@
+﻿Input.name,Variable.name,Subset.name,Dataset
+Windfarm characteristics,NA,Windfarm,core
+Dimensions,NA,Windfarm,core
+No. of turbines,n_turb,Windfarm,core
+Lifetime of windfarm (years),t_wf,Windfarm,core
+Performance,NA,Windfarm,core
+Power rating of turbines (turbine capacity) (MW),c_turb,Windfarm,core
+Capacity factor,p_cap_in,Windfarm,core
+Enter estimated capacity factor (percentage efficiency),p_cap,Windfarm,core
+Please enter additional data in sheet: Forestry input data,NA,Windfarm,core
+Backup,NA,Windfarm,core
+Extra capacity required for backup (%),c_res,Windfarm,core
+Additional emissions due to reduced thermal efficiency of the reserve generation (%),p_therm,Windfarm,core
+"Carbon dioxide emissions from turbine life -                                   (eg. manufacture, construction, decommissioning)",L_life_in,Windfarm,core
+Total CO2 emission from turbine life (tCO2 MW-1)                    (if known use direct input of emissions from turbine life),L_life,Windfarm,core
+Characteristics of peatland before windfarm development,NA,Peatland,core
+Type of peatland,peat_type,Peatland,core
+Average annual air temperature at site (oC),T_air,Peatland,core
+Average depth of peat at site (m),d_peat,Peatland,core
+C Content of dry peat (% by weight),pC_dry_peat,Peatland,core
+Average extent of drainage around drainage features at site (m),drain_ext,Peatland,core
+Average water table depth at site (m),d_wt,Peatland,core
+Dry soil bulk density (g cm-3),BD_dry_soil,Peatland,core
+Characteristics of bog plants,NA,Bog.plants,core
+Time required for regeneration of bog plants after restoration (years),t_restore,Bog.plants,core
+Carbon accumulation due to C fixation by bog plants in undrained peats (tC ha-1 yr-1),G_bog,Bog.plants,core
+Forestry Plantation Characteristics,NA,Forestry,core
+Method used to calculate CO2 loss from forest felling,for_detail,Forestry,core
+Please enter forest data in sheet: Forestry input data,NA,Forestry,core
+Area of forestry plantation to be felled (ha),A_forest,Forestry,core
+Average rate of carbon sequestration in timber (tC ha-1 yr-1),G_forest,Forestry,core
+Counterfactual emission factors,NA,Counterfactual,core
+To update counterfactual emission factors                              from the web            ,NA,Counterfactual,core
+Coal-fired plant emission factor (t CO2 MWh-1),E_coal,Counterfactual,core
+Grid-mix emission factor (t CO2 MWh-1),E_grid_mix,Counterfactual,core
+Fossil fuel-mix emission factor (t CO2 MWh-1),E_fossil_mix,Counterfactual,core
+Borrow pits,NA,Borrow.pits,core
+Number of borrow pits,n_pit,Borrow.pits,core
+Average length of pits (m),l_pit,Borrow.pits,core
+Average width of pits (m),w_pit,Borrow.pits,core
+Average depth of peat removed from pit (m),d_pit,Borrow.pits,core
+Foundations and hard-standing area associated with each turbine,NA,Foundations,core
+Method used to calculate CO2 loss from foundations and hard-standing,found_in,Foundations,core
+Please enter construction data in sheet: Construction input data,NA,Foundations,core
+Average length of turbine foundations (m),l_found,Foundations,core
+Average width of turbine foundations (m),w_found,Foundations,core
+Average depth of peat removed from turbine foundations (m),d_peat_rem_found,Foundations,core
+Average length of hard-standing (m),l_hardstand,Foundations,core
+Average width of hard-standing (m),w_hardstand,Foundations,core
+Average depth of peat removed from hard-standing (m),d_peat_rem_hardstand,Foundations,core
+Access tracks,NA,Access.tracks,core
+Total length of access track (m),l_track,Access.tracks,core
+Existing track length (m),l_track_exist,Access.tracks,core
+Length of access track that is floating road (m),l_float_road,Access.tracks,core
+Floating road width (m),w_float_road,Access.tracks,core
+Floating road depth (m),d_float_road,Access.tracks,core
+Length of floating road that is drained (m),l_float_road_drain,Access.tracks,core
+Average depth of drains associated with floating roads (m),d_float_road_drain,Access.tracks,core
+Length of access track that is excavated road (m),l_track_exc,Access.tracks,core
+Excavated road width (m),w_track_exc,Access.tracks,core
+Average depth of peat excavated for road (m),d_track_exc,Access.tracks,core
+Length of access track that is rock filled road (m),l_rock_road,Access.tracks,core
+Rock filled road width (m),w_rock_road,Access.tracks,core
+Rock filled road depth (m),d_rock_road,Access.tracks,core
+Length of rock filled road that is drained (m),l_rock_road_drain,Access.tracks,core
+Average depth of drains associated with rock filled roads (m),d_rock_road_drain,Access.tracks,core
+Cable Trenches,NA,Cable.trenches,core
+Length of any cable trench on peat that does not follow access tracks and is lined with a permeable medium (eg. sand) (m),l_cab_trench,Cable.trenches,core
+Average depth of peat cut for cable trenches (m),d_cab_trench,Cable.trenches,core
+Additional peat excavated                                                  (not already accounted for above),NA,Add.excavation,core
+Volume of additional peat excavated (m3),V_add,Add.excavation,core
+Area of additional peat excavated (m2),A_add,Add.excavation,core
+Peat Landslide Hazard,NA,Peat.landslide,core
+Weblink: Peat Landslide Hazard and Risk Assessments: Best Practice Guide for Proposed Electricity Generation Developments,NA,Peat.landslide,core
+"Improvement of C sequestration at site by blocking drains, restoration of habitat etc",NA,Seq.improvement,core
+Improvement of degraded bog,NA,Seq.improvement,core
+Area of degraded bog to be improved (ha)     ,A_bog_improve,Seq.improvement,core
+Water table depth in degraded bog before improvement (m),d_wt_bog_bfr,Seq.improvement,core
+Water table depth in degraded bog after improvement (m),d_wt_bog_aft,Seq.improvement,core
+Time required for hydrology and habitat of bog to return to its previous state on improvement (years),t_restore_hab_bog,Seq.improvement,core
+Period of time when effectiveness of the improvement in degraded bog can be guaranteed (years),t_restore_guar_bog,Seq.improvement,core
+Improvement of felled plantation land,NA,Seq.improvement,core
+Area of felled plantation to be improved (ha),A_felled_improve,Seq.improvement,core
+Water table depth in felled area before improvement (m),d_wt_felled_bfr,Seq.improvement,core
+Water table depth in felled area after improvement (m),d_wt_felled_aft,Seq.improvement,core
+Time required for hydrology and habitat of felled plantation to return to its previous state on improvement (years),t_restore_hab_felled,Seq.improvement,core
+Period of time when effectiveness of the improvement in felled plantation can be guaranteed (years),t_restore_guar_felled,Seq.improvement,core
+Restoration of peat removed from borrow pits,NA,Seq.improvement,core
+Area of borrow pits to be restored (ha),A_pit_improve,Seq.improvement,core
+Depth of water table in borrow pit before restoration with respect to the restored surface (m),d_wt_pit_bfr,Seq.improvement,core
+Depth of water table in borrow pit after restoration with respect to the restored surface (m),d_wt_pit_aft,Seq.improvement,core
+Time required for hydrology and habitat of borrow pit to return to its previous state on restoration (years),t_restore_hab_pit,Seq.improvement,core
+Period of time when effectiveness of the restoration of peat removed from borrow pits can be guaranteed (years),t_restore_guar_pit,Seq.improvement,core
+Early removal of drainage from foundations and hardstanding,NA,Seq.improvement,core
+Water table depth around foundations and hardstanding before restoration (m),d_wt_fhs_bfr,Seq.improvement,core
+Water table depth around foundations and hardstanding after restoration (m),d_wt_fhs_aft,Seq.improvement,core
+"Time to completion of backfilling, removal of any surface drains, and full restoration of the hydrology (years)",t_restore_hydr_full,Seq.improvement,core
+Restoration of site after decomissioning,NA,Site.restoration,core
+Will the hydrology of the site be restored on decommissioning?,restore_hydr_in,Site.restoration,core
+Will you attempt to block any gullies that have formed due to the windfarm?,NA,Site.restoration,core
+Will you attempt to block all artificial ditches and facilitate  rewetting?,NA,Site.restoration,core
+Will the habitat of the site be restored on decommissioning?,restore_hab_in,Site.restoration,core
+Will you control grazing on degraded areas?,NA,Site.restoration,core
+Will you manage areas to favour reintroduction of species,NA,Site.restoration,core
+Choice of methodology for calculating emission factors,em_factor_meth_in,Em.factor.meth,core
+Windfarm characteristics,NA,Windfarm,forestry
+Location,NA,Windfarm,forestry
+Distance to nearest biofuel plant (km),dist_biofuel_plant,Windfarm,forestry
+Dimensions,NA,Windfarm,forestry
+Total wind farm area (ha),A_windfarm,Windfarm,forestry
+Performance,NA,Windfarm,forestry
+Height of turbines (m),H_turb,Windfarm,forestry
+Average site windspeed (m s-1),Vwind_site,Windfarm,forestry
+Estimated downtime for maintenance etc (%),t_down,Windfarm,forestry
+Emissions due to forestry operations,NA,Emissions,forestry
+Emissions from felling (g CO2 m-3),L_harv,Emissions,forestry
+Emissions of CO2 associated with transportation (g CO2 km-1 t-1),L_transport,Emissions,forestry
+Forestry Plantation Characteristics,NA,Emissions,forestry
+Note - total number of turbines already specified: ,NA,Emissions,forestry
+AREA 1,NA,Area.1,forestry
+Number of turbines in this area,n_turb,Area.1,forestry
+Power curve - NOT USED!,NA,Area.1,forestry
+(In CORE INPUT DATA sheet you have selected ,NA,Area.1,forestry
+ to input capacity factor directly. No need to select!),NA,Area.1,forestry
+Power curve,pow_curve,Area.1,forestry
+Major soil sub-group,soil_type,Area.1,forestry
+Species,species,Area.1,forestry
+Felled Forest Biomass used as biofuel?,felled_biofuel,Area.1,forestry
+Felling regime,NA,Area.1,forestry
+Age of forestry when felled for windfarm (yr),t_harv,Area.1,forestry
+Area felled around each turbine (ha),A_harv_turb,Area.1,forestry
+Width of forest around felled area (m),D_width,Area.1,forestry
+Value of felled forestry as a biomass fuel (MWh t-1),e_felled_biofuel,Area.1,forestry
+(Carbon : Biomass) ratio of felled forestry,r_CBiomass,Area.1,forestry
+Replanting regime,NA,Area.1,forestry
+Years after felling when replanting occurs,t_replant,Area.1,forestry
+Age of seedlings on planting (yr),t_seedling_replant,Area.1,forestry
+Area replanted around each turbine (ha),A_replant_turb,Area.1,forestry
+AREA 2,NA,Area.2,forestry
+Number of turbines in this area,n_turb,Area.2,forestry
+Power curve - NOT USED!,NA,Area.2,forestry
+(In CORE INPUT DATA sheet you have selected ,NA,Area.2,forestry
+ to input capacity factor directly. No need to select!),NA,Area.2,forestry
+Power curve,pow_curve,Area.2,forestry
+Major soil sub-group,soil_type,Area.2,forestry
+Species,species,Area.2,forestry
+Felled Forest Biomass used as biofuel?,felled_biofuel,Area.2,forestry
+Felling regime,NA,Area.2,forestry
+Age of forestry when felled for windfarm (yr),t_harv,Area.2,forestry
+Area felled around each turbine (ha),A_harv_turb,Area.2,forestry
+Width of forest around felled area (m),D_width,Area.2,forestry
+Value of felled forestry as a biomass fuel (MWh t-1),e_felled_biofuel,Area.2,forestry
+(Carbon : Biomass) ratio of felled forestry,r_CBiomass,Area.2,forestry
+Replanting regime,NA,Area.2,forestry
+Years after felling when replanting occurs,t_replant,Area.2,forestry
+Age of seedlings on planting (yr),t_seedling_replant,Area.2,forestry
+Area replanted around each turbine (ha),A_replant_turb,Area.2,forestry
+AREA 3,NA,Area.3,forestry
+Number of turbines in this area,n_turb,Area.3,forestry
+Power curve - NOT USED!,NA,Area.3,forestry
+(In CORE INPUT DATA sheet you have selected ,NA,Area.3,forestry
+ to input capacity factor directly. No need to select!),NA,Area.3,forestry
+Power curve,pow_curve,Area.3,forestry
+Major soil sub-group,soil_type,Area.3,forestry
+Species,species,Area.3,forestry
+Felled Forest Biomass used as biofuel?,felled_biofuel,Area.3,forestry
+Felling regime,NA,Area.3,forestry
+Age of forestry when felled for windfarm (yr),t_harv,Area.3,forestry
+Area felled around each turbine (ha),A_harv_turb,Area.3,forestry
+Width of forest around felled area (m),D_width,Area.3,forestry
+Value of felled forestry as a biomass fuel (MWh t-1),e_felled_biofuel,Area.3,forestry
+(Carbon : Biomass) ratio of felled forestry,r_CBiomass,Area.3,forestry
+Replanting regime,NA,Area.3,forestry
+Years after felling when replanting occurs,t_replant,Area.3,forestry
+Age of seedlings on planting (yr),t_seedling_replant,Area.3,forestry
+Area replanted around each turbine (ha),A_replant_turb,Area.3,forestry
+AREA 4,NA,Area.4,forestry
+Number of turbines in this area,n_turb,Area.4,forestry
+Power curve - NOT USED!,NA,Area.4,forestry
+(In CORE INPUT DATA sheet you have selected ,NA,Area.4,forestry
+ to input capacity factor directly. No need to select!),NA,Area.4,forestry
+Power curve,pow_curve,Area.4,forestry
+Major soil sub-group,soil_type,Area.4,forestry
+Species,species,Area.4,forestry
+Felled Forest Biomass used as biofuel?,felled_biofuel,Area.4,forestry
+Felling regime,NA,Area.4,forestry
+Age of forestry when felled for windfarm (yr),t_harv,Area.4,forestry
+Area felled around each turbine (ha),A_harv_turb,Area.4,forestry
+Width of forest around felled area (m),D_width,Area.4,forestry
+Value of felled forestry as a biomass fuel (MWh t-1),e_felled_biofuel,Area.4,forestry
+(Carbon : Biomass) ratio of felled forestry,r_CBiomass,Area.4,forestry
+Replanting regime,NA,Area.4,forestry
+Years after felling when replanting occurs,t_replant,Area.4,forestry
+Age of seedlings on planting (yr),t_seedling_replant,Area.4,forestry
+Area replanted around each turbine (ha),A_replant_turb,Area.4,forestry
+AREA 5,NA,Area.5,forestry
+Number of turbines in this area,n_turb,Area.5,forestry
+Power curve - NOT USED!,NA,Area.5,forestry
+(In CORE INPUT DATA sheet you have selected ,NA,Area.5,forestry
+ to input capacity factor directly. No need to select!),NA,Area.5,forestry
+Power curve,pow_curve,Area.5,forestry
+Major soil sub-group,soil_type,Area.5,forestry
+Species,species,Area.5,forestry
+Felled Forest Biomass used as biofuel?,felled_biofuel,Area.5,forestry
+Felling regime,NA,Area.5,forestry
+Age of forestry when felled for windfarm (yr),t_harv,Area.5,forestry
+Area felled around each turbine (ha),A_harv_turb,Area.5,forestry
+Width of forest around felled area (m),D_width,Area.5,forestry
+Value of felled forestry as a biomass fuel (MWh t-1),e_felled_biofuel,Area.5,forestry
+(Carbon : Biomass) ratio of felled forestry,r_CBiomass,Area.5,forestry
+Replanting regime,NA,Area.5,forestry
+Years after felling when replanting occurs,t_replant,Area.5,forestry
+Age of seedlings on planting (yr),t_seedling_replant,Area.5,forestry
+Area replanted around each turbine (ha),A_replant_turb,Area.5,forestry
+AREA 1,NA,Area.1,construct
+Number of turbines in this area - Error! Total in areas > total on site!,NA,Area.1,construct
+Number of turbines in this area,NA,Area.1,construct
+Turbine foundations,NA,Area.1,construct
+Average depth of peat removed when constructing foundations (m),d_peat_rem_found,Area.1,construct
+Approximate geometric shape of whole dug when constructing foundations,shape_found,Area.1,construct
+Diameter at surface (m),diam_surf_found,Area.1,construct
+Diameter at bottom (m),diam_bott_found,Area.1,construct
+Length at surface (m),l_surf_found,Area.1,construct
+Width at surface (m),w_surf_found,Area.1,construct
+Length at bottom (m),l_bott_found,Area.1,construct
+Width at bottom (m),w_bott_found,Area.1,construct
+Hardstanding,NA,Area.1,construct
+Average depth of peat removed when constructing hardstanding (m),d_peat_rem_hardstand,Area.1,construct
+Approximate geometric shape of whole dug when constructing hardstanding,shape_hardstand,Area.1,construct
+Diameter at surface (m),diam_surf_hardstand,Area.1,construct
+Diameter at bottom (m),diam_bott_hardstand,Area.1,construct
+Length at surface (m),l_surf_hardstand,Area.1,construct
+Width at surface (m),w_surf_hardstand,Area.1,construct
+Length at bottom (m),l_bott_hardstand,Area.1,construct
+Width at bottom (m),w_bott_hardstand,Area.1,construct
+Piling,NA,Area.1,construct
+Is piling used?,piling_in,Area.1,construct
+Volume of Concrete,NA,Area.1,construct
+Volume of concrete used (m3),V_concrete,Area.1,construct
+AREA 2,NA,Area.2,construct
+Number of turbines in this area - Error! Total in areas > total on site!,NA,Area.2,construct
+Number of turbines in this area,NA,Area.2,construct
+Turbine foundations,NA,Area.2,construct
+Average depth of peat removed when constructing foundations (m),d_peat_rem_found,Area.2,construct
+Approximate geometric shape of whole dug when constructing foundations,shape_found,Area.2,construct
+Diameter at surface (m),diam_surf_found,Area.2,construct
+Diameter at bottom (m),diam_bott_found,Area.2,construct
+Length at surface (m),l_surf_found,Area.2,construct
+Width at surface (m),w_surf_found,Area.2,construct
+Length at bottom (m),l_bott_found,Area.2,construct
+Width at bottom (m),w_bott_found,Area.2,construct
+Hardstanding,NA,Area.2,construct
+Average depth of peat removed when constructing hardstanding (m),d_peat_rem_hardstand,Area.2,construct
+Approximate geometric shape of whole dug when constructing hardstanding,shape_hardstand,Area.2,construct
+Diameter at surface (m),diam_surf_hardstand,Area.2,construct
+Diameter at bottom (m),diam_bott_hardstand,Area.2,construct
+Length at surface (m),l_surf_hardstand,Area.2,construct
+Width at surface (m),w_surf_hardstand,Area.2,construct
+Length at bottom (m),l_bott_hardstand,Area.2,construct
+Width at bottom (m),w_bott_hardstand,Area.2,construct
+Piling,NA,Area.2,construct
+Is piling used?,piling_in,Area.2,construct
+Volume of Concrete,NA,Area.2,construct
+Volume of concrete used (m3),V_concrete,Area.2,construct
+AREA 3,NA,Area.3,construct
+Number of turbines in this area - Error! Total in areas > total on site!,NA,Area.3,construct
+Number of turbines in this area,NA,Area.3,construct
+Turbine foundations,NA,Area.3,construct
+Average depth of peat removed when constructing foundations (m),d_peat_rem_found,Area.3,construct
+Approximate geometric shape of whole dug when constructing foundations,shape_found,Area.3,construct
+Diameter at surface (m),diam_surf_found,Area.3,construct
+Diameter at bottom (m),diam_bott_found,Area.3,construct
+Length at surface (m),l_surf_found,Area.3,construct
+Width at surface (m),w_surf_found,Area.3,construct
+Length at bottom (m),l_bott_found,Area.3,construct
+Width at bottom (m),w_bott_found,Area.3,construct
+Hardstanding,NA,Area.3,construct
+Average depth of peat removed when constructing hardstanding (m),d_peat_rem_hardstand,Area.3,construct
+Approximate geometric shape of whole dug when constructing hardstanding,shape_hardstand,Area.3,construct
+Diameter at surface (m),diam_surf_hardstand,Area.3,construct
+Diameter at bottom (m),diam_bott_hardstand,Area.3,construct
+Length at surface (m),l_surf_hardstand,Area.3,construct
+Width at surface (m),w_surf_hardstand,Area.3,construct
+Length at bottom (m),l_bott_hardstand,Area.3,construct
+Width at bottom (m),w_bott_hardstand,Area.3,construct
+Piling,NA,Area.3,construct
+Is piling used?,piling_in,Area.3,construct
+Volume of Concrete,NA,Area.3,construct
+Volume of concrete used (m3),V_concrete,Area.4,construct
+AREA 4,NA,Area.4,construct
+Number of turbines in this area - Error! Total in areas > total on site!,NA,Area.4,construct
+Number of turbines in this area,NA,Area.4,construct
+Turbine foundations,NA,Area.4,construct
+Average depth of peat removed when constructing foundations (m),d_peat_rem_found,Area.4,construct
+Approximate geometric shape of whole dug when constructing foundations,shape_found,Area.4,construct
+Diameter at surface (m),diam_surf_found,Area.4,construct
+Diameter at bottom (m),diam_bott_found,Area.4,construct
+Length at surface (m),l_surf_found,Area.4,construct
+Width at surface (m),w_surf_found,Area.4,construct
+Length at bottom (m),l_bott_found,Area.4,construct
+Width at bottom (m),w_bott_found,Area.4,construct
+Hardstanding,NA,Area.4,construct
+Average depth of peat removed when constructing hardstanding (m),d_peat_rem_hardstand,Area.4,construct
+Approximate geometric shape of whole dug when constructing hardstanding,shape_hardstand,Area.4,construct
+Diameter at surface (m),diam_surf_hardstand,Area.4,construct
+Diameter at bottom (m),diam_bott_hardstand,Area.4,construct
+Length at surface (m),l_surf_hardstand,Area.4,construct
+Width at surface (m),w_surf_hardstand,Area.4,construct
+Length at bottom (m),l_bott_hardstand,Area.4,construct
+Width at bottom (m),w_bott_hardstand,Area.4,construct
+Piling,NA,Area.4,construct
+Is piling used?,piling_in,Area.4,construct
+Volume of Concrete,NA,Area.4,construct
+Volume of concrete used (m3),V_concrete,Area.5,construct
+AREA 5,NA,Area.5,construct
+Number of turbines in this area - Error! Total in areas > total on site!,NA,Area.5,construct
+Number of turbines in this area,NA,Area.5,construct
+Turbine foundations,NA,Area.5,construct
+Average depth of peat removed when constructing foundations (m),d_peat_rem_found,Area.5,construct
+Approximate geometric shape of whole dug when constructing foundations,shape_found,Area.5,construct
+Diameter at surface (m),diam_surf_found,Area.5,construct
+Diameter at bottom (m),diam_bott_found,Area.5,construct
+Length at surface (m),l_surf_found,Area.5,construct
+Width at surface (m),w_surf_found,Area.5,construct
+Length at bottom (m),l_bott_found,Area.5,construct
+Width at bottom (m),w_bott_found,Area.5,construct
+Hardstanding,NA,Area.5,construct
+Average depth of peat removed when constructing hardstanding (m),d_peat_rem_hardstand,Area.5,construct
+Approximate geometric shape of whole dug when constructing hardstanding,shape_hardstand,Area.5,construct
+Diameter at surface (m),diam_surf_hardstand,Area.5,construct
+Diameter at bottom (m),diam_bott_hardstand,Area.5,construct
+Length at surface (m),l_surf_hardstand,Area.5,construct
+Width at surface (m),w_surf_hardstand,Area.5,construct
+Length at bottom (m),l_bott_hardstand,Area.5,construct
+Width at bottom (m),w_bott_hardstand,Area.5,construct
+Piling,NA,Area.5,construct
+Is piling used?,piling_in,Area.5,construct
+Volume of Concrete,NA,Area.5,construct
+Volume of concrete used (m3),V_concrete,Area.5,construct
