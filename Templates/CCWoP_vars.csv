@@ -51,19 +51,19 @@ Average depth of peat removed from hard-standing (m),d_peat_rem_hardstand,Founda
 Access tracks,NA,Access.tracks,core
 Total length of access track (m),l_track,Access.tracks,core
 Existing track length (m),l_track_exist,Access.tracks,core
-Length of access track that is floating road (m),l_float_road,Access.tracks,core
-Floating road width (m),w_float_road,Access.tracks,core
-Floating road depth (m),d_float_road,Access.tracks,core
-Length of floating road that is drained (m),l_float_road_drain,Access.tracks,core
-Average depth of drains associated with floating roads (m),d_float_road_drain,Access.tracks,core
-Length of access track that is excavated road (m),l_track_exc,Access.tracks,core
-Excavated road width (m),w_track_exc,Access.tracks,core
-Average depth of peat excavated for road (m),d_track_exc,Access.tracks,core
-Length of access track that is rock filled road (m),l_rock_road,Access.tracks,core
-Rock filled road width (m),w_rock_road,Access.tracks,core
-Rock filled road depth (m),d_rock_road,Access.tracks,core
-Length of rock filled road that is drained (m),l_rock_road_drain,Access.tracks,core
-Average depth of drains associated with rock filled roads (m),d_rock_road_drain,Access.tracks,core
+Length of access track that is floating road (m),l_float,Access.tracks,core
+Floating road width (m),w_float,Access.tracks,core
+Floating road depth (m),d_float,Access.tracks,core
+Length of floating road that is drained (m),l_float_drain,Access.tracks,core
+Average depth of drains associated with floating roads (m),d_float_drain,Access.tracks,core
+Length of access track that is excavated road (m),l_track,Access.tracks,core
+Excavated road width (m),w_track,Access.tracks,core
+Average depth of peat excavated for road (m),d_track,Access.tracks,core
+Length of access track that is rock filled road (m),l_rock,Access.tracks,core
+Rock filled road width (m),w_rock,Access.tracks,core
+Rock filled road depth (m),d_rock,Access.tracks,core
+Length of rock filled road that is drained (m),l_rock_drain,Access.tracks,core
+Average depth of drains associated with rock filled roads (m),d_rock_drain,Access.tracks,core
 Cable Trenches,NA,Cable.trenches,core
 Length of any cable trench on peat that does not follow access tracks and is lined with a permeable medium (eg. sand) (m),l_cab_trench,Cable.trenches,core
 Average depth of peat cut for cable trenches (m),d_cab_trench,Cable.trenches,core
@@ -213,126 +213,126 @@ Years after felling when replanting occurs,t_replant,Area.5,forestry
 Age of seedlings on planting (yr),t_seedling_replant,Area.5,forestry
 Area replanted around each turbine (ha),A_replant_turb,Area.5,forestry
 AREA 1,NA,Area.1,construct
-Number of turbines in this area - Error! Total in areas > total on site!,NA,Area.1,construct
-Number of turbines in this area,NA,Area.1,construct
+Number of turbines in this area - Error! Total in areas > total on site!,n_turb,Area.1,construct
+Number of turbines in this area,n_turb,Area.1,construct
 Turbine foundations,NA,Area.1,construct
 Average depth of peat removed when constructing foundations (m),d_peat_rem_found,Area.1,construct
 Approximate geometric shape of whole dug when constructing foundations,shape_found,Area.1,construct
-Diameter at surface (m),diam_surf_found,Area.1,construct
-Diameter at bottom (m),diam_bott_found,Area.1,construct
-Length at surface (m),l_surf_found,Area.1,construct
-Width at surface (m),w_surf_found,Area.1,construct
-Length at bottom (m),l_bott_found,Area.1,construct
-Width at bottom (m),w_bott_found,Area.1,construct
+Diameter at surface (m),diam_found_surf,Area.1,construct
+Diameter at bottom (m),diam_found_bott,Area.1,construct
+Length at surface (m),l_found_surf,Area.1,construct
+Width at surface (m),w_found_surf,Area.1,construct
+Length at bottom (m),l_found_bott,Area.1,construct
+Width at bottom (m),w_found_bott,Area.1,construct
 Hardstanding,NA,Area.1,construct
 Average depth of peat removed when constructing hardstanding (m),d_peat_rem_hardstand,Area.1,construct
 Approximate geometric shape of whole dug when constructing hardstanding,shape_hardstand,Area.1,construct
-Diameter at surface (m),diam_surf_hardstand,Area.1,construct
-Diameter at bottom (m),diam_bott_hardstand,Area.1,construct
-Length at surface (m),l_surf_hardstand,Area.1,construct
-Width at surface (m),w_surf_hardstand,Area.1,construct
-Length at bottom (m),l_bott_hardstand,Area.1,construct
-Width at bottom (m),w_bott_hardstand,Area.1,construct
+Diameter at surface (m),diam_hardstand_surf,Area.1,construct
+Diameter at bottom (m),diam_hardstand_bott,Area.1,construct
+Length at surface (m),l_hardstand_surf,Area.1,construct
+Width at surface (m),w_hardstand_surf,Area.1,construct
+Length at bottom (m),l_hardstand_bott,Area.1,construct
+Width at bottom (m),w_hardstand_bott,Area.1,construct
 Piling,NA,Area.1,construct
 Is piling used?,piling_in,Area.1,construct
 Volume of Concrete,NA,Area.1,construct
 Volume of concrete used (m3),V_concrete,Area.1,construct
 AREA 2,NA,Area.2,construct
-Number of turbines in this area - Error! Total in areas > total on site!,NA,Area.2,construct
-Number of turbines in this area,NA,Area.2,construct
+Number of turbines in this area - Error! Total in areas > total on site!,n_turb,Area.2,construct
+Number of turbines in this area,n_turb,Area.2,construct
 Turbine foundations,NA,Area.2,construct
 Average depth of peat removed when constructing foundations (m),d_peat_rem_found,Area.2,construct
 Approximate geometric shape of whole dug when constructing foundations,shape_found,Area.2,construct
-Diameter at surface (m),diam_surf_found,Area.2,construct
-Diameter at bottom (m),diam_bott_found,Area.2,construct
-Length at surface (m),l_surf_found,Area.2,construct
-Width at surface (m),w_surf_found,Area.2,construct
-Length at bottom (m),l_bott_found,Area.2,construct
-Width at bottom (m),w_bott_found,Area.2,construct
+Diameter at surface (m),diam_found_surf,Area.2,construct
+Diameter at bottom (m),diam_found_bott,Area.2,construct
+Length at surface (m),l_found_surf,Area.2,construct
+Width at surface (m),w_found_surf,Area.2,construct
+Length at bottom (m),l_found_bott,Area.2,construct
+Width at bottom (m),w_found_bott,Area.2,construct
 Hardstanding,NA,Area.2,construct
 Average depth of peat removed when constructing hardstanding (m),d_peat_rem_hardstand,Area.2,construct
 Approximate geometric shape of whole dug when constructing hardstanding,shape_hardstand,Area.2,construct
-Diameter at surface (m),diam_surf_hardstand,Area.2,construct
-Diameter at bottom (m),diam_bott_hardstand,Area.2,construct
-Length at surface (m),l_surf_hardstand,Area.2,construct
-Width at surface (m),w_surf_hardstand,Area.2,construct
-Length at bottom (m),l_bott_hardstand,Area.2,construct
-Width at bottom (m),w_bott_hardstand,Area.2,construct
+Diameter at surface (m),diam_hardstand_surf,Area.2,construct
+Diameter at bottom (m),diam_hardstand_bott,Area.2,construct
+Length at surface (m),l_hardstand_surf,Area.2,construct
+Width at surface (m),w_hardstand_surf,Area.2,construct
+Length at bottom (m),l_hardstand_bott,Area.2,construct
+Width at bottom (m),w_hardstand_bott,Area.2,construct
 Piling,NA,Area.2,construct
 Is piling used?,piling_in,Area.2,construct
 Volume of Concrete,NA,Area.2,construct
 Volume of concrete used (m3),V_concrete,Area.2,construct
 AREA 3,NA,Area.3,construct
-Number of turbines in this area - Error! Total in areas > total on site!,NA,Area.3,construct
-Number of turbines in this area,NA,Area.3,construct
+Number of turbines in this area - Error! Total in areas > total on site!,n_turb,Area.3,construct
+Number of turbines in this area,n_turb,Area.3,construct
 Turbine foundations,NA,Area.3,construct
 Average depth of peat removed when constructing foundations (m),d_peat_rem_found,Area.3,construct
 Approximate geometric shape of whole dug when constructing foundations,shape_found,Area.3,construct
-Diameter at surface (m),diam_surf_found,Area.3,construct
-Diameter at bottom (m),diam_bott_found,Area.3,construct
-Length at surface (m),l_surf_found,Area.3,construct
-Width at surface (m),w_surf_found,Area.3,construct
-Length at bottom (m),l_bott_found,Area.3,construct
-Width at bottom (m),w_bott_found,Area.3,construct
+Diameter at surface (m),diam_found_surf,Area.3,construct
+Diameter at bottom (m),diam_found_bott,Area.3,construct
+Length at surface (m),l_found_surf,Area.3,construct
+Width at surface (m),w_found_surf,Area.3,construct
+Length at bottom (m),l_found_bott,Area.3,construct
+Width at bottom (m),w_found_bott,Area.3,construct
 Hardstanding,NA,Area.3,construct
 Average depth of peat removed when constructing hardstanding (m),d_peat_rem_hardstand,Area.3,construct
 Approximate geometric shape of whole dug when constructing hardstanding,shape_hardstand,Area.3,construct
-Diameter at surface (m),diam_surf_hardstand,Area.3,construct
-Diameter at bottom (m),diam_bott_hardstand,Area.3,construct
-Length at surface (m),l_surf_hardstand,Area.3,construct
-Width at surface (m),w_surf_hardstand,Area.3,construct
-Length at bottom (m),l_bott_hardstand,Area.3,construct
-Width at bottom (m),w_bott_hardstand,Area.3,construct
+Diameter at surface (m),diam_hardstand_surf,Area.3,construct
+Diameter at bottom (m),diam_hardstand_bott,Area.3,construct
+Length at surface (m),l_hardstand_surf,Area.3,construct
+Width at surface (m),w_hardstand_surf,Area.3,construct
+Length at bottom (m),l_hardstand_bott,Area.3,construct
+Width at bottom (m),w_hardstand_bott,Area.3,construct
 Piling,NA,Area.3,construct
 Is piling used?,piling_in,Area.3,construct
 Volume of Concrete,NA,Area.3,construct
 Volume of concrete used (m3),V_concrete,Area.4,construct
 AREA 4,NA,Area.4,construct
-Number of turbines in this area - Error! Total in areas > total on site!,NA,Area.4,construct
-Number of turbines in this area,NA,Area.4,construct
+Number of turbines in this area - Error! Total in areas > total on site!,n_turb,Area.4,construct
+Number of turbines in this area,n_turb,Area.4,construct
 Turbine foundations,NA,Area.4,construct
 Average depth of peat removed when constructing foundations (m),d_peat_rem_found,Area.4,construct
 Approximate geometric shape of whole dug when constructing foundations,shape_found,Area.4,construct
-Diameter at surface (m),diam_surf_found,Area.4,construct
-Diameter at bottom (m),diam_bott_found,Area.4,construct
-Length at surface (m),l_surf_found,Area.4,construct
-Width at surface (m),w_surf_found,Area.4,construct
-Length at bottom (m),l_bott_found,Area.4,construct
-Width at bottom (m),w_bott_found,Area.4,construct
+Diameter at surface (m),diam_found_surf,Area.4,construct
+Diameter at bottom (m),diam_found_bott,Area.4,construct
+Length at surface (m),l_found_surf,Area.4,construct
+Width at surface (m),w_found_surf,Area.4,construct
+Length at bottom (m),l_found_bott,Area.4,construct
+Width at bottom (m),w_found_bott,Area.4,construct
 Hardstanding,NA,Area.4,construct
 Average depth of peat removed when constructing hardstanding (m),d_peat_rem_hardstand,Area.4,construct
 Approximate geometric shape of whole dug when constructing hardstanding,shape_hardstand,Area.4,construct
-Diameter at surface (m),diam_surf_hardstand,Area.4,construct
-Diameter at bottom (m),diam_bott_hardstand,Area.4,construct
-Length at surface (m),l_surf_hardstand,Area.4,construct
-Width at surface (m),w_surf_hardstand,Area.4,construct
-Length at bottom (m),l_bott_hardstand,Area.4,construct
-Width at bottom (m),w_bott_hardstand,Area.4,construct
+Diameter at surface (m),diam_hardstand_surf,Area.4,construct
+Diameter at bottom (m),diam_hardstand_bott,Area.4,construct
+Length at surface (m),l_hardstand_surf,Area.4,construct
+Width at surface (m),w_hardstand_surf,Area.4,construct
+Length at bottom (m),l_hardstand_bott,Area.4,construct
+Width at bottom (m),w_hardstand_bott,Area.4,construct
 Piling,NA,Area.4,construct
 Is piling used?,piling_in,Area.4,construct
 Volume of Concrete,NA,Area.4,construct
 Volume of concrete used (m3),V_concrete,Area.5,construct
 AREA 5,NA,Area.5,construct
-Number of turbines in this area - Error! Total in areas > total on site!,NA,Area.5,construct
+Number of turbines in this area - Error! Total in areas > total on site!,n_turb,Area.5,construct
 Number of turbines in this area,NA,Area.5,construct
 Turbine foundations,NA,Area.5,construct
 Average depth of peat removed when constructing foundations (m),d_peat_rem_found,Area.5,construct
 Approximate geometric shape of whole dug when constructing foundations,shape_found,Area.5,construct
-Diameter at surface (m),diam_surf_found,Area.5,construct
-Diameter at bottom (m),diam_bott_found,Area.5,construct
-Length at surface (m),l_surf_found,Area.5,construct
-Width at surface (m),w_surf_found,Area.5,construct
-Length at bottom (m),l_bott_found,Area.5,construct
-Width at bottom (m),w_bott_found,Area.5,construct
+Diameter at surface (m),diam_found_surf,Area.5,construct
+Diameter at bottom (m),diam_found_bott,Area.5,construct
+Length at surface (m),l_found_surf,Area.5,construct
+Width at surface (m),w_found_surf,Area.5,construct
+Length at bottom (m),l_found_bott,Area.5,construct
+Width at bottom (m),w_found_bott,Area.5,construct
 Hardstanding,NA,Area.5,construct
 Average depth of peat removed when constructing hardstanding (m),d_peat_rem_hardstand,Area.5,construct
 Approximate geometric shape of whole dug when constructing hardstanding,shape_hardstand,Area.5,construct
-Diameter at surface (m),diam_surf_hardstand,Area.5,construct
-Diameter at bottom (m),diam_bott_hardstand,Area.5,construct
-Length at surface (m),l_surf_hardstand,Area.5,construct
-Width at surface (m),w_surf_hardstand,Area.5,construct
-Length at bottom (m),l_bott_hardstand,Area.5,construct
-Width at bottom (m),w_bott_hardstand,Area.5,construct
+Diameter at surface (m),diam_hardstand_surf,Area.5,construct
+Diameter at bottom (m),diam_hardstand_bott,Area.5,construct
+Length at surface (m),l_hardstand_surf,Area.5,construct
+Width at surface (m),w_hardstand_surf,Area.5,construct
+Length at bottom (m),l_hardstand_bott,Area.5,construct
+Width at bottom (m),w_hardstand_bott,Area.5,construct
 Piling,NA,Area.5,construct
 Is piling used?,piling_in,Area.5,construct
 Volume of Concrete,NA,Area.5,construct
