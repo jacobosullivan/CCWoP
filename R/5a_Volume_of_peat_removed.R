@@ -125,7 +125,7 @@ removal_at <- function(at_dims) {
               v = vol_removed_at))
 }
 
-#' removal
+#' Vol_peat_removed
 #' @param pit_dims borrow pit dimensions (list)
 #' @param f_dims foundation dimensions (list)
 #' @param h_dims hardstand dimensions (list)
@@ -133,11 +133,11 @@ removal_at <- function(at_dims) {
 #' @param add_dims additional excavation dimensions (list)
 #' @return Area/Volume of peat removed
 #' @export
-removal <- function(pit_dims,
-                    f_dims,
-                    h_dims,
-                    at_dims,
-                    add_dims) {
+Vol_peat_removed <- function(pit_dims,
+                             f_dims,
+                             h_dims,
+                             at_dims,
+                             add_dims) {
 
   # THIS FUNCTION...
 

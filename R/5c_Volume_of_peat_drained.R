@@ -132,7 +132,7 @@ drainage_add <- function(drain_ext,
               v = vol_drained_add))
 }
 
-#' drainage
+#' Vol_peat_drained
 #' @param drain_ext average extent of drainage around drainage features
 #' @param pit_dims borrow pit dimensions (list)
 #' @param fh_dims foundations + hardstanding dimensions
@@ -141,12 +141,12 @@ drainage_add <- function(drain_ext,
 #' @param add_dims additional excavation dimensions (list)
 #' @return Area/Volume of peat drained
 #' @export
-drainage <- function(drain_ext,
-                     pit_dims,
-                     fh_dims,
-                     at_dims,
-                     ct_dims,
-                     add_dims) {
+Vol_peat_drained <- function(drain_ext,
+                             pit_dims,
+                             fh_dims,
+                             at_dims,
+                             ct_dims,
+                             add_dims) {
 
   # THIS FUNCTION...
 

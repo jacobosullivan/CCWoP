@@ -129,33 +129,33 @@ if (core.dat$Foundations$found_in[1] == 1) { # pool all foundation/hardstanding
   d_fh <- list_op(d_f, d_h, func="max")
 }
 
-peat_drained <- drainage(drain_ext = drain_ext,
-                         # borrow pit dimensions
-                         pit_dims = list(n_pit = core.dat$Borrow.pits$n_pit,
-                                         l_pit = core.dat$Borrow.pits$l_pit,
-                                         w_pit = core.dat$Borrow.pits$w_pit,
-                                         d_pit = core.dat$Borrow.pits$d_pit),
-                         # foundation/hardstand dimensions
-                         fh_dims = list(n = n_turb,
-                                        l = l_fh,
-                                        w = w_fh,
-                                        d = d_fh),
-                         # access track dimensions
-                         at_dims = list(float = list(l = core.dat$Access.tracks$l_float,
-                                                     w = core.dat$Access.tracks$w_float,
-                                                     d = core.dat$Access.tracks$d_float_drain),
-                                        track = list(l = core.dat$Access.tracks$l_track,
-                                                     w = core.dat$Access.tracks$w_track,
-                                                     d = core.dat$Access.tracks$d_track),
-                                        rock = list(l = core.dat$Access.tracks$l_rock_drain,
-                                                    w = core.dat$Access.tracks$w_rock,
-                                                    d = core.dat$Access.tracks$d_rock_drain)),
-                         # cable trench dimensions
-                         ct_dims = list(l = core.dat$Cable.trenches$l_cab_trench,
-                                        d = core.dat$Cable.trenches$d_cab_trench),
-                         # additional excavation dimensions
-                         add_dims = list(v = core.dat$Add.excavation$V_add,
-                                         a = core.dat$Add.excavation$A_add))
+AV_indirect <- Vol_peat_drained(drain_ext = core.dat$Peatland$drain_ext,
+                                # borrow pit dimensions
+                                pit_dims = list(n_pit = core.dat$Borrow.pits$n_pit,
+                                                l_pit = core.dat$Borrow.pits$l_pit,
+                                                w_pit = core.dat$Borrow.pits$w_pit,
+                                                d_pit = core.dat$Borrow.pits$d_pit),
+                                # foundation/hardstand dimensions
+                                fh_dims = list(n = n_turb,
+                                               l = l_fh,
+                                               w = w_fh,
+                                               d = d_fh),
+                                # access track dimensions
+                                at_dims = list(float = list(l = core.dat$Access.tracks$l_float,
+                                                            w = core.dat$Access.tracks$w_float,
+                                                            d = core.dat$Access.tracks$d_float_drain),
+                                               track = list(l = core.dat$Access.tracks$l_track,
+                                                            w = core.dat$Access.tracks$w_track,
+                                                            d = core.dat$Access.tracks$d_track),
+                                               rock = list(l = core.dat$Access.tracks$l_rock_drain,
+                                                           w = core.dat$Access.tracks$w_rock,
+                                                           d = core.dat$Access.tracks$d_rock_drain)),
+                                # cable trench dimensions
+                                ct_dims = list(l = core.dat$Cable.trenches$l_cab_trench,
+                                               d = core.dat$Cable.trenches$d_cab_trench),
+                                # additional excavation dimensions
+                                add_dims = list(v = core.dat$Add.excavation$V_add,
+                                                a = core.dat$Add.excavation$A_add))
 
 ####################################################
 ############## Volume of peat removed ##############
@@ -190,35 +190,47 @@ if (core.dat$Foundations$found_in[1] == 1) { # pool all foundation/hardstanding
 
 }
 
-peat_removed <- removal(# borrow pit dimensions
-                        pit_dims = list(n_pit = core.dat$Borrow.pits$n_pit,
-                                       l_pit = core.dat$Borrow.pits$l_pit,
-                                       w_pit = core.dat$Borrow.pits$w_pit,
-                                       d_pit = core.dat$Borrow.pits$d_pit),
-                        # foundation dimensions
-                        f_dims = list(n = n_turb,
-                                     l_b = l_fb,
-                                     w_b = w_fb,
-                                     l_s = l_fs,
-                                     w_s = w_fs,
-                                     d = d_f),
-                        # hardstanding dimensions
-                        h_dims = list(n = n_turb,
-                                     l_b = l_hb,
-                                     w_b = w_hb,
-                                     l_s = l_hs,
-                                     w_s = w_hs,
-                                     d = d_h),
-                        # access track dimensions
-                        at_dims = list(float = list(l = core.dat$Access.tracks$l_float,
-                                                   w = core.dat$Access.tracks$w_float,
-                                                   d = core.dat$Access.tracks$d_float_drain),
-                                      track = list(l = core.dat$Access.tracks$l_track,
-                                                   w = core.dat$Access.tracks$w_track,
-                                                   d = core.dat$Access.tracks$d_track),
-                                      rock = list(l = core.dat$Access.tracks$l_rock_drain,
-                                                  w = core.dat$Access.tracks$w_rock,
-                                                  d = core.dat$Access.tracks$d_rock_drain)),
-                        # additional excavation dimensions
-                        add_dims = list(v = core.dat$Add.excavation$V_add,
-                                       a = core.dat$Add.excavation$A_add))
+AV_direct <- Vol_peat_removed(# borrow pit dimensions
+                              pit_dims = list(n_pit = core.dat$Borrow.pits$n_pit,
+                                             l_pit = core.dat$Borrow.pits$l_pit,
+                                             w_pit = core.dat$Borrow.pits$w_pit,
+                                             d_pit = core.dat$Borrow.pits$d_pit),
+                              # foundation dimensions
+                              f_dims = list(n = n_turb,
+                                            l_b = l_fb,
+                                            w_b = w_fb,
+                                            l_s = l_fs,
+                                            w_s = w_fs,
+                                            d = d_f),
+                              # hardstanding dimensions
+                              h_dims = list(n = n_turb,
+                                            l_b = l_hb,
+                                            w_b = w_hb,
+                                            l_s = l_hs,
+                                            w_s = w_hs,
+                                            d = d_h),
+                              # access track dimensions
+                              at_dims = list(float = list(l = core.dat$Access.tracks$l_float,
+                                                          w = core.dat$Access.tracks$w_float,
+                                                          d = core.dat$Access.tracks$d_float_drain),
+                                             track = list(l = core.dat$Access.tracks$l_track,
+                                                          w = core.dat$Access.tracks$w_track,
+                                                          d = core.dat$Access.tracks$d_track),
+                                             rock = list(l = core.dat$Access.tracks$l_rock_drain,
+                                                         w = core.dat$Access.tracks$w_rock,
+                                                         d = core.dat$Access.tracks$d_rock_drain)),
+                              # additional excavation dimensions
+                              add_dims = list(v = core.dat$Add.excavation$V_add,
+                                              a = core.dat$Add.excavation$A_add))
+
+
+####################################################
+########### Loss of CO2 fixing potential ###########
+####################################################
+
+L_fix <- Loss_of_CO2_fix_pot(A_direct = AV_direct$Total$a,
+                             A_indirect = AV_indirect$Total$a,
+                             G_bog = core.dat$Bog.plants$G_bog,
+                             t_wf = core.dat$Windfarm$t_wf,
+                             t_restore = core.dat$Bog.plants$t_restore,
+                             CO2_C = 3.667)
