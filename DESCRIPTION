@@ -1,9 +1,9 @@
 Package: CCWoP
-Title: What the Package Does (One Line, Title Case)
+Title: R implementation of the Full carbon calculator for windfarms on peatlands
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+    person("Jacob", "O'Sullivan", , "j.osullivan@zoho.com", role = c("aut", "cre"))
+Description: Full carbon balance calculation for installation of windfarms on peatlands with accounting of adjacent deforestation
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8

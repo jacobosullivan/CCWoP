@@ -3,9 +3,9 @@ library(tidyverse) # dataframe manipulations
 library(purrr) # nested list indexing
 devtools::document()
 
-####################################################
-############### Load input data from UI ############
-####################################################
+################################################################################
+############################# Load input data from UI ##########################
+################################################################################
 
 path_to_UI <- "Templates/Full carbon calculator for windfarms on peatlands - Version 2.14.1.xlsx" # select user input spreadsheet
 
@@ -17,9 +17,9 @@ construct.dat <- dat$construct.dat
 rm(dat)
 
 
-####################################################
-############# Calculate capacity factor ############
-####################################################
+################################################################################
+########################### Calculate capacity factor ##########################
+################################################################################
 
 if (core.dat$Windfarm$p_cap_in[1] == 2) { # capacity factor calculated from forestry module
   p_cap <- 1 # placeholder for forestry module output
@@ -28,9 +28,9 @@ if (core.dat$Windfarm$p_cap_in[1] == 2) { # capacity factor calculated from fore
 }
 
 
-####################################################
-###### Calculate potential emissions savings #######
-####################################################
+################################################################################
+#################### Calculate potential emissions savings #####################
+################################################################################
 
 ## Total Windfarm energy output
 e_out <- Windfarm_output(p_cap = p_cap,
@@ -50,9 +50,9 @@ S_fuel <- Windfarm_emissions_saving(e_out = e_out,
                                     E_mat = E_mat)
 
 
-####################################################
-######### Carbon loss due to turbine life ##########
-####################################################
+################################################################################
+####################### Carbon loss due to turbine life ########################
+################################################################################
 
 if (core.dat$Windfarm$L_life_in[1] == 2) { # lifetime emissions calculated from linear regression coefficients
 
@@ -77,9 +77,9 @@ if (core.dat$Windfarm$L_life_in[1] == 2) { # lifetime emissions calculated from 
 }
 
 
-####################################################
-############ Carbon loss due to back up ############
-####################################################
+################################################################################
+########################## Carbon loss due to back up ##########################
+################################################################################
 
 L_back <- Backup_emissions(c_turb = core.dat$Windfarm$c_turb,
                            n_turb = core.dat$Windfarm$n_turb,
@@ -89,9 +89,9 @@ L_back <- Backup_emissions(c_turb = core.dat$Windfarm$c_turb,
                            t_wf = core.dat$Windfarm$t_wf)
 
 
-####################################################
-############## Volume of peat drained ##############
-####################################################
+################################################################################
+############################ Volume of peat drained ############################
+################################################################################
 
 ## Compute foundation and hardstanding dimensions
 if (core.dat$Foundations$found_in[1] == 1) { # pool all foundation/hardstanding
@@ -157,9 +157,9 @@ AV_indirect <- Vol_peat_drained(drain_ext = core.dat$Peatland$drain_ext,
                                 add_dims = list(v = core.dat$Add.excavation$V_add,
                                                 a = core.dat$Add.excavation$A_add))
 
-####################################################
-############## Volume of peat removed ##############
-####################################################
+################################################################################
+############################ Volume of peat removed ############################
+################################################################################
 
 ## Compute foundation and hardstanding dimensions
 if (core.dat$Foundations$found_in[1] == 1) { # pool all foundation/hardstanding
@@ -224,9 +224,9 @@ AV_direct <- Vol_peat_removed(# borrow pit dimensions
                                               a = core.dat$Add.excavation$A_add))
 
 
-####################################################
-########### Loss of CO2 fixing potential ###########
-####################################################
+################################################################################
+######################### Loss of CO2 fixing potential #########################
+################################################################################
 
 L_fix <- Loss_of_CO2_fix_pot(A_direct = AV_direct$Total$a,
                              A_indirect = AV_indirect$Total$a,
@@ -236,9 +236,9 @@ L_fix <- Loss_of_CO2_fix_pot(A_direct = AV_direct$Total$a,
                              CO2_C = 3.667)
 
 
-####################################################
-############ Emissions rates from soils ############
-####################################################
+################################################################################
+########################## Emissions rates from soils ##########################
+################################################################################
 
 E_tot <- Emissions_rates_soils(em_factor_meth_in = core.dat$Em.factor.meth$em_factor_meth_in,
                                peat_type = core.dat$Peatland$peat_type,
@@ -249,9 +249,9 @@ E_tot <- Emissions_rates_soils(em_factor_meth_in = core.dat$Em.factor.meth$em_fa
                                CO2_C = 3.667,
                                CH4_CO2 = 30.67)
 
-####################################################
-################# Loss of Soil CO2 #################
-####################################################
+################################################################################
+############################### Loss of Soil CO2 ###############################
+################################################################################
 
 L_indirect <- 0 # next
 
@@ -262,5 +262,3 @@ L_direct <- CO2_loss_removed(pC_dry_peat = core.dat$Peatland$pC_dry_peat,
                              E_tot = NA, # this is computed in 5d. CO2 loss from drained peat!
                              CO2_C = 3.667,
                              pCO2_lost = 100)
-
-
