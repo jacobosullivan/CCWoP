@@ -234,3 +234,33 @@ L_fix <- Loss_of_CO2_fix_pot(A_direct = AV_direct$Total$a,
                              t_wf = core.dat$Windfarm$t_wf,
                              t_restore = core.dat$Bog.plants$t_restore,
                              CO2_C = 3.667)
+
+
+####################################################
+############ Emissions rates from soils ############
+####################################################
+
+E_tot <- Emissions_rates_soils(em_factor_meth_in = core.dat$Em.factor.meth$em_factor_meth_in,
+                               peat_type = core.dat$Peatland$peat_type,
+                               A_indirect = AV_indirect$Total$a,
+                               V_indirect = AV_indirect$Total$v,
+                               T_air = core.dat$Peatland$T_air,
+                               d_wt = core.dat$Peatland$d_wt,
+                               CO2_C = 3.667,
+                               CH4_CO2 = 30.67)
+
+####################################################
+################# Loss of Soil CO2 #################
+####################################################
+
+L_indirect <- 0 # next
+
+L_direct <- CO2_loss_removed(pC_dry_peat = core.dat$Peatland$pC_dry_peat,
+                             BD_dry_soil = core.dat$Peatland$BD_dry_soil,
+                             A_direct = AV_direct$Total$a,
+                             V_direct = AV_direct$Total$v,
+                             E_tot = NA, # this is computed in 5d. CO2 loss from drained peat!
+                             CO2_C = 3.667,
+                             pCO2_lost = 100)
+
+

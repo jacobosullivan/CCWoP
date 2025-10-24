@@ -2,6 +2,9 @@
 
 export(Backup_emissions)
 export(C.seq.in.soil.under.trees)
+export(CO2_loss_drained)
+export(CO2_loss_removed)
+export(Emissions_rates_soils)
 export(Lifetime_emissions)
 export(Loss_of_CO2_fix_pot)
 export(Vol_peat_drained)
