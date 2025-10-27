@@ -9,7 +9,7 @@ CO2_loss_removed(
   BD_dry_soil,
   A_direct,
   V_direct,
-  E_tot,
+  L_undrained_pa,
   CO2_C = 3.667,
   pCO2_lost = 100
 )
@@ -23,7 +23,7 @@ CO2_loss_removed(
 
 \item{V_direct}{Volume peat removed}
 
-\item{E_tot}{Total emissions of undrained per per unit area}
+\item{L_undrained_pa}{Emissions from undrained peat per unit area}
 
 \item{CO2_C}{Molecular weight ratio C to CO2}
 

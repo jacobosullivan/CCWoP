@@ -25,14 +25,14 @@ Emissions_rates_soils <- function(em_factor_meth_in,
   if (em_factor_meth_in[1] == 1) { # IPCC default calculation used
 
     if (peat_type[1] == 1) { # Acid bog selected
-      E_CH4_undrained <- (11 / 1000000000) * 10000 * 365
+      R_CH4_undrained <- (11 / 1000000000) * 10000 * 365
     } else { # Fen selected
-      E_CH4_undrained <- (60 / 1000000000) * 10000 * 365
+      R_CH4_undrained <- (60 / 1000000000) * 10000 * 365
     }
 
-    E_CO2_drained <- 9.6 * (12 + 16 + 16) / 12 # Identical for both peat types
-    E_CO2_undrained <- 0 # Assumption
-    E_CH4_drained <- 0 # Assumption
+    R_CO2_drained <- 9.6 * (12 + 16 + 16) / 12 # Identical for both peat types
+    R_CO2_undrained <- 0 # Assumption
+    R_CH4_drained <- 0 # Assumption
 
   } else { # Site specific calculation using ECOSSE method
 
@@ -40,43 +40,43 @@ Emissions_rates_soils <- function(em_factor_meth_in,
 
     if (peat_type[1] == 1) { # Acid bog selected
 
-      ECOSSE_CO2 <- function(CO2_C, d_wt, T_air) {
+      ECOSSR_CO2 <- function(CO2_C, d_wt, T_air) {
         return((CO2_C/1000) * ((6700 * exp(-0.26 * exp(-0.05153 * ((100*d_wt)-50)))) + ((72.54 * T_air) - 800)))
       }
 
-      ECOSSE_CH4 <- function(CH4_CO2, d_wt, T_air) { # converts into CO2 eq units
+      ECOSSR_CH4 <- function(CH4_CO2, d_wt, T_air) { # converts into CO2 eq units
         return((CH4_CO2/1000) * (500 * exp(-0.1234 * (100*d_wt)) + ((3.529*T_air) - 36.67)))
       }
 
-      E_CO2_drained <- ECOSSE_CO2(CO2_C, d_wt_drained, T_air)
-      E_CO2_undrained <- ECOSSE_CO2(CO2_C, d_wt, T_air)
+      R_CO2_drained <- ECOSSR_CO2(CO2_C, d_wt_drained, T_air)
+      R_CO2_undrained <- ECOSSR_CO2(CO2_C, d_wt, T_air)
 
-      E_CH4_drained <- ECOSSE_CH4(CH4_CO2, d_wt_drained, T_air)
-      E_CH4_undrained <- ECOSSE_CH4(CH4_CO2, d_wt, T_air)
+      R_CH4_drained <- ECOSSR_CH4(CH4_CO2, d_wt_drained, T_air)
+      R_CH4_undrained <- ECOSSR_CH4(CH4_CO2, d_wt, T_air)
 
     } else { # Fen selected
 
-      ECOSSE_CO2 <- function(CO2_C, d_wt, T_air) {
+      ECOSSR_CO2 <- function(CO2_C, d_wt, T_air) {
         return((CO2_C/1000) * (16244 * exp(-0.17594 * exp(-0.07346 * ((d_wt*100)-50))) + (153.234*T_air)))
       }
 
-      ECOSSE_CH4 <- function(CH4_CO2, d_wt, T_air) { # converts into CO2 eq units
+      ECOSSR_CH4 <- function(CH4_CO2, d_wt, T_air) { # converts into CO2 eq units
         return((CH4_CO2/1000) * (-10 + 563.6253 * exp(-0.09702 * (100*d_wt)) + (0.662183*T_air)))
       }
 
-      E_CO2_drained <- ECOSSE_CO2(CO2_C, d_wt_drained, T_air)
-      E_CO2_undrained <- ECOSSE_CO2(CO2_C, d_wt, T_air)
+      R_CO2_drained <- ECOSSR_CO2(CO2_C, d_wt_drained, T_air)
+      R_CO2_undrained <- ECOSSR_CO2(CO2_C, d_wt, T_air)
 
-      E_CH4_drained <- ECOSSE_CH4(CH4_CO2, d_wt_drained, T_air)
-      E_CH4_undrained <- ECOSSE_CH4(CH4_CO2, d_wt, T_air)
+      R_CH4_drained <- ECOSSR_CH4(CH4_CO2, d_wt_drained, T_air)
+      R_CH4_undrained <- ECOSSR_CH4(CH4_CO2, d_wt, T_air)
 
     }
 
   }
 
-  return(list(E_CO2_drained=E_CO2_drained,
-              E_CO2_undrained=E_CO2_undrained,
-              E_CH4_drained=E_CH4_drained,
-              E_CH4_undrained=E_CH4_undrained))
+  return(list(R_CO2_drained=R_CO2_drained,
+              R_CO2_undrained=R_CO2_undrained,
+              R_CH4_drained=R_CH4_drained,
+              R_CH4_undrained=R_CH4_undrained))
 
 }

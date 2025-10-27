@@ -7,7 +7,10 @@
 CO2_loss_drained(
   pC_dry_peat,
   BD_dry_soil,
+  R_tot,
+  D_f,
   restore_hydr_in,
+  restore_hab_in,
   A_indirect,
   V_indirect,
   t_wf,
@@ -19,7 +22,13 @@ CO2_loss_drained(
 
 \item{BD_dry_soil}{Dry soil bulk density}
 
+\item{R_tot}{ECOSSE emissions factors}
+
+\item{D_f}{Number flooded days undrained peatland (by peat type)}
+
 \item{restore_hydr_in}{Select hydrology restoration}
+
+\item{restore_hab_in}{Select habitat restoration}
 
 \item{A_indirect}{Area peat drained}
 
@@ -30,13 +39,9 @@ CO2_loss_drained(
 \item{t_restore}{Time to restoration after decomissioning}
 
 \item{E_tot}{Total emissions of undrained per per unit area}
-
-\item{CO2_C}{Molecular weight ratio C to CO2}
-
-\item{pCO2_lost}{percent Carbon lost as CO2}
 }
 \value{
-Hypothetical carbon fixation of drained/removed peat
+Net CO2 loss from drained peat
 }
 \description{
 CO2_loss_drained

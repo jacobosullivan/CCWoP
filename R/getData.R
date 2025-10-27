@@ -35,7 +35,7 @@ getCoreInputData <- function(path, df_struct) {
     filter(!is.na(Input.data)) %>%
     mutate(Input.data=str_replace(Input.data, "\\ {2,}", "\\ ")) %>% # remove non-standard formatting
     mutate(Input.data=str_replace(Input.data, "\\ +$", "")) %>% # remove non-standard formatting
-    mutate(across(c(Exp, Min, Max), ~ ifelse(.=="Yes", 1, .))) %>%
+    mutate(across(c(Exp, Min, Max), ~ ifelse(.=="Yes", 2, .))) %>%
     mutate(across(c(Exp, Min, Max), ~ ifelse(.=="No", 1, .))) %>%
     mutate(across(c(Exp, Min, Max), ~ as.numeric(.))) %>%
     filter(!(is.na(Exp) & is.na(Min) & is.na(Max))) # if all inputs are NA, remove
