@@ -279,3 +279,7 @@ L_direct <- CO2_loss_removed(pC_dry_peat = core.dat$Peatland$pC_dry_peat,
                              L_undrained_pa = L_drainage$L_undrained / AV_indirect$Total$a,
                              CO2_C = 3.667,
                              pCO2_lost = 100)
+
+L_soil <- CO2_loss_from_soil(L_direct = L_direct,
+                             L_indirect = L_indirect)
+
