@@ -1,6 +1,35 @@
 ## 5d. CO2 loss from drained peat
 
 #' CO2_loss_drained
+#' @param core.dat UI data
+#' @param AV_indirect Area/Volume of drained peat
+#' @return L_indirect
+#' @export
+CO2_loss_drained <- function(core.dat, AV_indirect, R_tot) {
+
+  # Wrapper function for the CO2_loss_drained0() module
+  # THIS FUNCTION...
+
+  L_drainage <- CO2_loss_drained0(pC_dry_peat = core.dat$Peatland$pC_dry_peat,
+                                  BD_dry_soil = core.dat$Peatland$BD_dry_soil,
+                                  R_tot = R_tot,
+                                  peat_type = core.dat$Peatland$peat_type,
+                                  restore_hydr_in = core.dat$Site.restoration$restore_hydr_in,
+                                  restore_hab_in = core.dat$Site.restoration$restore_hab_in,
+                                  A_indirect = AV_indirect$Total$a,
+                                  V_indirect = AV_indirect$Total$v,
+                                  t_wf = core.dat$Windfarm$t_wf,
+                                  t_restore = core.dat$Bog.plants$t_restore,
+                                  CO2_C = 3.667)
+
+  L_indirect <- list(L_drained = L_drainage$L_drained,
+                     L_undrained = L_drainage$L_undrained,
+                     L_indirect = L_drainage$L_drained - L_drainage$L_undrained)
+
+  return(L_indirect)
+}
+
+#' CO2_loss_drained
 #' @param pC_dry_peat Carbon content of dry peat
 #' @param BD_dry_soil Dry soil bulk density
 #' @param R_tot ECOSSE emissions factors
@@ -11,19 +40,20 @@
 #' @param V_indirect Volume peat drained
 #' @param t_wf Windfarm life time
 #' @param t_restore Time to restoration after decomissioning
-#' @param E_tot Total emissions of undrained per per unit area
+#' @param CO2_c Molecular weight ratio C to CO2
 #' @return Net CO2 loss from drained peat
 #' @export
-CO2_loss_drained <- function(pC_dry_peat,
-                             BD_dry_soil,
-                             R_tot,
-                             peat_type,
-                             restore_hydr_in,
-                             restore_hab_in,
-                             A_indirect,
-                             V_indirect,
-                             t_wf,
-                             t_restore) {
+CO2_loss_drained0 <- function(pC_dry_peat,
+                              BD_dry_soil,
+                              R_tot,
+                              peat_type,
+                              restore_hydr_in,
+                              restore_hab_in,
+                              A_indirect,
+                              V_indirect,
+                              t_wf,
+                              t_restore,
+                              CO2_C = 3.667) {
 
   # THIS FUNCTION...
 

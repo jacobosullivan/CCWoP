@@ -4,36 +4,17 @@
 \alias{Emissions_rates_soils}
 \title{Emissions_rates_soils}
 \usage{
-Emissions_rates_soils(
-  em_factor_meth_in,
-  peat_type,
-  A_indirect,
-  V_indirect,
-  T_air,
-  d_wt,
-  CO2_C = 3.667,
-  CH4_CO2 = 30.67
-)
+Emissions_rates_soils(core.dat, construct.dat, AV_indirect)
 }
 \arguments{
-\item{em_factor_meth_in}{Select IPCC default or ECOSSE model}
+\item{core.dat}{UI data}
 
-\item{peat_type}{Select acid bog or fen}
+\item{construct.dat}{UI construction data}
 
-\item{A_indirect}{Area peat drained}
-
-\item{V_indirect}{Volume peat drained}
-
-\item{T_air}{Average air temperature}
-
-\item{d_wt}{Average water table depth (undrained)}
-
-\item{CO2_C}{Molecular weight ratio C to CO2}
-
-\item{CH4_CO2}{CH4 to CO2 conversion factor}
+\item{AV_indirect}{Area/Volume of drained peat}
 }
 \value{
-Emissions rates from drained and undrained peatland
+R_tot
 }
 \description{
 Emissions_rates_soils

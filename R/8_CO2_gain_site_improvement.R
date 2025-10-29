@@ -6,18 +6,20 @@
 #' @export
 CO_2_gain_site_improve <- function(core.dat) {
 
+  # Wrapper function for the CO_2_gain_site_improve0() module
   # THIS FUNCTION...
+
   feature <- dat_improvement(core.dat)
 
   # Compute emissions savings
-  L_improvement <- Emissions_saved(T_air = core.dat$Peatland$T_air,
-                                   d_feature = feature$d,
-                                   a_feature = feature$a,
-                                   t_feature = feature$t,
-                                   em_factor_meth_in = core.dat$Em.factor.meth$em_factor_meth_in,
-                                   peat_type = core.dat$Peatland$peat_type,
-                                   CO2_C = 3.667,
-                                   CH4_CO2 = 30.67)
+  L_improvement <- CO_2_gain_site_improve0(T_air = core.dat$Peatland$T_air,
+                                           d_feature = feature$d,
+                                           a_feature = feature$a,
+                                           t_feature = feature$t,
+                                           em_factor_meth_in = core.dat$Em.factor.meth$em_factor_meth_in,
+                                           peat_type = core.dat$Peatland$peat_type,
+                                           CO2_C = 3.667,
+                                           CH4_CO2 = 30.67)
 
   return(L_improvement)
 
@@ -130,14 +132,14 @@ dat_improvement <- function(core.dat) {
 #' @param CH4_CO2 CH4 to CO2 conversion factor
 #' @return CO2 emissions rate ECOSSE Fen
 #' @export
-Emissions_saved <- function(T_air,
-                            d_feature,
-                            a_feature,
-                            t_feature,
-                            em_factor_meth_in,
-                            peat_type,
-                            CO2_C = 3.667,
-                            CH4_CO2 = 30.67) {
+CO_2_gain_site_improve0 <- function(T_air,
+                                    d_feature,
+                                    a_feature,
+                                    t_feature,
+                                    em_factor_meth_in,
+                                    peat_type,
+                                    CO2_C = 3.667,
+                                    CH4_CO2 = 30.67) {
 
   # THIS FUNCTION...
 

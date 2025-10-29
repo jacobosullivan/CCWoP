@@ -4,30 +4,15 @@
 \alias{Lifetime_emissions}
 \title{Lifetime_emissions}
 \usage{
-Lifetime_emissions(
-  c_turb,
-  n_turb,
-  coefs,
-  V_concrete,
-  c_turb_thresh = 1,
-  E_concrete = 0.316
-)
+Lifetime_emissions(core.dat, construct.dat)
 }
 \arguments{
-\item{c_turb}{maximum tubine power capacity}
+\item{core.dat}{UI data}
 
-\item{n_turb}{number of turbines}
-
-\item{coefs}{regression coefficeints}
-
-\item{V_concrete}{total volume of cement used}
-
-\item{c_turb_thresh}{threshold turbine power capacity for regression models}
-
-\item{E_cement}{emissions per unit volume cement}
+\item{construct.dat}{UI construction data}
 }
 \value{
-Windfarm lifetime emissions
+L_life
 }
 \description{
 Lifetime_emissions

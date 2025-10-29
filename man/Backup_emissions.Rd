@@ -4,23 +4,13 @@
 \alias{Backup_emissions}
 \title{Backup_emissions}
 \usage{
-Backup_emissions(c_turb, n_turb, p_therm, p_back, E_mat, t_wf)
+Backup_emissions(core.dat, E_mat)
 }
 \arguments{
-\item{c_turb}{maximum tubine power capacity}
-
-\item{n_turb}{number of turbines}
-
-\item{p_therm}{percent thermal efficiency of backup source}
-
-\item{p_back}{percent extra capacity needed for backup}
-
-\item{E_mat}{counterfactuals in matrix form with IDs as rownames}
-
-\item{t_wf}{windfarm lifetime}
+\item{core.dat}{UI data}
 }
 \value{
-Backup lifetime emissions
+L_back
 }
 \description{
 Backup_emissions

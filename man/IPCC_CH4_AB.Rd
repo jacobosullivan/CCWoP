@@ -4,7 +4,10 @@
 \alias{IPCC_CH4_AB}
 \title{IPCC_CH4_AB}
 \usage{
-IPCC_CH4_AB()
+IPCC_CH4_AB(CH4_CO2 = 30.67)
+}
+\arguments{
+\item{CH4_CO2}{CH4 to CO2 conversion factor}
 }
 \value{
 CH4 emissions rate IPCC Acid bog

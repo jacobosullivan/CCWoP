@@ -2,36 +2,20 @@
 % Please edit documentation in R/5b_CO2_loss_from_removed_peat.R
 \name{CO2_loss_removed}
 \alias{CO2_loss_removed}
-\title{CO2_loss_removed}
+\title{CO2_loss_remomved}
 \usage{
-CO2_loss_removed(
-  pC_dry_peat,
-  BD_dry_soil,
-  A_direct,
-  V_direct,
-  L_undrained_pa,
-  CO2_C = 3.667,
-  pCO2_lost = 100
-)
+CO2_loss_removed(core.dat, AV_direct, L_indirect)
 }
 \arguments{
-\item{pC_dry_peat}{Carbon content of dry peat}
+\item{core.dat}{UI data}
 
-\item{BD_dry_soil}{Dry soil bulk density}
+\item{AV_direct}{Area/Volume of removed peat}
 
-\item{A_direct}{Area peat removed}
-
-\item{V_direct}{Volume peat removed}
-
-\item{L_undrained_pa}{Emissions from undrained peat per unit area}
-
-\item{CO2_C}{Molecular weight ratio C to CO2}
-
-\item{pCO2_lost}{percent Carbon lost as CO2}
+\item{L_indirect}{CO2 from drained peat}
 }
 \value{
-Hypothetical carbon fixation of drained/removed peat
+L_direct
 }
 \description{
-CO2_loss_removed
+CO2_loss_remomved
 }

@@ -1,5 +1,85 @@
 ## 5c. Volume of peat drained
 
+#' AV_peat_drained
+#' @param core.dat UI data
+#' @param construct.dat UI construction data
+#' @return AV_indirect
+#' @export
+AV_peat_drained <- function(core.dat, construct.dat) {
+
+  # Wrapper function for the AV_peat_drained0() module
+  # THIS FUNCTION...
+
+  ## Compute foundation and hardstanding dimensions
+  if (core.dat$Foundations$found_in[1] == 1) { # pool all foundation/hardstanding
+    l_f <- core.dat$Foundations$l_found
+    w_f <- core.dat$Foundations$w_found
+
+    l_h <- core.dat$Foundations$l_hardstand
+    w_h <- core.dat$Foundations$w_hardstand
+
+    # Get total no turbines
+    n_turb <- core.dat$Windfarm$n_turb
+
+    # Sum total length/width of foundations + hardstandings
+    l_fh <- l_f + l_h
+    w_fh <- w_f + w_h
+
+    # Get max depths
+    d_f <- core.dat$Foundations$d_peat_rem_found
+    d_h <- core.dat$Foundations$d_peat_rem_hardstand
+
+    d_fh <- apply(cbind(d_f,d_h), MAR=1, FUN=max)
+  } else { # each area considered individually (produces more drainage due to increased edge effects)
+    l_f <- map(construct.dat, "l_found_bott") # 'bottom' width used in this case
+    w_f <- map(construct.dat, "w_found_bott")
+
+    l_h <- map(construct.dat, "l_hardstand_bott") # 'bottom' width used in this case
+    w_h <- map(construct.dat, "w_hardstand_bott")
+
+    n_turb <- map(construct.dat, "n_turb")
+
+    # Sum total length/width of foundations + hardstandings by area
+    l_fh <- list_op(l_f, l_h, func = "+")
+    w_fh <- list_op(w_f, w_h, func = "+")
+
+    d_f <- map(construct.dat, "d_peat_rem_found")
+    d_h <- map(construct.dat, "d_peat_rem_hardstand")
+
+    d_fh <- list_op(d_f, d_h, func="max")
+  }
+
+  AV_indirect <- AV_peat_drained0(drain_ext = core.dat$Peatland$drain_ext,
+                                  # borrow pit dimensions
+                                  pit_dims = list(n_pit = core.dat$Borrow.pits$n_pit,
+                                                  l_pit = core.dat$Borrow.pits$l_pit,
+                                                  w_pit = core.dat$Borrow.pits$w_pit,
+                                                  d_pit = core.dat$Borrow.pits$d_pit),
+                                  # foundation/hardstand dimensions
+                                  fh_dims = list(n = n_turb,
+                                                 l = l_fh,
+                                                 w = w_fh,
+                                                 d = d_fh),
+                                  # access track dimensions
+                                  at_dims = list(float = list(l = core.dat$Access.tracks$l_float,
+                                                              w = core.dat$Access.tracks$w_float,
+                                                              d = core.dat$Access.tracks$d_float_drain),
+                                                 track = list(l = core.dat$Access.tracks$l_track,
+                                                              w = core.dat$Access.tracks$w_track,
+                                                              d = core.dat$Access.tracks$d_track),
+                                                 rock = list(l = core.dat$Access.tracks$l_rock_drain,
+                                                             w = core.dat$Access.tracks$w_rock,
+                                                             d = core.dat$Access.tracks$d_rock_drain)),
+                                  # cable trench dimensions
+                                  ct_dims = list(l = core.dat$Cable.trenches$l_cab_trench,
+                                                 d = core.dat$Cable.trenches$d_cab_trench),
+                                  # additional excavation dimensions
+                                  add_dims = list(v = core.dat$Add.excavation$V_add,
+                                                  a = core.dat$Add.excavation$A_add))
+
+  return(AV_indirect)
+}
+
 #' area_drained
 #' @param drain_ext average extent of drainage around drainage features
 #' @param l length of drainage feature
@@ -42,13 +122,13 @@ drainage_fh <- function(drain_ext,
     drainage_per_turb <- lapply(Map(list, fh_dims$l, fh_dims$w), FUN=function(x) area_drained(drain_ext, unlist(x[[1]]), unlist(x[[2]])))
 
     # multiply by n_turb
-    drainage_fh <- list_op(drainage_per_turb, fh_dims$n, func = "*")
+    drainage_wf <- list_op(drainage_per_turb, fh_dims$n, func = "*")
 
     # sum across areas
-    area_drained_fh <- Reduce("+", drainage_fh)
+    area_drained_fh <- Reduce("+", drainage_wf)
 
     # compute volume (unclear why factor 2) and sum
-    vol_drained_fh <- Reduce("+", list_op(drainage_fh, fh_dims$d, func = "*0.5"))
+    vol_drained_fh <- Reduce("+", list_op(drainage_wf, fh_dims$d, func = "*0.5"))
 
   } else { # dimensions passed as vector: single area/areas pooled
     area_drained_fh <- area_drained(drain_ext, fh_dims$l, fh_dims$w) * fh_dims$n
@@ -132,7 +212,7 @@ drainage_add <- function(drain_ext,
               v = vol_drained_add))
 }
 
-#' Vol_peat_drained
+#' AV_peat_drained0
 #' @param drain_ext average extent of drainage around drainage features
 #' @param pit_dims borrow pit dimensions (list)
 #' @param fh_dims foundations + hardstanding dimensions
@@ -141,7 +221,7 @@ drainage_add <- function(drain_ext,
 #' @param add_dims additional excavation dimensions (list)
 #' @return Area/Volume of peat drained
 #' @export
-Vol_peat_drained <- function(drain_ext,
+AV_peat_drained0 <- function(drain_ext,
                              pit_dims,
                              fh_dims,
                              at_dims,

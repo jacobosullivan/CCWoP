@@ -4,44 +4,15 @@
 \alias{CO2_loss_drained}
 \title{CO2_loss_drained}
 \usage{
-CO2_loss_drained(
-  pC_dry_peat,
-  BD_dry_soil,
-  R_tot,
-  D_f,
-  restore_hydr_in,
-  restore_hab_in,
-  A_indirect,
-  V_indirect,
-  t_wf,
-  t_restore
-)
+CO2_loss_drained(core.dat, AV_indirect, R_tot)
 }
 \arguments{
-\item{pC_dry_peat}{Carbon content of dry peat}
+\item{core.dat}{UI data}
 
-\item{BD_dry_soil}{Dry soil bulk density}
-
-\item{R_tot}{ECOSSE emissions factors}
-
-\item{D_f}{Number flooded days undrained peatland (by peat type)}
-
-\item{restore_hydr_in}{Select hydrology restoration}
-
-\item{restore_hab_in}{Select habitat restoration}
-
-\item{A_indirect}{Area peat drained}
-
-\item{V_indirect}{Volume peat drained}
-
-\item{t_wf}{Windfarm life time}
-
-\item{t_restore}{Time to restoration after decomissioning}
-
-\item{E_tot}{Total emissions of undrained per per unit area}
+\item{AV_indirect}{Area/Volume of drained peat}
 }
 \value{
-Net CO2 loss from drained peat
+L_indirect
 }
 \description{
 CO2_loss_drained

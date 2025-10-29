@@ -1,5 +1,80 @@
 ## 5a. Volume of peat removed
 
+#' AV_peat_removed
+#' @param core.dat UI data
+#' @param construct.dat UI construction data
+#' @return AV_direct
+#' @export
+AV_peat_removed <- function(core.dat, construct.dat) {
+
+  # Wrapper function for the AV_peat_removed0() module
+  # THIS FUNCTION...
+
+  ## Compute foundation and hardstanding dimensions
+  if (core.dat$Foundations$found_in[1] == 1) { # pool all foundation/hardstanding
+    n_turb <- core.dat$Windfarm$n_turb
+    l_fb <- l_fs <- core.dat$Foundations$l_found
+    w_fb <- w_fs <- core.dat$Foundations$w_found
+    d_f <- core.dat$Foundations$d_peat_rem_found
+
+    l_hb <- l_hs <- core.dat$Foundations$l_hardstand
+    w_hb <- w_hs <- core.dat$Foundations$w_hardstand
+    d_h <- core.dat$Foundations$d_peat_rem_hardstand
+
+  } else { # each area considered individually (produces more drainage due to increased edge effects)
+    n_turb <- map(construct.dat, "n_turb")
+
+    d_f <- map(construct.dat, "d_peat_rem_found")
+    d_h <- map(construct.dat, "d_peat_rem_hardstand")
+
+    l_fb <- map(construct.dat, "l_found_bott")
+    w_fb <- map(construct.dat, "w_found_bott")
+    l_fs <- map(construct.dat, "l_found_surf")
+    w_fs <- map(construct.dat, "w_found_surf")
+
+    l_hb <- map(construct.dat, "l_hardstand_bott")
+    w_hb <- map(construct.dat, "w_hardstand_bott")
+    l_hs <- map(construct.dat, "l_hardstand_surf")
+    w_hs <- map(construct.dat, "w_hardstand_surf")
+
+  }
+
+  AV_direct <- AV_peat_removed0(# borrow pit dimensions
+                                pit_dims = list(n_pit = core.dat$Borrow.pits$n_pit,
+                                                l_pit = core.dat$Borrow.pits$l_pit,
+                                                w_pit = core.dat$Borrow.pits$w_pit,
+                                                d_pit = core.dat$Borrow.pits$d_pit),
+                                # foundation dimensions
+                                f_dims = list(n = n_turb,
+                                              l_b = l_fb,
+                                              w_b = w_fb,
+                                              l_s = l_fs,
+                                              w_s = w_fs,
+                                              d = d_f),
+                                # hardstanding dimensions
+                                h_dims = list(n = n_turb,
+                                              l_b = l_hb,
+                                              w_b = w_hb,
+                                              l_s = l_hs,
+                                              w_s = w_hs,
+                                              d = d_h),
+                                # access track dimensions
+                                at_dims = list(float = list(l = core.dat$Access.tracks$l_float,
+                                                            w = core.dat$Access.tracks$w_float,
+                                                            d = core.dat$Access.tracks$d_float_drain),
+                                               track = list(l = core.dat$Access.tracks$l_track,
+                                                            w = core.dat$Access.tracks$w_track,
+                                                            d = core.dat$Access.tracks$d_track),
+                                               rock = list(l = core.dat$Access.tracks$l_rock_drain,
+                                                           w = core.dat$Access.tracks$w_rock,
+                                                           d = core.dat$Access.tracks$d_rock_drain)),
+                                # additional excavation dimensions
+                                add_dims = list(v = core.dat$Add.excavation$V_add,
+                                                a = core.dat$Add.excavation$A_add))
+
+  return(AV_direct)
+}
+
 #' removal_bp
 #' @param pit_dims number, length, width and depth of borrow pits (list)
 #' @return Area/Volume of peat removed due to borrow pits
@@ -26,7 +101,7 @@ removal_f <- function(f_dims) {
     return(((d/3) * (l_s*w_s + l_b*w_b + sqrt(l_s*w_s*l_b*l_s)))/d)
   }
 
-  if (class(l_f)=="list") { # dimensions passed as list: handle each area individually
+  if (class(f_dims$n)=="list") { # dimensions passed as list: handle each area individually
 
     # removal
     removal_per_turb <- lapply(Map(list, f_dims$l_s, f_dims$w_s, f_dims$l_b, f_dims$w_b, f_dims$d),
@@ -67,7 +142,7 @@ removal_h <- function(h_dims) {
     return((l_b * w_b) + (w_s * (l_s - l_b) * 0.5) + (l_s * (w_s - w_b) * 0.5) + 0.5 * ((l_s - l_b) * (w_s - w_b)))
   }
 
-  if (class(l_h)=="list") { # dimensions passed as list: handle each area individually
+  if (class(h_dims$n)=="list") { # dimensions passed as list: handle each area individually
 
     # removal
     removal_per_turb <- lapply(Map(list, h_dims$l_s, h_dims$w_s, h_dims$l_b, h_dims$w_b, h_dims$d),
@@ -133,7 +208,7 @@ removal_at <- function(at_dims) {
 #' @param add_dims additional excavation dimensions (list)
 #' @return Area/Volume of peat removed
 #' @export
-Vol_peat_removed <- function(pit_dims,
+AV_peat_removed0 <- function(pit_dims,
                              f_dims,
                              h_dims,
                              at_dims,

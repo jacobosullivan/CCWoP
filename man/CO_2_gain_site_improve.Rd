@@ -4,33 +4,13 @@
 \alias{CO_2_gain_site_improve}
 \title{CO_2_gain_site_improve}
 \usage{
-CO_2_gain_site_improve(
-  T_air,
-  d_feature,
-  D_f,
-  em_factor_meth_in,
-  peat_type,
-  CO2_C = 3.667,
-  CH4_CO2 = 30.67
-)
+CO_2_gain_site_improve(core.dat)
 }
 \arguments{
-\item{T_air}{Average air temperature}
-
-\item{d_feature}{Before and after improvement water table depths}
-
-\item{D_f}{Number flooded days undrained peatland (by peat type)}
-
-\item{em_factor_meth_in}{Select IPCC default or ECOSSE model}
-
-\item{peat_type}{Select acid bog or fen}
-
-\item{CO2_C}{Molecular weight ratio C to CO2}
-
-\item{CH4_CO2}{CH4 to CO2 conversion factor}
+\item{core.dat}{UI data}
 }
 \value{
-CO2 emissions rate ECOSSE Fen
+L_improvement
 }
 \description{
 CO_2_gain_site_improve
