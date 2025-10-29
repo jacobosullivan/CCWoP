@@ -253,16 +253,10 @@ R_tot <- Emissions_rates_soils(em_factor_meth_in = core.dat$Em.factor.meth$em_fa
 ############################### Loss of Soil CO2 ###############################
 ################################################################################
 
-if (core.dat$Peatland$peat_type[1] == 1) { # Acid bog
-  D_f <- 178
-} else { # Fen
-  D_f <- 169
-}
-
 L_drainage <- CO2_loss_drained(pC_dry_peat = core.dat$Peatland$pC_dry_peat,
                                BD_dry_soil = core.dat$Peatland$BD_dry_soil,
                                R_tot = R_tot,
-                               D_f = D_f,
+                               peat_type = core.dat$Peatland$peat_type,
                                restore_hydr_in = core.dat$Site.restoration$restore_hydr_in,
                                restore_hab_in = core.dat$Site.restoration$restore_hab_in,
                                A_indirect = AV_indirect$Total$a,
@@ -283,3 +277,8 @@ L_direct <- CO2_loss_removed(pC_dry_peat = core.dat$Peatland$pC_dry_peat,
 L_soil <- CO2_loss_from_soil(L_direct = L_direct,
                              L_indirect = L_indirect)
 
+################################################################################
+####################### CO2 gain due to site improvement #######################
+################################################################################
+
+L_improvement <- CO_2_gain_site_improve(core.dat = core.dat)

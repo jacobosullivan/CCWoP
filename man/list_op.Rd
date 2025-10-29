@@ -4,7 +4,7 @@
 \alias{list_op}
 \title{list_op}
 \usage{
-list_op(l1, l2, func)
+list_op(l1, l2, l3 = NULL, func)
 }
 \arguments{
 \item{l1}{list object 1}

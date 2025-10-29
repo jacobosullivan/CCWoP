@@ -1,5 +1,71 @@
 ## 5e. Emission rates from soils
 
+#' IPCC_CO2
+#' @return CO2 emissions rate IPCC Acid bog AND Fen
+#' @export
+IPCC_CO2 <- function() {
+  R_CO2 <- 9.6 * (12 + 16 + 16) / 12
+  return(list(R_CO2 = c(Exp = R_CO2, Min = R_CO2, Max = R_CO2))) # Identical for both peat types
+}
+
+#' IPCC_CH4_AB
+#' @param CH4_CO2 CH4 to CO2 conversion factor
+#' @return CH4 emissions rate IPCC Acid bog
+#' @export
+IPCC_CH4_AB <- function(CH4_CO2 = 30.67) {
+  R_CH4 <- CH4_CO2 * (11 / 1000000000) * 10000 * 365
+  return(list(R_CH4 = c(Exp = R_CH4, Min = R_CH4, Max = R_CH4)))
+}
+
+#' IPCC_CH4_F
+#' @param CH4_CO2 CH4 to CO2 conversion factor
+#' @return CH4 emissions rate IPCC Fen
+#' @export
+IPCC_CH4_F <- function(CH4_CO2 = 30.67) {
+  R_CH4 = CH4_CO2 * (60 / 1000000000) * 10000 * 365
+  return(list(R_CH4 = c(Exp = R_CH4, Min = R_CH4, Max = R_CH4)))
+}
+
+#' ECOSSR_CO2_AB
+#' @param CO2_C Molecular weight ratio C to CO2
+#' @param T_air Average air temperature
+#' @param d_wt Average water table depth (undrained)
+#' @return CO2 emissions rate ECOSSE Acid bog
+#' @export
+ECOSSR_CO2_AB <- function(CO2_C, d_wt, T_air) {
+  return(list(R_CO2 = (CO2_C/1000) * ((6700 * exp(-0.26 * exp(-0.05153 * ((100*d_wt)-50)))) + ((72.54 * T_air) - 800))))
+}
+
+#' ECOSSR_CH4_AB
+#' @param CH4_CO2 CH4 to CO2 conversion factor
+#' @param T_air Average air temperature
+#' @param d_wt Average water table depth (undrained)
+#' @return CH4 emissions rate ECOSSE Acid bog
+#' @export
+ECOSSR_CH4_AB <- function(CH4_CO2, d_wt, T_air) { # converts into CO2 eq units
+  return(list(R_CH4 = (CH4_CO2/1000) * (500 * exp(-0.1234 * (100*d_wt)) + ((3.529*T_air) - 36.67))))
+}
+
+#' ECOSSR_CO2_F
+#' @param CO2_C Molecular weight ratio C to CO2
+#' @param T_air Average air temperature
+#' @param d_wt Average water table depth (undrained)
+#' @return CO2 emissions rate ECOSSE Fen
+#' @export
+ECOSSR_CO2_F <- function(CO2_C, d_wt, T_air) {
+  return(list(R_CO2 = (CO2_C/1000) * (16244 * exp(-0.17594 * exp(-0.07346 * ((d_wt*100)-50))) + (153.234*T_air))))
+}
+
+#' ECOSSR_CH4_F
+#' @param CH4_CO2 CH4 to CO2 conversion factor
+#' @param T_air Average air temperature
+#' @param d_wt Average water table depth (undrained)
+#' @return CO2 emissions rate ECOSSE Fen
+#' @export
+ECOSSR_CH4_F <- function(CH4_CO2, d_wt, T_air) { # converts into CO2 eq units
+  return(list(R_CH4 = (CH4_CO2/1000) * (-10 + 563.6253 * exp(-0.09702 * (100*d_wt)) + (0.662183*T_air))))
+}
+
 #' Emissions_rates_soils
 #' @param em_factor_meth_in Select IPCC default or ECOSSE model
 #' @param peat_type Select acid bog or fen
@@ -25,12 +91,12 @@ Emissions_rates_soils <- function(em_factor_meth_in,
   if (em_factor_meth_in[1] == 1) { # IPCC default calculation used
 
     if (peat_type[1] == 1) { # Acid bog selected
-      R_CH4_undrained <- (11 / 1000000000) * 10000 * 365
+      R_CH4_undrained <- IPCC_CH4_AB()
     } else { # Fen selected
-      R_CH4_undrained <- (60 / 1000000000) * 10000 * 365
+      R_CH4_undrained <- IPCC_CH4_F()
     }
 
-    R_CO2_drained <- 9.6 * (12 + 16 + 16) / 12 # Identical for both peat types
+    R_CO2_drained <- IPCC_CO2() # Identical for both peat types
     R_CO2_undrained <- 0 # Assumption
     R_CH4_drained <- 0 # Assumption
 
@@ -40,35 +106,19 @@ Emissions_rates_soils <- function(em_factor_meth_in,
 
     if (peat_type[1] == 1) { # Acid bog selected
 
-      ECOSSR_CO2 <- function(CO2_C, d_wt, T_air) {
-        return((CO2_C/1000) * ((6700 * exp(-0.26 * exp(-0.05153 * ((100*d_wt)-50)))) + ((72.54 * T_air) - 800)))
-      }
+      R_CO2_drained <- ECOSSR_CO2_AB(CO2_C, d_wt_drained, T_air)
+      R_CO2_undrained <- ECOSSR_CO2_AB(CO2_C, d_wt, T_air)
 
-      ECOSSR_CH4 <- function(CH4_CO2, d_wt, T_air) { # converts into CO2 eq units
-        return((CH4_CO2/1000) * (500 * exp(-0.1234 * (100*d_wt)) + ((3.529*T_air) - 36.67)))
-      }
-
-      R_CO2_drained <- ECOSSR_CO2(CO2_C, d_wt_drained, T_air)
-      R_CO2_undrained <- ECOSSR_CO2(CO2_C, d_wt, T_air)
-
-      R_CH4_drained <- ECOSSR_CH4(CH4_CO2, d_wt_drained, T_air)
-      R_CH4_undrained <- ECOSSR_CH4(CH4_CO2, d_wt, T_air)
+      R_CH4_drained <- ECOSSR_CH4_AB(CH4_CO2, d_wt_drained, T_air)
+      R_CH4_undrained <- ECOSSR_CH4_AB(CH4_CO2, d_wt, T_air)
 
     } else { # Fen selected
 
-      ECOSSR_CO2 <- function(CO2_C, d_wt, T_air) {
-        return((CO2_C/1000) * (16244 * exp(-0.17594 * exp(-0.07346 * ((d_wt*100)-50))) + (153.234*T_air)))
-      }
+      R_CO2_drained <- ECOSSR_CO2_F(CO2_C, d_wt_drained, T_air)
+      R_CO2_undrained <- ECOSSR_CO2_F(CO2_C, d_wt, T_air)
 
-      ECOSSR_CH4 <- function(CH4_CO2, d_wt, T_air) { # converts into CO2 eq units
-        return((CH4_CO2/1000) * (-10 + 563.6253 * exp(-0.09702 * (100*d_wt)) + (0.662183*T_air)))
-      }
-
-      R_CO2_drained <- ECOSSR_CO2(CO2_C, d_wt_drained, T_air)
-      R_CO2_undrained <- ECOSSR_CO2(CO2_C, d_wt, T_air)
-
-      R_CH4_drained <- ECOSSR_CH4(CH4_CO2, d_wt_drained, T_air)
-      R_CH4_undrained <- ECOSSR_CH4(CH4_CO2, d_wt, T_air)
+      R_CH4_drained <- ECOSSR_CH4_F(CH4_CO2, d_wt_drained, T_air)
+      R_CH4_undrained <- ECOSSR_CH4_F(CH4_CO2, d_wt, T_air)
 
     }
 

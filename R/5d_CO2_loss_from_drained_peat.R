@@ -4,7 +4,7 @@
 #' @param pC_dry_peat Carbon content of dry peat
 #' @param BD_dry_soil Dry soil bulk density
 #' @param R_tot ECOSSE emissions factors
-#' @param D_f Number flooded days undrained peatland (by peat type)
+#' @param peat_type Select acid bog or fen
 #' @param restore_hydr_in Select hydrology restoration
 #' @param restore_hab_in Select habitat restoration
 #' @param A_indirect Area peat drained
@@ -17,7 +17,7 @@
 CO2_loss_drained <- function(pC_dry_peat,
                              BD_dry_soil,
                              R_tot,
-                             D_f,
+                             peat_type,
                              restore_hydr_in,
                              restore_hab_in,
                              A_indirect,
@@ -26,6 +26,12 @@ CO2_loss_drained <- function(pC_dry_peat,
                              t_restore) {
 
   # THIS FUNCTION...
+
+  if (peat_type[1] == 1) { # Acid bog selected
+    D_f <- 178
+  } else {
+    D_f <- 169
+  }
 
   # If restored emissions from drained and counterfactual (undrained) calculated using ECOSSE factors
   A_t <- (A_indirect / 10000) * (t_wf + t_restore)  # convert area to ha
