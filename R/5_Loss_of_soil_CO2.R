@@ -7,6 +7,6 @@
 #' @export
 CO2_loss_from_soil <- function(L_direct, L_indirect) {
 
-  return(L_direct + L_indirect)
+  return(L_direct + L_indirect$L_indirect)
 
 }

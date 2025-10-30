@@ -21,7 +21,7 @@ CO2_loss_removed <- function(core.dat,
   BD_dry_soil <- core.dat$Peatland$BD_dry_soil # Dry soil bulk density
   A_direct <- AV_direct$Total$a # Area peat removed
   V_direct <- AV_direct$Total$v # Volume peat removed
-  L_undrained_pa <- L_indirect$L_undrained / AV_indirect$Total$a # Emissions from undrained peat per unit area
+  L_undrained_pa <- L_indirect$L_undrained$Tot / AV_indirect$Total$a # Emissions from undrained peat per unit area
 
   # Total GHG emissions from removed land
   L_removed <- (pCO2_lost / 100) * (CO2_C / 100) * pC_dry_peat * BD_dry_soil * V_direct

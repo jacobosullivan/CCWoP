@@ -9,7 +9,7 @@ CO_2_gain_site_improve <- function(core.dat) {
   # Wrapper function for the CO_2_gain_site_improve0() module
   # THIS FUNCTION...
 
-  if (core.dat$restore_hab_in[1] == 2 & core.dat$restore_hydr_in[1] == 2) { # habitat AND hydrology restored
+  if (core.dat$Site.restoration$restore_hab_in[1] == 2 & core.dat$Site.restoration$restore_hydr_in[1] == 2) { # habitat AND hydrology restored
     feature <- dat_improvement(core.dat)
 
     # Compute emissions savings
@@ -23,10 +23,10 @@ CO_2_gain_site_improve <- function(core.dat) {
                                              CH4_CO2 = 30.67)
   } else {
     no_imp <- c(Exp = 0, Min = 0, Max = 0)
-    L_improvement <- list(Degraded.bog = no_imp,
-                          Felled.forestry = no_imp,
-                          Borrow.pits = no_imp,
-                          Found.hard = no_imp)
+    L_improvement <- list(L_improvement = list(Degraded.bog = no_imp,
+                                               Felled.forestry = no_imp,
+                                               Borrow.pits = no_imp,
+                                               Found.hard = no_imp))
   }
 
   return(L_improvement)
@@ -235,9 +235,14 @@ CO_2_gain_site_improve0 <- function(T_air,
   ## Sum CO2 and CH4 contributions
   E_tot_bfr <- list_op(l1 = E_CO2_bfr, l2 = E_CH4_bfr, func = "+")
   E_tot_aft <- list_op(l1 = E_CO2_aft, l2 = E_CH4_aft, func = "+")
+  L_improvement <- list_op(l1 = E_tot_bfr, l2 = E_tot_aft, func = "-")
 
   ## Estimate emissions savings from difference between pre- and post-improvement totals
-  L_improvement <- list_op(l1 = E_tot_bfr, l2 = E_tot_aft, func = "-")
+  L_improvement <- list(E_CO2_bfr = E_CO2_bfr,
+                        E_CO2_aft = E_CO2_aft,
+                        E_CH4_bfr = E_CH4_bfr,
+                        E_CH4_aft = E_CH4_aft,
+                        L_improvement = L_improvement)
 
   return(L_improvement)
 }

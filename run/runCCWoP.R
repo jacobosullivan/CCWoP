@@ -82,7 +82,7 @@ L_direct <- CO2_loss_removed(core.dat = core.dat,
                              L_indirect = L_indirect)
 
 L_soil <- CO2_loss_from_soil(L_direct = L_direct,
-                             L_indirect = L_indirect$L_indirect)
+                             L_indirect = L_indirect)
 
 ################################################################################
 ####################### CO2 gain due to site improvement #######################
