@@ -1,28 +1,5 @@
 ## 5e. Emission rates from soils
 
-#' Emissions_rates_soils
-#' @param core.dat UI data
-#' @param construct.dat UI construction data
-#' @param AV_indirect Area/Volume of drained peat
-#' @return R_tot
-#' @export
-Emissions_rates_soils <- function(core.dat, construct.dat, AV_indirect) {
-
-  # Wrapper function for the Emissions_rates_soils0() module
-  # THIS FUNCTION...
-
-  R_tot <- Emissions_rates_soils0(em_factor_meth_in = core.dat$Em.factor.meth$em_factor_meth_in,
-                                  peat_type = core.dat$Peatland$peat_type,
-                                  A_indirect = AV_indirect$Total$a,
-                                  V_indirect = AV_indirect$Total$v,
-                                  T_air = core.dat$Peatland$T_air,
-                                  d_wt = core.dat$Peatland$d_wt,
-                                  CO2_C = 3.667,
-                                  CH4_CO2 = 30.67)
-
-  return(R_tot)
-}
-
 #' IPCC_CO2
 #' @return CO2 emissions rate IPCC Acid bog AND Fen
 #' @export
@@ -90,26 +67,28 @@ ECOSSR_CH4_F <- function(CH4_CO2, d_wt, T_air) { # converts into CO2 eq units
 }
 
 #' Emissions_rates_soils
-#' @param em_factor_meth_in Select IPCC default or ECOSSE model
-#' @param peat_type Select acid bog or fen
-#' @param A_indirect Area peat drained
-#' @param V_indirect Volume peat drained
-#' @param T_air Average air temperature
-#' @param d_wt Average water table depth (undrained)
+#' @param core.dat UI data
+#' @param construct.dat UI construction data
+#' @param AV_indirect Area/Volume of drained peat
 #' @param CO2_C Molecular weight ratio C to CO2
 #' @param CH4_CO2 CH4 to CO2 conversion factor
 #' @return Emissions rates from drained and undrained peatland
 #' @export
-Emissions_rates_soils0 <- function(em_factor_meth_in,
-                                   peat_type,
-                                   A_indirect,
-                                   V_indirect,
-                                   T_air,
-                                   d_wt,
-                                   CO2_C = 3.667,
-                                   CH4_CO2 = 30.67) {
+Emissions_rates_soils <- function(core.dat,
+                                  construct.dat,
+                                  AV_indirect,
+                                  CO2_C = 3.667,
+                                  CH4_CO2 = 30.67) {
 
   # THIS FUNCTION...
+
+  # Extract inputs for easy access
+  em_factor_meth_in <- core.dat$Em.factor.meth$em_factor_meth_in # Select IPCC default or ECOSSE model
+  peat_type <- core.dat$Peatland$peat_type # Select acid bog or fen
+  A_indirect <- AV_indirect$Total$a # Area peat drained
+  V_indirect <- AV_indirect$Total$v # Volume peat drained
+  T_air <- core.dat$Peatland$T_air # Average air temperature
+  d_wt <- core.dat$Peatland$d_wt # Average water table depth (undrained)
 
   if (em_factor_meth_in[1] == 1) { # IPCC default calculation used
 
@@ -147,9 +126,10 @@ Emissions_rates_soils0 <- function(em_factor_meth_in,
 
   }
 
-  return(list(R_CO2_drained=R_CO2_drained$R_CO2,
-              R_CO2_undrained=R_CO2_undrained$R_CO2,
-              R_CH4_drained=R_CH4_drained$R_CH4,
-              R_CH4_undrained=R_CH4_undrained$R_CH4))
+  R_tot <- list(R_CO2_drained=R_CO2_drained$R_CO2,
+                R_CO2_undrained=R_CO2_undrained$R_CO2,
+                R_CH4_drained=R_CH4_drained$R_CH4,
+                R_CH4_undrained=R_CH4_undrained$R_CH4)
 
+  return(R_tot)
 }

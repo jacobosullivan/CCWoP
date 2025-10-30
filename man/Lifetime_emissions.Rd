@@ -4,15 +4,17 @@
 \alias{Lifetime_emissions}
 \title{Lifetime_emissions}
 \usage{
-Lifetime_emissions(core.dat, construct.dat)
+Lifetime_emissions(core.dat, construct.dat, E_concrete = 0.316)
 }
 \arguments{
 \item{core.dat}{UI data}
 
 \item{construct.dat}{UI construction data}
+
+\item{E_cement}{emissions per unit volume cement}
 }
 \value{
-L_life
+Windfarm lifetime emissions
 }
 \description{
 Lifetime_emissions

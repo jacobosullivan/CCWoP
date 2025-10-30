@@ -8,9 +8,11 @@ Backup_emissions(core.dat, E_mat)
 }
 \arguments{
 \item{core.dat}{UI data}
+
+\item{E_mat}{counterfactuals in matrix form with IDs as rownames}
 }
 \value{
-L_back
+Backup lifetime emissions
 }
 \description{
 Backup_emissions

@@ -4,14 +4,20 @@
 \alias{Loss_of_CO2_fix_pot}
 \title{Loss_of_CO2_fix_pot}
 \usage{
-Loss_of_CO2_fix_pot(core.dat, construct.dat, AV_direct, AV_indirect)
+Loss_of_CO2_fix_pot(core.dat, AV_direct, AV_indirect, CO2_C = 3.667)
 }
 \arguments{
-\item{core.dat}{UI data}
+\item{CO2_C}{Molecular weight ratio C to CO2}
 
-\item{construct.dat}{UI construction data}
+\item{A_direct}{Area of removed peat}
 
-\item{AV_direct}{Area/Volume of removed peat}
+\item{A_indirect}{Area of drained peat}
+
+\item{G_bog}{Peatland carbon accumulation rate}
+
+\item{t_wf}{Windfarm life time}
+
+\item{t_restore}{Time to restoration after decomissioning}
 }
 \value{
 L_fix

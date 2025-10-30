@@ -58,7 +58,6 @@ AV_direct <- AV_peat_removed(core.dat = core.dat,
 ################################################################################
 
 L_fix <- Loss_of_CO2_fix_pot(core.dat = core.dat,
-                             construct.dat = construct.dat,
                              AV_direct = AV_direct,
                              AV_indirect = AV_indirect)
 

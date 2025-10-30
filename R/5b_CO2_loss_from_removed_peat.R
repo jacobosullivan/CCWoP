@@ -1,47 +1,27 @@
 ## 5b. CO2 loss from removed peat
 
-#' CO2_loss_remomved
+#' CO2_loss_removed
 #' @param core.dat UI data
 #' @param AV_direct Area/Volume of removed peat
 #' @param L_indirect CO2 from drained peat
-#' @return L_direct
-#' @export
-CO2_loss_removed <- function(core.dat, AV_direct, L_indirect) {
-
-  # Wrapper function for the CO2_loss_removed0() module
-  # THIS FUNCTION...
-
-  L_direct <- CO2_loss_removed0(pC_dry_peat = core.dat$Peatland$pC_dry_peat,
-                                BD_dry_soil = core.dat$Peatland$BD_dry_soil,
-                                A_direct = AV_direct$Total$a,
-                                V_direct = AV_direct$Total$v,
-                                L_undrained_pa = L_indirect$L_undrained / AV_indirect$Total$a,
-                                CO2_C = 3.667,
-                                pCO2_lost = 100)
-
-  return(L_direct)
-}
-
-
-#' CO2_loss_removed0
-#' @param pC_dry_peat Carbon content of dry peat
-#' @param BD_dry_soil Dry soil bulk density
-#' @param A_direct Area peat removed
-#' @param V_direct Volume peat removed
-#' @param L_undrained_pa Emissions from undrained peat per unit area
 #' @param CO2_C Molecular weight ratio C to CO2
 #' @param pCO2_lost percent Carbon lost as CO2
 #' @return Hypothetical carbon fixation of drained/removed peat
 #' @export
-CO2_loss_removed0 <- function(pC_dry_peat,
-                              BD_dry_soil,
-                              A_direct,
-                              V_direct,
-                              L_undrained_pa,
+CO2_loss_removed <- function(core.dat,
+                              AV_direct,
+                              L_indirect,
                               CO2_C = 3.667,
                               pCO2_lost = 100) {
 
   # THIS FUNCTION...
+
+  # Extract input variables for easy access
+  pC_dry_peat <- core.dat$Peatland$pC_dry_peat # Carbon content of dry peat
+  BD_dry_soil <- core.dat$Peatland$BD_dry_soil # Dry soil bulk density
+  A_direct <- AV_direct$Total$a # Area peat removed
+  V_direct <- AV_direct$Total$v # Volume peat removed
+  L_undrained_pa <- L_indirect$L_undrained / AV_indirect$Total$a # Emissions from undrained peat per unit area
 
   # Total GHG emissions from removed land
   L_removed <- (pCO2_lost / 100) * (CO2_C / 100) * pC_dry_peat * BD_dry_soil * V_direct

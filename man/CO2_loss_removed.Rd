@@ -2,9 +2,15 @@
 % Please edit documentation in R/5b_CO2_loss_from_removed_peat.R
 \name{CO2_loss_removed}
 \alias{CO2_loss_removed}
-\title{CO2_loss_remomved}
+\title{CO2_loss_removed}
 \usage{
-CO2_loss_removed(core.dat, AV_direct, L_indirect)
+CO2_loss_removed(
+  core.dat,
+  AV_direct,
+  L_indirect,
+  CO2_C = 3.667,
+  pCO2_lost = 100
+)
 }
 \arguments{
 \item{core.dat}{UI data}
@@ -12,10 +18,14 @@ CO2_loss_removed(core.dat, AV_direct, L_indirect)
 \item{AV_direct}{Area/Volume of removed peat}
 
 \item{L_indirect}{CO2 from drained peat}
+
+\item{CO2_C}{Molecular weight ratio C to CO2}
+
+\item{pCO2_lost}{percent Carbon lost as CO2}
 }
 \value{
-L_direct
+Hypothetical carbon fixation of drained/removed peat
 }
 \description{
-CO2_loss_remomved
+CO2_loss_removed
 }

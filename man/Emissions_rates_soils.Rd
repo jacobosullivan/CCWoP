@@ -4,7 +4,13 @@
 \alias{Emissions_rates_soils}
 \title{Emissions_rates_soils}
 \usage{
-Emissions_rates_soils(core.dat, construct.dat, AV_indirect)
+Emissions_rates_soils(
+  core.dat,
+  construct.dat,
+  AV_indirect,
+  CO2_C = 3.667,
+  CH4_CO2 = 30.67
+)
 }
 \arguments{
 \item{core.dat}{UI data}
@@ -12,9 +18,13 @@ Emissions_rates_soils(core.dat, construct.dat, AV_indirect)
 \item{construct.dat}{UI construction data}
 
 \item{AV_indirect}{Area/Volume of drained peat}
+
+\item{CO2_C}{Molecular weight ratio C to CO2}
+
+\item{CH4_CO2}{CH4 to CO2 conversion factor}
 }
 \value{
-R_tot
+Emissions rates from drained and undrained peatland
 }
 \description{
 Emissions_rates_soils

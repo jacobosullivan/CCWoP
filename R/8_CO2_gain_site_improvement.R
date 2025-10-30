@@ -9,17 +9,25 @@ CO_2_gain_site_improve <- function(core.dat) {
   # Wrapper function for the CO_2_gain_site_improve0() module
   # THIS FUNCTION...
 
-  feature <- dat_improvement(core.dat)
+  if (core.dat$restore_hab_in[1] == 2 & core.dat$restore_hydr_in[1] == 2) { # habitat AND hydrology restored
+    feature <- dat_improvement(core.dat)
 
-  # Compute emissions savings
-  L_improvement <- CO_2_gain_site_improve0(T_air = core.dat$Peatland$T_air,
-                                           d_feature = feature$d,
-                                           a_feature = feature$a,
-                                           t_feature = feature$t,
-                                           em_factor_meth_in = core.dat$Em.factor.meth$em_factor_meth_in,
-                                           peat_type = core.dat$Peatland$peat_type,
-                                           CO2_C = 3.667,
-                                           CH4_CO2 = 30.67)
+    # Compute emissions savings
+    L_improvement <- CO_2_gain_site_improve0(T_air = core.dat$Peatland$T_air,
+                                             d_feature = feature$d,
+                                             a_feature = feature$a,
+                                             t_feature = feature$t,
+                                             em_factor_meth_in = core.dat$Em.factor.meth$em_factor_meth_in,
+                                             peat_type = core.dat$Peatland$peat_type,
+                                             CO2_C = 3.667,
+                                             CH4_CO2 = 30.67)
+  } else {
+    no_imp <- c(Exp = 0, Min = 0, Max = 0)
+    L_improvement <- list(Degraded.bog = no_imp,
+                          Felled.forestry = no_imp,
+                          Borrow.pits = no_imp,
+                          Found.hard = no_imp)
+  }
 
   return(L_improvement)
 
