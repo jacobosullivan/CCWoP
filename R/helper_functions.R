@@ -3,6 +3,7 @@
 #' list_op
 #' @param l1 list object 1
 #' @param l2 list_object 2
+#' @param l3 list_object 3
 #' @param func string describing elementwise operation
 #' @return outcome of elementwise operation
 #' @export
