@@ -1,36 +1,254 @@
 ## 7a. C sequest. in trees (3PG)
 
-#' get3PGparms
-#' @return 3PGparms
-#' @export
-get3PGparms <- function(forestry.dat) {
-  parmname <- c("3PG module",
-                "Average annual photosynthetically active radiation",
-                "Light extinction coefficient",
-                "Specific leaf area",
-                "Leaf longevity",
-                "Fine root longevity",
-                "Maximum light-use efficiency",
-                "Total reduction factor for misc environmental effects",
-                "Ratio of NPP to GPP",
-                "Allocation to foliage",
-                "Coefficient for allocation response to nitrogen",
-                "Age for 50% reduction in light-use efficiency",
-                "Initial foliage biomass",
-                "Understorey module",
-                "Understorey LAI")
+C_sequest_in_trees <- function(core.dat,
+                               forestry.dat) {
 
-  df0 <- data.frame(Parameter = parmname,
-                    Value = NA,
-                    Scots.Pine = NA,
-                    Sitka.Spruce = NA)
+  # Get 3PG templates
+  parms_3PG <- read_excel("Templates/3PG_parms.xlsx",
+                          sheet = "3PG_parms",
+                          range = "A1:E24")
 
-  df <- data.frame(Parameter = parmname,
-                   Area.1 = NA,
-                   Area.2 = NA,
-                   Area.3 = NA,
-                   Area.4 = NA,
-                   Area.5 = NA)
+  species <- c("Scots_Pine", "Sitka_Spruce")
 
-  # now fill in df taking values/conditionals from forestry.dat
+  parms_3PG <- as.data.frame(parms_3PG %>%
+    filter(complete.cases(.)) %>%
+    select(Var_name, all_of(species)))
+
+
+  f_E_tab <-  read_excel("Templates/3PG_parms.xlsx",
+                         sheet = "f_E",
+                         range = "A1:E7")
+
+  f_E_tab <- f_E_tab %>%
+    select(Soil_type, Acc_temp, f_E)
+
+  # Get full parameter lists for each area
+  parms_3PG_by_area <- array(0,
+                             dim = c(nrow(parms_3PG), # f_E and t_seedling_replant not included in template
+                                     3, # Exp, Min, Max if defined
+                                     length(grep("Area", names(forestry.dat)))), # number of areas considered
+                             dimnames = list(c(parms_3PG$Var_name),
+                                             c("Exp", "Min", "Max"),
+                                             grep("Area", names(forestry.dat), value=T)))
+
+  ii <- 1
+  for (i in grep("Area", names(forestry.dat))) {
+
+    # Species parameters (no range given)
+    parms_3PG_by_area[parms_3PG$Var_name,,ii] <- parms_3PG[,which(colnames(parms_3PG) == species[forestry.dat[[i]]$species[1]])]
+
+    # Accumulated temperature category based on wind farm site average temperature (not forest area)
+    # May have non-zero range though unlikely due to current coarseness of environmental metric
+    parms_3PG_by_area["acc_temp",,ii] <- sapply((core.dat$Peatland$T_air - 5) * 365, FUN = function(x) {
+      if (x < 1050) {
+        return(1)
+      } else if (x < 1050) {
+        return(2)
+      } else {
+        return(3)
+      }
+    })
+
+    f_E_area <- f_E_tab[f_E_tab$Soil_type == forestry.dat[[i]]$soil_type[1],]
+    parms_3PG_by_area["f_E",,ii] <- f_E_area$f_E[c(which(f_E_area$Acc_temp == parms_3PG_by_area["acc_temp",1,ii]),
+                                                    which(f_E_area$Acc_temp == parms_3PG_by_area["acc_temp",2,ii]),
+                                                    which(f_E_area$Acc_temp == parms_3PG_by_area["acc_temp",3,ii]))] # this allows re-indexing of same or different values in case of differences in Exp, Min and Max acc_temp
+
+    # Forestry parameters
+    parms_3PG_by_area["t_harv",,ii] <- forestry.dat[[i]]$t_harv
+    parms_3PG_by_area["t_wf",,ii] <- core.dat$Windfarm$t_wf
+    parms_3PG_by_area["t_replant",,ii] <- forestry.dat[[i]]$t_replant
+    parms_3PG_by_area["t_seedling_replant",,ii] <- forestry.dat[[i]]$t_seedling_replant
+    parms_3PG_by_area["t_replant_guar",,ii] <- core.dat$Windfarm$t_wf - forestry.dat[[i]]$t_replant
+    parms_3PG_by_area["t_replant_guar", parms_3PG_by_area["t_replant_guar",,ii] < 0, ii] <- 0 # set to zero if negative
+
+    ii <- ii + 1
+  }
+
+  ## Model pre-wind farm forestry
+  out_exp <- apply(parms_3PG_by_area[,1,], # remove t_seedling_replant (use default value of 0 for modelling pre-wf forestry)
+                   MAR=2,
+                   function(x) do.call(run_3PG, as.list(c(x, c(replant=0))))) # select pre-wind farm forestry
+
+  ## Model replanted forestry
+  out_exp_replant <- apply(parms_3PG_by_area[,1,], # remove t_seedling_replant (use default value of 0 for modelling pre-wf forestry)
+                           MAR=2,
+                           function(x) do.call(run_3PG, as.list(c(x, c(replant=1))))) # select replanted forestry
+
+  ## Model pre-wind farm forestry MIN
+  out_min <- apply(parms_3PG_by_area[,2,], # remove t_seedling_replant (use default value of 0 for modelling pre-wf forestry)
+                   MAR=2,
+                   function(x) do.call(run_3PG, as.list(c(x, c(replant=0))))) # select pre-wind farm forestry
+
+  ## Model replanted forestry MIN
+  out_min_replant <- apply(parms_3PG_by_area[,2,], # remove t_seedling_replant (use default value of 0 for modelling pre-wf forestry)
+                           MAR=2,
+                           function(x) do.call(run_3PG, as.list(c(x, c(replant=1))))) # select replanted forestry
+
+
+  ## Model pre-wind farm forestry MAX
+  out_max <- apply(parms_3PG_by_area[,3,], # remove t_seedling_replant (use default value of 0 for modelling pre-wf forestry)
+                   MAR=2,
+                   function(x) do.call(run_3PG, as.list(c(x, c(replant=0))))) # select pre-wind farm forestry
+
+  ## Model replanted forestry MAX
+  out_max_replant <- apply(parms_3PG_by_area[,3,], # remove t_seedling_replant (use default value of 0 for modelling pre-wf forestry)
+                           MAR=2,
+                           function(x) do.call(run_3PG, as.list(c(x, c(replant=1))))) # select replanted forestry
+
+  L_seq_pot <- lapply(list_op(l1 = map(out_exp, .f = "NPP_01"),
+                              l2 = map(out_min, .f = "NPP_01"),
+                              l3 = map(out_max, .f = "NPP_01"),
+                              func = "c"),
+                      FUN = function(x) {
+                              if (x[3] < x[2]) {
+                                x0 <- x[3]
+                                x[3] <- x[2]
+                                x[2] <- x0
+                              }
+                              names(x) <- c("Exp", "Min", "Max")
+                              return(x)})
+
+  L_C <- lapply(list_op(l1 = map(out_exp, .f = "NPP_0"),
+                        l2 = map(out_min, .f = "NPP_0"),
+                        l3 = map(out_max, .f = "NPP_0"),
+                        func = "c"),
+                FUN = function(x) {
+                  if (x[3] < x[2]) {
+                    x0 <- x[3]
+                    x[3] <- x[2]
+                    x[2] <- x0
+                  }
+                  names(x) <- c("Exp", "Min", "Max")
+                  return(x)})
+
+  L_C_replant <- lapply(list_op(l1 = map(out_exp_replant, .f = "NPP_01"),
+                                l2 = map(out_min_replant, .f = "NPP_01"),
+                                l3 = map(out_max_replant, .f = "NPP_01"),
+                                func = "c"),
+                        FUN = function(x) {
+                          if (x[3] < x[2]) {
+                            x0 <- x[3]
+                            x[3] <- x[2]
+                            x[2] <- x0
+                          }
+                          names(x) <- c("Exp", "Min", "Max")
+                          return(x)})
+
+  return(list(L_seq_pot = L_seq_pot,
+              L_C = L_C,
+              L_C_replant = L_C_replant))
+}
+
+run_3PG <- function(t_rotation = 50, # rotation length
+                    rotation = 3, # no. rotations
+                    t_step = 1, # time step
+                    L_long = 4, # leaf longevity
+                    pF = 0.25, # proportion carbon allocated to foliage
+                    N0 = 0, # coefficient for allocation response to nitrogen (NOT USED)
+                    R_long = 0, # fine root longevity (NOT USED)
+                    Wl_init = 0.005, # initial foliage biomass
+                    t_seedling_replant = 0, # seedling age at planting
+                    SLA = 6, # specific leaf area
+                    phi_p = 2880, # average annual photosynthetically active radiation
+                    kP = 0.5, # extinction coefficient
+                    acc_temp = 1, # accumulated temperature (not used)
+                    f_E = 0.3176845825, # environmental modifier
+                    A0.5 = 100, # age at 50% reduction in NPP
+                    LAI_u = 3, # LAI understory
+                    e_max = 0.00152, # maximum light use efficiency
+                    YPP = 0.47, # NPP:GPP ratio
+                    t_harv = 25, # age of forestry when felled for wind farm
+                    t_wf = 25, # lifetime of wind farm
+                    t_replant = 0, # years after felling when replanting occurs
+                    t_replant_guar = 20, # years for which replanted forestry will be grown on the site
+                    t1 = 25, # either t_wf or t_replant_guar
+                    replant = 0, # boolean to select pre-wind farm or replanted forest for output
+                    thin = data.frame(t = c(20, 25, 30, 35, 40, 45), # thinning regime (years/proportion harvested)
+                                      p = c(0.189655172413793, 0.180555555555556, 0.166666666666667, 0.141538461538462, 0.050561797752809, 0.0537897310513447))) {
+
+  if (replant == 0) {
+    t_seedling_replant <- 0
+  }
+
+  t <- seq(0,t_rotation,by=t_step)
+  res <- data.frame(matrix(0, nrow=length(t), ncol=10))
+  colnames(res) <- c("t",
+                     "thin",
+                     "Wl",
+                     "LAI",
+                     "phi_pau",
+                     "phi_pa_u",
+                     "phi_pau_u",
+                     "NPP",
+                     "NPP_tot",
+                     "NPP_cum")
+
+  res$t <- t
+
+  # Initialise 3PG
+  res$Wl[1] <- Wl_init
+  res$LAI[1] <- res$Wl[1] * SLA
+
+  # 2880 * (1 - exp(-0.5 * 0.03)) * (1 / ((1 + 0 / 100)^4)) * 0.3176845825
+  res$phi_pau[1] <- phi_p * f_E * (1 - exp(-kP * res$LAI[1])) * (1 / (1 + (res$t[1] / A0.5)^4))
+
+  res$phi_pa_u[1] <- phi_p * (1 - (1 - exp(-kP * res$LAI[1]))) * (1 - exp(-kP * LAI_u))
+  res$phi_pau_u[1] <- res$phi_pa_u[1] * f_E
+  res$NPP[1] <- YPP * e_max * res$phi_pau[1]
+  res$NPP_tot[1] <- YPP * e_max * (res$phi_pau[1] +  res$phi_pau_u[1]) * 10 # convert from m-2 to ha-1
+  res$NPP_cum[1] <- res$NPP_tot[1]
+
+  # Iterate 3PG
+  for (i in 2:nrow(res)) {
+    # Add thinning (accounting for possible non-integer time step)
+    if (nrow(thin) > 0 & res$t[i] >= thin$t[1]) {
+      res$thin[i] <- thin$p[1]
+      thin <- thin[-1,]
+    }
+
+    if (res$t[i] < (t_seedling_replant + 6)) { # Leaf longevity not yet relevant
+      res$Wl[i] <- res$Wl[i-1] * (1 - res$thin[i]) + t_step * res$NPP[i-1] * pF
+    } else { # Accounting for leaf longevity
+      res$Wl[i] <- res$Wl[i-1] * (1 - res$thin[i]) + t_step * (res$NPP[i-1] * pF - res$Wl[i-1] / L_long)
+    }
+    res$LAI[i] <- res$Wl[i] * SLA
+
+    res$phi_pau[i] <- phi_p * f_E * (1 - exp(-kP * res$LAI[i])) * (1 / (1 + (res$t[i] / A0.5)^4))
+
+    res$phi_pa_u[i] <- phi_p * (1 - (1 - exp(-kP * res$LAI[i]))) * (1 - exp(-kP * LAI_u))
+    res$phi_pau_u[i] <- res$phi_pa_u[i] * f_E
+    res$NPP[i] <- YPP * e_max * res$phi_pau[i]
+    res$NPP_tot[i] <- YPP * e_max * (res$phi_pau[i] +  res$phi_pau_u[i]) * 10 # convert from m-2 to ha-1
+    res$NPP_cum[i] <- res$NPP_cum[i-1] + res$NPP_tot[i]
+  }
+
+  if (replant == 0) {
+    t0 <- t_harv
+    t1 <- t0 + t_wf
+  } else {
+    t0 <- t_seedling_replant
+    t1 <- t0 + t_replant_guar
+  }
+
+  if (t_rotation < t1) {
+    rotation <- floor(t1 / t_rotation) + 1
+    res <- rbind(res, do.call(rbind, replicate(rotation-1, res[-nrow(res),], simplify=F)))
+    res$t <- seq(0,(nrow(res)-1)*t_step,by=t_step)
+  }
+
+  NPP_0 <- res %>%
+    filter(abs(t - t0) == min(abs(t - t0))) %>% # this in case of non-integer t/t0
+    slice(1) %>%
+    select(NPP_cum) %>%
+    unname()
+
+  NPP_01 <- res %>%
+    filter(t >= t0 & t < t1) %>%
+    select(NPP_tot) %>%
+    sum()
+
+  return(list(res = res,
+              NPP_0 = NPP_0,
+              NPP_01 = NPP_01))
 }

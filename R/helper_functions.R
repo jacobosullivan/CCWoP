@@ -20,6 +20,8 @@ list_op <- function(l1, l2, l3 = NULL, func) {
     res <- lapply(seq_along(l1), FUN=function(x) 0.5 * unlist(unname(l1[x])) * unlist(unname(l2[x])))
   } else if (func == "max") {
     res <- lapply(seq_along(l1), FUN=function(x) apply(cbind(unlist(unname(l1[x])), unlist(unname(l2[x]))), MAR=1, FUN=max))
+  } else if (func == "c") {
+    res <- lapply(seq_along(l1), FUN=function(x) c(unlist(unname(l1[x])), unlist(unname(l2[x]))))
   }
 
   if (!is.null(l3)) {
@@ -33,6 +35,8 @@ list_op <- function(l1, l2, l3 = NULL, func) {
       res <- lapply(seq_along(res), FUN=function(x) unlist(unname(res[x])) * unlist(unname(l3[x])))
     } else if (func == "max") {
       res <- lapply(seq_along(res), FUN=function(x) apply(cbind(unlist(unname(res[x])), unlist(unname(l3[x]))), MAR=1, FUN=max))
+    } else if (func == "c") {
+      res <- lapply(seq_along(res), FUN=function(x) c(unlist(unname(res[x])), unlist(unname(l3[x]))))
     }
   }
 

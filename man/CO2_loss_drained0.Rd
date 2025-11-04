@@ -14,8 +14,7 @@ CO2_loss_drained0(
   A_indirect,
   V_indirect,
   t_wf,
-  t_restore,
-  CO2_C = 3.667
+  t_restore
 )
 }
 \arguments{
@@ -38,8 +37,6 @@ CO2_loss_drained0(
 \item{t_wf}{Windfarm life time}
 
 \item{t_restore}{Time to restoration after decomissioning}
-
-\item{CO2_c}{Molecular weight ratio C to CO2}
 }
 \value{
 Net CO2 loss from drained peat

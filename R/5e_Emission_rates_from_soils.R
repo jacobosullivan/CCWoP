@@ -12,7 +12,7 @@ IPCC_CO2 <- function() {
 #' @param CH4_CO2 CH4 to CO2 conversion factor
 #' @return CH4 emissions rate IPCC Acid bog
 #' @export
-IPCC_CH4_AB <- function(CH4_CO2 = 30.67) {
+IPCC_CH4_AB <- function() {
   R_CH4 <- CH4_CO2 * (11 / 1000000000) * 10000 * 365
   return(list(R_CH4 = c(Exp = R_CH4, Min = R_CH4, Max = R_CH4)))
 }
@@ -21,48 +21,44 @@ IPCC_CH4_AB <- function(CH4_CO2 = 30.67) {
 #' @param CH4_CO2 CH4 to CO2 conversion factor
 #' @return CH4 emissions rate IPCC Fen
 #' @export
-IPCC_CH4_F <- function(CH4_CO2 = 30.67) {
+IPCC_CH4_F <- function() {
   R_CH4 = CH4_CO2 * (60 / 1000000000) * 10000 * 365
   return(list(R_CH4 = c(Exp = R_CH4, Min = R_CH4, Max = R_CH4)))
 }
 
 #' ECOSSR_CO2_AB
-#' @param CO2_C Molecular weight ratio C to CO2
 #' @param T_air Average air temperature
 #' @param d_wt Average water table depth (undrained)
 #' @return CO2 emissions rate ECOSSE Acid bog
 #' @export
-ECOSSR_CO2_AB <- function(CO2_C, d_wt, T_air) {
+ECOSSR_CO2_AB <- function(d_wt, T_air) {
   return(list(R_CO2 = (CO2_C/1000) * ((6700 * exp(-0.26 * exp(-0.05153 * ((100*d_wt)-50)))) + ((72.54 * T_air) - 800))))
 }
 
 #' ECOSSR_CH4_AB
-#' @param CH4_CO2 CH4 to CO2 conversion factor
 #' @param T_air Average air temperature
 #' @param d_wt Average water table depth (undrained)
 #' @return CH4 emissions rate ECOSSE Acid bog
 #' @export
-ECOSSR_CH4_AB <- function(CH4_CO2, d_wt, T_air) { # converts into CO2 eq units
+ECOSSR_CH4_AB <- function(d_wt, T_air) { # converts into CO2 eq units
   return(list(R_CH4 = (CH4_CO2/1000) * (500 * exp(-0.1234 * (100*d_wt)) + ((3.529*T_air) - 36.67))))
 }
 
 #' ECOSSR_CO2_F
-#' @param CO2_C Molecular weight ratio C to CO2
 #' @param T_air Average air temperature
 #' @param d_wt Average water table depth (undrained)
 #' @return CO2 emissions rate ECOSSE Fen
 #' @export
-ECOSSR_CO2_F <- function(CO2_C, d_wt, T_air) {
+ECOSSR_CO2_F <- function(d_wt, T_air) {
   return(list(R_CO2 = (CO2_C/1000) * (16244 * exp(-0.17594 * exp(-0.07346 * ((d_wt*100)-50))) + (153.234*T_air))))
 }
 
 #' ECOSSR_CH4_F
-#' @param CH4_CO2 CH4 to CO2 conversion factor
 #' @param T_air Average air temperature
 #' @param d_wt Average water table depth (undrained)
 #' @return CO2 emissions rate ECOSSE Fen
 #' @export
-ECOSSR_CH4_F <- function(CH4_CO2, d_wt, T_air) { # converts into CO2 eq units
+ECOSSR_CH4_F <- function(d_wt, T_air) { # converts into CO2 eq units
   return(list(R_CH4 = (CH4_CO2/1000) * (-10 + 563.6253 * exp(-0.09702 * (100*d_wt)) + (0.662183*T_air))))
 }
 
@@ -76,11 +72,11 @@ ECOSSR_CH4_F <- function(CH4_CO2, d_wt, T_air) { # converts into CO2 eq units
 #' @export
 Emissions_rates_soils <- function(core.dat,
                                   construct.dat,
-                                  AV_indirect,
-                                  CO2_C = 3.667,
-                                  CH4_CO2 = 30.67) {
+                                  AV_indirect) {
 
   # THIS FUNCTION...
+  CO2_C <- 3.667 # Molecular weight ratio C to CO2
+  CH4_CO2 <- 30.67 # CH4 to CO2 conversion factor
 
   # Extract inputs for easy access
   em_factor_meth_in <- core.dat$Em.factor.meth$em_factor_meth_in # Select IPCC default or ECOSSE model

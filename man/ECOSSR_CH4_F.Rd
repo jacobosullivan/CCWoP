@@ -4,11 +4,9 @@
 \alias{ECOSSR_CH4_F}
 \title{ECOSSR_CH4_F}
 \usage{
-ECOSSR_CH4_F(CH4_CO2, d_wt, T_air)
+ECOSSR_CH4_F(d_wt, T_air)
 }
 \arguments{
-\item{CH4_CO2}{CH4 to CO2 conversion factor}
-
 \item{d_wt}{Average water table depth (undrained)}
 
 \item{T_air}{Average air temperature}

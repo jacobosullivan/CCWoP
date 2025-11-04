@@ -10,9 +10,7 @@ CO_2_gain_site_improve0(
   a_feature,
   t_feature,
   em_factor_meth_in,
-  peat_type,
-  CO2_C = 3.667,
-  CH4_CO2 = 30.67
+  peat_type
 )
 }
 \arguments{
@@ -27,10 +25,6 @@ CO_2_gain_site_improve0(
 \item{em_factor_meth_in}{Select IPCC default or ECOSSE model}
 
 \item{peat_type}{Select acid bog or fen}
-
-\item{CO2_C}{Molecular weight ratio C to CO2}
-
-\item{CH4_CO2}{CH4 to CO2 conversion factor}
 }
 \value{
 CO2 emissions rate ECOSSE Fen

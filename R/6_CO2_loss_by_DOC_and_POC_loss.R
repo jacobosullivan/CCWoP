@@ -2,7 +2,13 @@
 
 #' CO2_loss_DOC_POC
 #' @param core.dat UI data
-#' @return L_DOC
+#' @param L_indirect CO2 losses due to drainage
+#' @param L_improvement CO2 gains due to restoration
+#' @param pC_DOC estimated percent of total carbon losses lost as DOC
+#' @param pDOC_CO2 percent DOC ultimately lost as CO2
+#' @param pC_POC estimated percent of total carbon losses lost as POC
+#' @param pPOC_CO2 percent POC ultimately lost as CO2
+#' @return L_DPOC
 #' @export
 CO2_loss_DOC_POC <- function(core.dat,
                              L_indirect,
@@ -10,12 +16,13 @@ CO2_loss_DOC_POC <- function(core.dat,
                              pC_DOC = c(Exp = 26, Min = 7, Max = 40),
                              pDOC_CO2 = 100,
                              pC_POC = c(Exp = 8, Min = 4, Max = 10),
-                             pPOC_CO2 = 100,
-                             CO2_C = 3.667,
-                             CH4_CO2 = 30.67,
-                             pC_CH4 = 0.75) {
+                             pPOC_CO2 = 100) {
 
   # THIS FUNCTION...
+
+  CO2_C <- 3.667 # Molecular weight ratio C to CO2
+  CH4_CO2 <- 30.67 # CH4 to CO2 conversion factor
+  pC_CH4 <- 0.75 # proportion of molecular weight of CH4 that is Carbon (12/16)
 
   if (core.dat$Site.restoration$restore_hab_in[1] == 2 & core.dat$Site.restoration$restore_hydr_in[1] == 2) {
 

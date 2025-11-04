@@ -4,13 +4,7 @@
 \alias{Emissions_rates_soils}
 \title{Emissions_rates_soils}
 \usage{
-Emissions_rates_soils(
-  core.dat,
-  construct.dat,
-  AV_indirect,
-  CO2_C = 3.667,
-  CH4_CO2 = 30.67
-)
+Emissions_rates_soils(core.dat, construct.dat, AV_indirect)
 }
 \arguments{
 \item{core.dat}{UI data}

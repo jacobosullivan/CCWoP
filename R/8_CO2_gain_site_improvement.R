@@ -18,9 +18,7 @@ CO_2_gain_site_improve <- function(core.dat) {
                                              a_feature = feature$a,
                                              t_feature = feature$t,
                                              em_factor_meth_in = core.dat$Em.factor.meth$em_factor_meth_in,
-                                             peat_type = core.dat$Peatland$peat_type,
-                                             CO2_C = 3.667,
-                                             CH4_CO2 = 30.67)
+                                             peat_type = core.dat$Peatland$peat_type)
   } else {
     no_imp <- c(Exp = 0, Min = 0, Max = 0)
     L_improvement <- list(L_improvement = list(Degraded.bog = no_imp,
@@ -136,8 +134,6 @@ dat_improvement <- function(core.dat) {
 #' @param t_feature Guaranteed improvement lifetime
 #' @param em_factor_meth_in Select IPCC default or ECOSSE model
 #' @param peat_type Select acid bog or fen
-#' @param CO2_C Molecular weight ratio C to CO2
-#' @param CH4_CO2 CH4 to CO2 conversion factor
 #' @return CO2 emissions rate ECOSSE Fen
 #' @export
 CO_2_gain_site_improve0 <- function(T_air,
@@ -145,11 +141,12 @@ CO_2_gain_site_improve0 <- function(T_air,
                                     a_feature,
                                     t_feature,
                                     em_factor_meth_in,
-                                    peat_type,
-                                    CO2_C = 3.667,
-                                    CH4_CO2 = 30.67) {
+                                    peat_type) {
 
   # THIS FUNCTION...
+
+  CO2_C <- 3.667 # Molecular weight ratio C to CO2
+  CH4_CO2 <- 30.67 # CH4 to CO2 conversion factor
 
   if (peat_type[1] == 1) { # Acid bog selected
     D_f <- 178

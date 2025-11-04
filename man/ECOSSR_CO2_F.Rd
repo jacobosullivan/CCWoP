@@ -4,11 +4,9 @@
 \alias{ECOSSR_CO2_F}
 \title{ECOSSR_CO2_F}
 \usage{
-ECOSSR_CO2_F(CO2_C, d_wt, T_air)
+ECOSSR_CO2_F(d_wt, T_air)
 }
 \arguments{
-\item{CO2_C}{Molecular weight ratio C to CO2}
-
 \item{d_wt}{Average water table depth (undrained)}
 
 \item{T_air}{Average air temperature}

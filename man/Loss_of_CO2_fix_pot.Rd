@@ -4,11 +4,9 @@
 \alias{Loss_of_CO2_fix_pot}
 \title{Loss_of_CO2_fix_pot}
 \usage{
-Loss_of_CO2_fix_pot(core.dat, AV_direct, AV_indirect, CO2_C = 3.667)
+Loss_of_CO2_fix_pot(core.dat, AV_direct, AV_indirect)
 }
 \arguments{
-\item{CO2_C}{Molecular weight ratio C to CO2}
-
 \item{A_direct}{Area of removed peat}
 
 \item{A_indirect}{Area of drained peat}

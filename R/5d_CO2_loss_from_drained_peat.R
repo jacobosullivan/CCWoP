@@ -19,8 +19,7 @@ CO2_loss_drained <- function(core.dat, AV_indirect, R_tot) {
                                   A_indirect = AV_indirect$Total$a,
                                   V_indirect = AV_indirect$Total$v,
                                   t_wf = core.dat$Windfarm$t_wf,
-                                  t_restore = core.dat$Bog.plants$t_restore,
-                                  CO2_C = 3.667)
+                                  t_restore = core.dat$Bog.plants$t_restore)
 
   L_indirect <- list(L_drained = L_drainage$L_drained,
                      L_undrained = L_drainage$L_undrained,
@@ -40,7 +39,6 @@ CO2_loss_drained <- function(core.dat, AV_indirect, R_tot) {
 #' @param V_indirect Volume peat drained
 #' @param t_wf Windfarm life time
 #' @param t_restore Time to restoration after decomissioning
-#' @param CO2_c Molecular weight ratio C to CO2
 #' @return Net CO2 loss from drained peat
 #' @export
 CO2_loss_drained0 <- function(pC_dry_peat,
@@ -52,10 +50,10 @@ CO2_loss_drained0 <- function(pC_dry_peat,
                               A_indirect,
                               V_indirect,
                               t_wf,
-                              t_restore,
-                              CO2_C = 3.667) {
+                              t_restore) {
 
   # THIS FUNCTION...
+  CO2_C <- 3.667 # Molecular weight ratio C to CO2
 
   if (peat_type[1] == 1) { # Acid bog selected
     D_f <- 178

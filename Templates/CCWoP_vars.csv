@@ -27,7 +27,7 @@ Carbon accumulation due to C fixation by bog plants in undrained peats (tC ha-1 
 Forestry Plantation Characteristics,NA,Forestry,core
 Method used to calculate CO2 loss from forest felling,for_detail,Forestry,core
 Please enter forest data in sheet: Forestry input data,NA,Forestry,core
-Area of forestry plantation to be felled (ha),A_forest,Forestry,core
+Area of forestry plantation to be felled (ha),A_felled,Forestry,core
 Average rate of carbon sequestration in timber (tC ha-1 yr-1),G_forest,Forestry,core
 Counterfactual emission factors,NA,Counterfactual,core
 To update counterfactual emission factors                              from the web            ,NA,Counterfactual,core

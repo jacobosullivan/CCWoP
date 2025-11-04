@@ -6,15 +6,15 @@
 #' @param G_bog Peatland carbon accumulation rate
 #' @param t_wf Windfarm life time
 #' @param t_restore Time to restoration after decomissioning
-#' @param CO2_C Molecular weight ratio C to CO2
 #' @return L_fix
 #' @export
 Loss_of_CO2_fix_pot <- function(core.dat,
                                 AV_direct,
-                                AV_indirect,
-                                CO2_C = 3.667) {
+                                AV_indirect) {
 
   # THIS FUNCTION...
+
+  CO2_C <- 3.667 # Molecular weight ratio C to CO2
 
   # Extract input variables for easy access
   G_bog <- core.dat$Bog.plants$G_bog

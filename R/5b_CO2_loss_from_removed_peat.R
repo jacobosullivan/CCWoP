@@ -4,14 +4,12 @@
 #' @param core.dat UI data
 #' @param AV_direct Area/Volume of removed peat
 #' @param L_indirect CO2 from drained peat
-#' @param CO2_C Molecular weight ratio C to CO2
 #' @param pCO2_lost percent Carbon lost as CO2
 #' @return Hypothetical carbon fixation of drained/removed peat
 #' @export
 CO2_loss_removed <- function(core.dat,
                               AV_direct,
                               L_indirect,
-                              CO2_C = 3.667,
                               pCO2_lost = 100) {
 
   # THIS FUNCTION...
@@ -22,6 +20,8 @@ CO2_loss_removed <- function(core.dat,
   A_direct <- AV_direct$Total$a # Area peat removed
   V_direct <- AV_direct$Total$v # Volume peat removed
   L_undrained_pa <- L_indirect$L_undrained$Tot / AV_indirect$Total$a # Emissions from undrained peat per unit area
+
+  CO2_C <- 3.667 # Molecular weight ratio C to CO2
 
   # Total GHG emissions from removed land
   L_removed <- (pCO2_lost / 100) * (CO2_C / 100) * pC_dry_peat * BD_dry_soil * V_direct

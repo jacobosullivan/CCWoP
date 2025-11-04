@@ -4,13 +4,7 @@
 \alias{CO2_loss_removed}
 \title{CO2_loss_removed}
 \usage{
-CO2_loss_removed(
-  core.dat,
-  AV_direct,
-  L_indirect,
-  CO2_C = 3.667,
-  pCO2_lost = 100
-)
+CO2_loss_removed(core.dat, AV_direct, L_indirect, pCO2_lost = 100)
 }
 \arguments{
 \item{core.dat}{UI data}
@@ -18,8 +12,6 @@ CO2_loss_removed(
 \item{AV_direct}{Area/Volume of removed peat}
 
 \item{L_indirect}{CO2 from drained peat}
-
-\item{CO2_C}{Molecular weight ratio C to CO2}
 
 \item{pCO2_lost}{percent Carbon lost as CO2}
 }

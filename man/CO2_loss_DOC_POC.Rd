@@ -11,17 +11,26 @@ CO2_loss_DOC_POC(
   pC_DOC = c(Exp = 26, Min = 7, Max = 40),
   pDOC_CO2 = 100,
   pC_POC = c(Exp = 8, Min = 4, Max = 10),
-  pPOC_CO2 = 100,
-  CO2_C = 3.667,
-  CH4_CO2 = 30.67,
-  pC_CH4 = 0.75
+  pPOC_CO2 = 100
 )
 }
 \arguments{
 \item{core.dat}{UI data}
+
+\item{L_indirect}{CO2 losses due to drainage}
+
+\item{L_improvement}{CO2 gains due to restoration}
+
+\item{pC_DOC}{estimated percent of total carbon losses lost as DOC}
+
+\item{pDOC_CO2}{percent DOC ultimately lost as CO2}
+
+\item{pC_POC}{estimated percent of total carbon losses lost as POC}
+
+\item{pPOC_CO2}{percent POC ultimately lost as CO2}
 }
 \value{
-L_DOC
+L_DPOC
 }
 \description{
 CO2_loss_DOC_POC

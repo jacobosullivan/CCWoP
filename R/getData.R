@@ -106,6 +106,9 @@ getForestryInputData <- function(path, df_struct) {
                   by="Input.data") %>%
     mutate(Input.data=str_remove(Input.data, "\\.\\..*")) %>%
     filter(!(is.na(Exp) & is.na(Min) & is.na(Max))) %>% # if all inputs are NA, remove
+    group_by(Subset.name) %>%
+    filter(n() > 1) %>% # remove 'singletons': these are empty areas with non NA 'power curve' due to drop down menu
+    ungroup() %>%
     filter(!is.na(Variable.name))
 
   forestry.dat <- vector(mode = "list", length = length(unique(df$Subset.name)))
