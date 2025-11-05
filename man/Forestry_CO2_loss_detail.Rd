@@ -4,10 +4,12 @@
 \alias{Forestry_CO2_loss_detail}
 \title{Forestry_CO2_loss_detail}
 \usage{
-Forestry_CO2_loss_detail(core.dat)
+Forestry_CO2_loss_detail(core.dat, forestry.dat)
 }
 \arguments{
 \item{core.dat}{UI data}
+
+\item{forestry.dat}{UI forestry data}
 }
 \value{
 Estimated lifetime loss of carbon sequestration

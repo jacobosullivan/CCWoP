@@ -8,19 +8,195 @@ Forestry_CO2_loss_detail <- function(core.dat,
                                      forestry.dat) {
 
   # THIS FUNCTION...
+  CO2_C <- 3.667 # Molecular weight ratio C to CO2
+
+  ## Loss of carbon sequestration due to felling of forestry for wind farm
   C_forestry <- C_sequest_in_trees(core.dat,
                                    forestry.dat)
 
-  ## NExt I need to clarify the most appropriate way to compute 'Total emissions due to cleared land'
+  A_felled <- list_op(l1 = map(forestry.dat[grep("Area", names(forestry.dat))], "n_turb"),
+                      l2 = map(forestry.dat[grep("Area", names(forestry.dat))], "A_harv_turb"),
+                      func = "*")
 
-  # SEE: '7ii. Forestry CO2 loss - detail'!F17
+  A_replant <- list_op(l1 = map(forestry.dat[grep("Area", names(forestry.dat))], "n_turb"),
+                       l2 = map(forestry.dat[grep("Area", names(forestry.dat))], "A_replant_turb"),
+                       func = "*")
 
-  # The spreadsheet takes the C sequestration potential in units of ha-1 from 3PG and multiplies this by the difference between
-  # the deforested and replanted land areas.
+  C_seq_loss_felled <- lapply(list_op(l1 = A_felled,
+                                      l2 = C_forestry$seq_pot,
+                                      func = "*"),
+                              FUN = function (x) x * CO2_C)
 
-  # This assumes that the sequestration potential of the pre-development forest is the same as the replanted forest which is clearly not true
-  # due to age modifiers etc.
+  # SPREADSHEET ERROR
+  # Replanted sequestration should consider a different per area total due to e.g. the age modifier
+  C_seq_gain_replant <- lapply(list_op(l1 = A_replant,
+                                       l2 = C_forestry$seq_pot_replant,
+                                       func = "*"),
+                               FUN = function (x) x * CO2_C)
 
-  # It's also really weird to take this approach since both sequestration rates are explicitly calculated using 3PG
+  C_seq_loss_net <- list_op(l1 = L_seq_loss_felled,
+                            l2 = C_seq_gain_replant,
+                            func = "-")
 
+
+  ## Cleared forest floor emissions
+
+  # Extract and restructure data for easy access
+  C_seq_soil_df <- C_seq_soil()
+  soil_seq_rate <- list()
+  t_wf_by_area <- list()
+  emissions_from_felling <- list()
+  emissions_from_transport <- list()
+  fossil_fuel_emissions_factor <- list()
+  dist_fuel_plant <- list()
+
+  ii <- 1
+  for (i in grep("Area", names(forestry.dat))) {
+    soil_seq_rate[[ii]] <- C_seq_soil_df$seq_rate[which(C_seq_soil_df$Soil_type == forestry.dat[[i]]$soil_type[1])]
+    t_wf_by_area[[ii]] <- core.dat$Windfarm$t_wf
+    emissions_from_felling[[ii]] <- forestry.dat$Emissions$L_harv / 1e6 # unit conversion
+    emissions_from_transport[[ii]] <- forestry.dat$Emissions$L_transport / 1e6 # unit conversion
+    fossil_fuel_emissions_factor[[ii]] <- core.dat$Counterfactual$E_fossil_mix
+    dist_fuel_plant[[ii]] <- forestry.dat$Windfarm$dist_biofuel_plant
+    ii <- ii + 1
+  }
+  names(soil_seq_rate) <- grep("Area", names(forestry.dat), value = T)
+  names(t_wf_by_area) <- grep("Area", names(forestry.dat), value = T)
+  names(emissions_from_felling) <- grep("Area", names(forestry.dat), value = T)
+  names(emissions_from_transport) <- grep("Area", names(forestry.dat), value = T)
+  names(fossil_fuel_emissions_factor) <- grep("Area", names(forestry.dat), value = T)
+  names(dist_fuel_plant) <- grep("Area", names(forestry.dat), value = T)
+
+  L_floor_bfr_replant <- list_op(l1 = A_felled,
+                                 l2 = map(forestry.dat[grep("Area", names(forestry.dat))], "t_replant"),
+                                 l3 = soil_seq_rate,
+                                 func = "*")
+
+  L_floor_aft_replant <- list_op(l1 = list_op(l1 = A_felled,
+                                              l2 = A_replant,
+                                              func = "-"),
+                                 l2 = list_op(l1 = t_wf_by_area,
+                                              l2 = map(forestry.dat[grep("Area", names(forestry.dat))], "t_replant"),
+                                              func = "-"),
+                                 l3 = soil_seq_rate,
+                                 func = "*")
+
+  L_floor <- lapply(list_op(l1 = L_floor_bfr_replant,
+                            l2 = L_floor_aft_replant,
+                            func = "+"),
+                    FUN = function(x) x * CO2_C)
+
+  ## Emissions from harvesting operations (from growth yield table)
+  vol_harv <- lapply(list_op(l1 = map(forestry.dat[grep("Area", names(forestry.dat))], "t_harv"),
+                             l2 = map(forestry.dat[grep("Area", names(forestry.dat))], "soil_type"),
+                             func = "c"),
+                     FUN = function(x) growth_yield_tab(t = x[1:3], soil_type = x[4], species = 2)$volume)
+
+  L_harv <- list_op(l1 = vol_harv,
+                    l2 = A_felled,
+                    l3 = emissions_from_felling,
+                    func = "*")
+
+  ## Savings from use of felled forestry as biofuel
+  B_felled <- list_op(l1 = A_felled,
+                      l2 = C_forestry$C_tot,
+                      l3 = lapply(map(forestry.dat[grep("Area", names(forestry.dat))], "r_CBiomass"),
+                                  FUN = function(x) {
+                                    x <- x[c(1,3,2)] # re-arrange Min, Max
+                                    names(x) <- c("Exp", "Min", "Max")
+                                    return(x^-1)
+                                  }),
+                      func = "*")
+
+  B_pow_val_felled <- list_op(l1 = B_felled,
+                              l2 = map(forestry.dat[grep("Area", names(forestry.dat))], "e_felled_biofuel"),
+                              func = "*")
+
+  # Get 1/0 for Yes/No converting felled forestry to biofuel
+  felled_biofuel <- lapply(map(forestry.dat[grep("Area", names(forestry.dat))], "felled_biofuel"),
+                           FUN = function(x) {
+                             if (x[1]==2) { # not used as biofuel
+                               return(c(Exp = 0, Min = 0, Max = 0))
+                             } else {
+                               return(c(Exp = 1, Min = 1, Max = 1))
+                             }
+                           })
+
+  S_biofuel_felled <- list_op(l1 = B_pow_val_felled,
+                              l2 = fossil_fuel_emissions_factor,
+                              l3 = felled_biofuel,
+                              func = "*")
+
+  L_transp_felled <- list_op(l1 = dist_fuel_plant,
+                             l2 = emissions_from_transport,
+                             l3 = B_felled,
+                             func = "*")
+
+  S_biofuel_felled <- list_op(l1 = S_biofuel_felled,
+                              l2 = L_transp_felled,
+                              func = "-")
+
+  ## Savings from use of replanted forestry as biofuel
+  B_replant <- list_op(l1 = A_replant,
+                       l2 = C_forestry$seq_pot_replant,
+                       l3 = lapply(map(forestry.dat[grep("Area", names(forestry.dat))], "r_CBiomass"),
+                                   FUN = function(x) {
+                                     x <- x[c(1,3,2)] # re-arrange Min, Max
+                                     names(x) <- c("Exp", "Min", "Max")
+                                     return(x^-1)
+                                   }),
+                       func = "*")
+
+  B_pow_val_replant <- list_op(l1 = B_replant,
+                               l2 = map(forestry.dat[grep("Area", names(forestry.dat))], "e_felled_biofuel"),
+                               func = "*")
+
+  # Assume that if harvested biomass converted to biofuel, so is replanted biomass ...
+  replant_biofuel <- felled_biofuel
+
+  S_biofuel_replant <- list_op(l1 = B_pow_val_replant,
+                               l2 = fossil_fuel_emissions_factor,
+                               l3 = replant_biofuel,
+                               func = "*")
+
+  L_transp_replant <- list_op(l1 = dist_fuel_plant,
+                              l2 = emissions_from_transport,
+                              l3 = B_replant,
+                              func = "*")
+
+  S_biofuel_replant <- list_op(l1 = S_biofuel_replant,
+                               l2 = L_transp_replant,
+                               func = "-")
+
+  S_biofuel_felled
+  lapply(S_biofuel_felled,
+         FUN = function(x) {
+           x <- x[c(1,3,2)] # re-arrange Min, Max
+           names(x) <- c("Exp", "Min", "Max")
+           return(x)
+         })
+
+  ## Totals
+  L_forestry <- list_op(l1 = list_op(l1 = L_seq_loss_defor,
+                                     l2 = L_floor,
+                                     l3 = L_harv,
+                                     func = "+"),
+                        l2 = list_op(l1 = lapply(S_biofuel_felled,
+                                                 FUN = function(x) {
+                                                   x <- x[c(1,3,2)] # re-arrange Min, Max
+                                                   names(x) <- c("Exp", "Min", "Max")
+                                                   return(x)
+                                                 }),
+                                     l2 = lapply(S_biofuel_replant,
+                                                 FUN = function(x) {
+                                                   x <- x[c(1,3,2)] # re-arrange Min, Max
+                                                   names(x) <- c("Exp", "Min", "Max")
+                                                   return(x)
+                                                 }),
+                                     func = "+"),
+                        func = "-")
+
+  L_forestry_tot <- colSums(bind_rows(L_forestry))
+
+  return(L_forestry_tot)
 }

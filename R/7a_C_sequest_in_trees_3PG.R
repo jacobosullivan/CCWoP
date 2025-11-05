@@ -1,7 +1,14 @@
 ## 7a. C sequest. in trees (3PG)
 
+#' C_sequest_in_trees
+#' @param core.dat UI data
+#' @param forestry.dat UI forestry data
+#' @return 3PG output
+#' @export
 C_sequest_in_trees <- function(core.dat,
                                forestry.dat) {
+
+  # THIS FUNCTION...
 
   # Get 3PG templates
   parms_3PG <- read_excel("Templates/3PG_parms.xlsx",
@@ -77,6 +84,7 @@ C_sequest_in_trees <- function(core.dat,
                        function(x) do.call(run_3PG, as.list(c(x, c(replant=0)))))
                })
 
+  # SHOULD THIS BE HANDLED BY SIMPLY SUBSETTING THE ABOVE INSTEAD OF RE-RUNNING?
   ## Model replanted forestry
   out_replant <- apply(parms_3PG_by_area, # remove t_seedling_replant (use default value of 0 for modelling pre-wf forestry)
                    MAR = 3,
@@ -99,27 +107,27 @@ C_sequest_in_trees <- function(core.dat,
     return(x)
   }
 
-  L_seq_pot <- lapply(list_op(l1 = map(map(out, .f = "Exp"), .f = "NPP_01"),
+  seq_pot <- lapply(list_op(l1 = map(map(out, .f = "Exp"), .f = "NPP_01"),
                               l2 = map(map(out, .f = "Min"), .f = "NPP_01"),
                               l3 = map(map(out, .f = "Max"), .f = "NPP_01"),
                               func = "c"),
                       FUN = getExpMinMax)
 
-  L_C <- lapply(list_op(l1 = map(map(out, .f = "Exp"), .f = "NPP_0"),
+  C_tot <- lapply(list_op(l1 = map(map(out, .f = "Exp"), .f = "NPP_0"),
                         l2 = map(map(out, .f = "Min"), .f = "NPP_0"),
                         l3 = map(map(out, .f = "Max"), .f = "NPP_0"),
                         func = "c"),
                 FUN = getExpMinMax)
 
-  L_C_replant <- lapply(list_op(l1 = map(map(out_replant, .f = "Exp"), .f = "NPP_01"),
+  seq_pot_replant <- lapply(list_op(l1 = map(map(out_replant, .f = "Exp"), .f = "NPP_01"),
                                 l2 = map(map(out_replant, .f = "Min"), .f = "NPP_01"),
                                 l3 = map(map(out_replant, .f = "Max"), .f = "NPP_01"),
                                 func = "c"),
                         FUN = getExpMinMax)
 
-  return(list(L_seq_pot = L_seq_pot,
-              L_C = L_C,
-              L_C_replant = L_C_replant))
+  return(list(seq_pot = seq_pot,
+              C_tot = C_tot,
+              seq_pot_replant = seq_pot_replant))
 }
 
 run_3PG <- function(t_rotation = 50, # rotation length
@@ -172,8 +180,9 @@ run_3PG <- function(t_rotation = 50, # rotation length
   res$Wl[1] <- Wl_init
   res$LAI[1] <- res$Wl[1] * SLA
 
-  # 2880 * (1 - exp(-0.5 * 0.03)) * (1 / ((1 + 0 / 100)^4)) * 0.3176845825
-  res$phi_pau[1] <- phi_p * f_E * (1 - exp(-kP * res$LAI[1])) * (1 / (1 + (res$t[1] / A0.5)^4))
+  # SPREADSHEET ERROR
+  # res$phi_pau[1] <- phi_p * f_E * (1 - exp(-kP * res$LAI[1])) * (1 / (1 + (res$t[1] / A0.5)^4))
+  res$phi_pau[1] <- phi_p * f_E * (1 - exp(-kP * res$LAI[1])) * (1 / (1 + ((res$t[1] + t_seedling_replant) / A0.5)^4))
 
   res$phi_pa_u[1] <- phi_p * (1 - (1 - exp(-kP * res$LAI[1]))) * (1 - exp(-kP * LAI_u))
   res$phi_pau_u[1] <- res$phi_pa_u[1] * f_E
@@ -183,20 +192,26 @@ run_3PG <- function(t_rotation = 50, # rotation length
 
   # Iterate 3PG
   for (i in 2:nrow(res)) {
-    # Add thinning (accounting for possible non-integer time step)
-    if (nrow(thin) > 0 & res$t[i] >= thin$t[1]) {
-      res$thin[i] <- thin$p[1]
-      thin <- thin[-1,]
+    if (!is.null(thin)) {
+      # Add thinning (accounting for possible non-integer time step)
+      if (nrow(thin) > 0 & res$t[i] >= thin$t[1]) {
+        res$thin[i] <- thin$p[1]
+        thin <- thin[-1,]
+      }
     }
 
-    if (res$t[i] < (t_seedling_replant + 6)) { # Leaf longevity not yet relevant
+    # SPREADSHEET ERROR
+    # if (res$t[i] < (t_seedling_replant + 6)) { # Leaf longevity not yet relevant SPREADSHEET ERROR
+    if ((res$t[i] + t_seedling_replant) < 6) { # Leaf longevity not yet relevant
       res$Wl[i] <- res$Wl[i-1] * (1 - res$thin[i]) + t_step * res$NPP[i-1] * pF
     } else { # Accounting for leaf longevity
       res$Wl[i] <- res$Wl[i-1] * (1 - res$thin[i]) + t_step * (res$NPP[i-1] * pF - res$Wl[i-1] / L_long)
     }
     res$LAI[i] <- res$Wl[i] * SLA
 
-    res$phi_pau[i] <- phi_p * f_E * (1 - exp(-kP * res$LAI[i])) * (1 / (1 + (res$t[i] / A0.5)^4))
+    # SPREADSHEET ERROR
+    # res$phi_pau[i] <- phi_p * f_E * (1 - exp(-kP * res$LAI[i])) * (1 / (1 + (res$t[i] / A0.5)^4))
+    res$phi_pau[i] <- phi_p * f_E * (1 - exp(-kP * res$LAI[i])) * (1 / (1 + ((res$t[i] + t_seedling_replant) / A0.5)^4))
 
     res$phi_pa_u[i] <- phi_p * (1 - (1 - exp(-kP * res$LAI[i]))) * (1 - exp(-kP * LAI_u))
     res$phi_pau_u[i] <- res$phi_pa_u[i] * f_E
@@ -233,4 +248,36 @@ run_3PG <- function(t_rotation = 50, # rotation length
   return(list(#res = res,
               NPP_0 = NPP_0,
               NPP_01 = NPP_01))
+}
+
+if (0) { # testing reason for differences due to t_seedling_replant
+
+  t_rotation <- 50
+
+  out0 <- run_3PG(t_rotation = t_rotation, t_seedling_replant = 0, thin = NULL)
+  out1 <- run_3PG(t_rotation = t_rotation, t_seedling_replant = 10, thin = NULL, replant = 1)
+
+  # When seedlings planted at age 10, dynamics are different relative to planting at age 0 then subsetting the time series
+  # Specifically, Wl is lower (unless and until Wl converges)
+  # Also there are differences in the decay phase (once the age modifier kills off growth)
+
+  plot(out0$res$Wl[11:t_rotation], out1$res$Wl[1:(t_rotation-10)])
+  abline(c(0,1))
+
+  out0$res$Wl[out0$res$t == 10] # leaf biomass at 10 years
+  out2 <- run_3PG(t_rotation = t_rotation, t_seedling_replant = 10, Wl_init = out0$res$Wl[out0$res$t == 10], thin = NULL, replant = 1)
+  out3 <- run_3PG(t_rotation = t_rotation, t_seedling_replant = 0, Wl_init = out0$res$Wl[out0$res$t == 10], thin = NULL, replant = 0)
+
+  ## This shows that the model can now be simply offset by t_seedling_replant
+  plot(out0$res$Wl[11:t_rotation], out2$res$Wl[1:(t_rotation-10)])
+  abline(c(0,1))
+
+  plot(out0$res$NPP[11:t_rotation], out2$res$NPP[1:(t_rotation-10)])
+  abline(c(0,1))
+
+  plot(out2$res$t + 10, out2$res$Wl, col='red', type='l', xlim=c(0,60), ylim=c(0,1))
+  lines(out1$res$t + 10, out1$res$Wl, col='blue', type='l')
+  lines(out3$res$t, out1$res$Wl, col='green', type='l')
+  lines(out0$res$t, out0$res$Wl)
+
 }

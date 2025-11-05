@@ -11,6 +11,8 @@ list_op(l1, l2, l3 = NULL, func)
 
 \item{l2}{list_object 2}
 
+\item{l3}{list_object 3}
+
 \item{func}{string describing elementwise operation}
 }
 \value{

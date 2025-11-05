@@ -105,9 +105,8 @@ L_DPOC <- CO2_loss_DOC_POC(core.dat,
 if (core.dat$Forestry$for_detail[1] == 1) { # Simple version of forest modelling
   L_forest <- Forestry_CO2_loss_simple(core.dat)
 } else { # detailed version of forest modelling (3PG module)
-
-  L_forest <- Forestry_CO2_loss_detailed(core.dat)
-
+  L_forest <- Forestry_CO2_loss_detail(core.dat,
+                                       forestry.dat)
 }
 
 ################################################################################
