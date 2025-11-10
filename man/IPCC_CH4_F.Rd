@@ -4,7 +4,7 @@
 \alias{IPCC_CH4_F}
 \title{IPCC_CH4_F}
 \usage{
-IPCC_CH4_F()
+IPCC_CH4_F(CH4_CO2)
 }
 \arguments{
 \item{CH4_CO2}{CH4 to CO2 conversion factor}

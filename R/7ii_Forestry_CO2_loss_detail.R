@@ -34,7 +34,7 @@ Forestry_CO2_loss_detail <- function(core.dat,
                                        func = "*"),
                                FUN = function (x) x * CO2_C)
 
-  C_seq_loss_net <- list_op(l1 = L_seq_loss_felled,
+  C_seq_loss_net <- list_op(l1 = C_seq_loss_felled,
                             l2 = C_seq_gain_replant,
                             func = "-")
 
@@ -168,16 +168,8 @@ Forestry_CO2_loss_detail <- function(core.dat,
                                l2 = L_transp_replant,
                                func = "-")
 
-  S_biofuel_felled
-  lapply(S_biofuel_felled,
-         FUN = function(x) {
-           x <- x[c(1,3,2)] # re-arrange Min, Max
-           names(x) <- c("Exp", "Min", "Max")
-           return(x)
-         })
-
   ## Totals
-  L_forestry <- list_op(l1 = list_op(l1 = L_seq_loss_defor,
+  L_forestry <- list_op(l1 = list_op(l1 = C_seq_loss_felled,
                                      l2 = L_floor,
                                      l3 = L_harv,
                                      func = "+"),

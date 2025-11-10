@@ -4,7 +4,7 @@
 \alias{ECOSSR_CO2_AB}
 \title{ECOSSR_CO2_AB}
 \usage{
-ECOSSR_CO2_AB(d_wt, T_air)
+ECOSSR_CO2_AB(CO2_C, d_wt, T_air)
 }
 \arguments{
 \item{d_wt}{Average water table depth (undrained)}

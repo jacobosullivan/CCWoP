@@ -1,13 +1,14 @@
 ## 7c. Average stand data
 
 #' growth_yield_tab
+#' @param t stand age
+#' @param soil_type soil type (deep peat or peaty gley)
+#' @param species 1: scots pine; 2: sitka spruce
 #' @return C_seq_soil
 #' @export
 growth_yield_tab <- function(t, soil_type, species = 2) {
 
   # THIS FUNCTION...
-
-  # t <- seq(50)
 
   # Only growth and yield tables for Sitka currently available
   if (species == 2) { # Sitka

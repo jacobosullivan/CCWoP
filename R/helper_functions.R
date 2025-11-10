@@ -23,6 +23,8 @@ list_op <- function(l1, l2, l3 = NULL, func) {
     res <- lapply(seq_along(l1), FUN=function(x) apply(cbind(unlist(unname(l1[x])), unlist(unname(l2[x]))), MAR=1, FUN=max))
   } else if (func == "c") {
     res <- lapply(seq_along(l1), FUN=function(x) c(unlist(unname(l1[x])), unlist(unname(l2[x]))))
+  } else if (func == "/") {
+    res <- lapply(seq_along(l1), FUN=function(x) unlist(unname(l1[x])) / unlist(unname(l2[x])))
   }
 
   if (!is.null(l3)) {

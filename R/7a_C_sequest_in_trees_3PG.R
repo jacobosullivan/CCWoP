@@ -176,12 +176,14 @@ run_3PG <- function(t_rotation = 50, # rotation length
 
   res$t <- t
 
+  leaf_long_onset <- 6 # as in spreadsheet: suggest setting to zero!
+
   # Initialise 3PG
   res$Wl[1] <- Wl_init
   res$LAI[1] <- res$Wl[1] * SLA
 
   # SPREADSHEET ERROR
-  # res$phi_pau[1] <- phi_p * f_E * (1 - exp(-kP * res$LAI[1])) * (1 / (1 + (res$t[1] / A0.5)^4))
+  # res$phi_pau[1] <- phi_p * f_E * (1 - exp(-kP * res$LAI[1])) * (1 / (1 + (res$t[1] / A0.5)^4)) # SPREADSHEET ERROR
   res$phi_pau[1] <- phi_p * f_E * (1 - exp(-kP * res$LAI[1])) * (1 / (1 + ((res$t[1] + t_seedling_replant) / A0.5)^4))
 
   res$phi_pa_u[1] <- phi_p * (1 - (1 - exp(-kP * res$LAI[1]))) * (1 - exp(-kP * LAI_u))
@@ -201,8 +203,8 @@ run_3PG <- function(t_rotation = 50, # rotation length
     }
 
     # SPREADSHEET ERROR
-    # if (res$t[i] < (t_seedling_replant + 6)) { # Leaf longevity not yet relevant SPREADSHEET ERROR
-    if ((res$t[i] + t_seedling_replant) < 6) { # Leaf longevity not yet relevant
+    # if (res$t[i] < (t_seedling_replant + leaf_long_onset)) { # Leaf longevity not yet relevant SPREADSHEET ERROR
+    if ((res$t[i] + t_seedling_replant) < leaf_long_onset) { # Leaf longevity not yet relevant
       res$Wl[i] <- res$Wl[i-1] * (1 - res$thin[i]) + t_step * res$NPP[i-1] * pF
     } else { # Accounting for leaf longevity
       res$Wl[i] <- res$Wl[i-1] * (1 - res$thin[i]) + t_step * (res$NPP[i-1] * pF - res$Wl[i-1] / L_long)
@@ -210,7 +212,7 @@ run_3PG <- function(t_rotation = 50, # rotation length
     res$LAI[i] <- res$Wl[i] * SLA
 
     # SPREADSHEET ERROR
-    # res$phi_pau[i] <- phi_p * f_E * (1 - exp(-kP * res$LAI[i])) * (1 / (1 + (res$t[i] / A0.5)^4))
+    # res$phi_pau[i] <- phi_p * f_E * (1 - exp(-kP * res$LAI[i])) * (1 / (1 + (res$t[i] / A0.5)^4)) # SPREADSHEET ERROR
     res$phi_pau[i] <- phi_p * f_E * (1 - exp(-kP * res$LAI[i])) * (1 / (1 + ((res$t[i] + t_seedling_replant) / A0.5)^4))
 
     res$phi_pa_u[i] <- phi_p * (1 - (1 - exp(-kP * res$LAI[i]))) * (1 - exp(-kP * LAI_u))
@@ -245,21 +247,38 @@ run_3PG <- function(t_rotation = 50, # rotation length
     select(NPP_tot) %>%
     sum()
 
-  return(list(#res = res,
+  return(list(res = res,
               NPP_0 = NPP_0,
               NPP_01 = NPP_01))
 }
 
 if (0) { # testing reason for differences due to t_seedling_replant
 
-  t_rotation <- 50
+  t_rotation <- 150
 
   out0 <- run_3PG(t_rotation = t_rotation, t_seedling_replant = 0, thin = NULL)
+  out0b <- run_3PG(t_rotation = t_rotation, t_seedling_replant = 0, thin = NULL)
+  out0c <- run_3PG(t_rotation = t_rotation, t_seedling_replant = 0, thin = NULL, Wl_init = 0.01)
+
   out1 <- run_3PG(t_rotation = t_rotation, t_seedling_replant = 10, thin = NULL, replant = 1)
+  out2 <- run_3PG(t_rotation = t_rotation, t_seedling_replant = 10, thin = NULL, replant = 1)
+  out3 <- run_3PG(t_rotation = t_rotation, t_seedling_replant = 10, thin = NULL, replant = 1, A0.5 = )
 
   # When seedlings planted at age 10, dynamics are different relative to planting at age 0 then subsetting the time series
   # Specifically, Wl is lower (unless and until Wl converges)
   # Also there are differences in the decay phase (once the age modifier kills off growth)
+
+  plot(out0$res$t, out0$res$NPP, type='n', ylim=c(0,0.6))
+  lines(out1$res$t, out1$res$NPP, type='l', col="red")
+  lines(out2$res$t, out2$res$NPP, type='l', col="blue")
+  lines(out0$res$t, out0$res$NPP, type='l', col="black")
+
+  plot(out0$res$t, out0$res$NPP, type='n', ylim=c(0,0.6))
+  lines(out0$res$t, out0$res$NPP, type='l', col="black")
+  lines(out0b$res$t, out0b$res$NPP, type='l', col="black", lty=2)
+  lines(out0c$res$t, out0c$res$NPP, type='l', col="black", lty=3)
+
+
 
   plot(out0$res$Wl[11:t_rotation], out1$res$Wl[1:(t_rotation-10)])
   abline(c(0,1))

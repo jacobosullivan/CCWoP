@@ -21,9 +21,13 @@ CO2_loss_drained <- function(core.dat, AV_indirect, R_tot) {
                                   t_wf = core.dat$Windfarm$t_wf,
                                   t_restore = core.dat$Bog.plants$t_restore)
 
+  L_indirect <- c(Exp = L_drainage$L_drained$Tot[1] - L_drainage$L_undrained$Tot[1],
+                  Min = min(L_drainage$L_drained$Tot[2:3] - L_drainage$L_undrained$Tot[2:3]),
+                  Max = max(L_drainage$L_drained$Tot[2:3] - L_drainage$L_undrained$Tot[2:3]))
+
   L_indirect <- list(L_drained = L_drainage$L_drained,
                      L_undrained = L_drainage$L_undrained,
-                     L_indirect = L_drainage$L_drained$Tot - L_drainage$L_undrained$Tot)
+                     L_indirect = L_indirect)
 
   return(L_indirect)
 }
@@ -84,11 +88,20 @@ CO2_loss_drained0 <- function(pC_dry_peat,
   L_drained_no_rest <- list(Tot = (CO2_C / 100) * pC_dry_peat * BD_dry_soil * V_indirect)
   L_undrained_no_rest <- list(Tot = L_drained_no_rest$Tot * p_undrained)
 
-  if (restore_hab_in[1] == 2 & restore_hydr_in[1] == 2) { # habitat AND hydrology restored
-    return(list(L_drained = L_drained_rest,
-                L_undrained = L_undrained_rest))
-  } else {
-    return(list(L_drained = L_drained_no_rest,
-                L_undrained = L_undrained_no_rest))
+  L_drained <- L_drained_rest # first assume restoration
+  L_undrained <- L_undrained_rest
+
+  if (any(restore_hab_in == 1 | restore_hydr_in == 1)) {
+    # replace non-restored instances with results without restoration
+    L_drained$Tot[restore_hab_in == 1 | restore_hydr_in == 1] <- L_drained_no_rest$Tot[restore_hab_in == 1 | restore_hydr_in == 1]
+    L_drained$CO2[restore_hab_in == 1 | restore_hydr_in == 1] <- 0
+    L_drained$CH4[restore_hab_in == 1 | restore_hydr_in == 1] <- 0
+
+    L_undrained$Tot[restore_hab_in == 1 | restore_hydr_in == 1] <- L_undrained_no_rest$Tot[restore_hab_in == 1 | restore_hydr_in == 1]
+    L_undrained$CO2[restore_hab_in == 1 | restore_hydr_in == 1] <- 0
+    L_undrained$CH4[restore_hab_in == 1 | restore_hydr_in == 1] <- 0
   }
+
+  return(list(L_drained = L_drained,
+              L_undrained = L_undrained))
 }

@@ -198,7 +198,7 @@ drainage_add <- function(drain_ext,
 
   #THIS FUNCTION...
   if (any(add_dims$v > 0)) {
-    d_add <- add_dims$a / add_dims$a
+    d_add <- add_dims$v / add_dims$a[c(1,3,2)] # re-order Min/Max inputs
     r_add <- sqrt(add_dims$a/pi)
     r_add_drained <- r_add + drain_ext
     area_drained_add <- pi * r_add_drained * r_add_drained - add_dims$a

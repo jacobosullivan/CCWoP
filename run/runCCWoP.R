@@ -11,6 +11,7 @@ path_to_UI <- "Templates/Full carbon calculator for windfarms on peatlands - Ver
 
 dat <- getData(path_to_UI)
 
+## I need tests to ensure all data has been passed. If not, return error messages
 core.dat <- dat$core.dat
 forestry.dat <- dat$forestry.dat
 construct.dat <- dat$construct.dat
@@ -108,6 +109,13 @@ if (core.dat$Forestry$for_detail[1] == 1) { # Simple version of forest modelling
   L_forest <- Forestry_CO2_loss_detail(core.dat,
                                        forestry.dat)
 }
+
+################################################################################
+############################### Windspeed ratios ###############################
+################################################################################
+
+R_windspeed <- Wind_speed_ratios(core.dat,
+                                 forestry.dat)
 
 ################################################################################
 ########################### Calculate capacity factor ##########################

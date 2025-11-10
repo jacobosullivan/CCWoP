@@ -6,6 +6,13 @@
 \usage{
 growth_yield_tab(t, soil_type, species = 2)
 }
+\arguments{
+\item{t}{stand age}
+
+\item{soil_type}{soil type (deep peat or peaty gley)}
+
+\item{species}{1: scots pine; 2: sitka spruce}
+}
 \value{
 C_seq_soil
 }
