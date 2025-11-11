@@ -95,36 +95,43 @@ L_improvement <- CO_2_gain_site_improve(core.dat = core.dat)
 ######################### CO2 loss by DOC and POC loss #########################
 ################################################################################
 
-L_DPOC <- CO2_loss_DOC_POC(core.dat,
-                           L_indirect,
-                           L_improvement)
+L_DPOC <- CO2_loss_DOC_POC(core.dat = core.dat,
+                           L_indirect = L_indirect,
+                           L_improvement = L_improvement)
 
 ################################################################################
 ##################### CO2 sequestration loss from Forestry #####################
 ################################################################################
 
 if (core.dat$Forestry$for_detail[1] == 1) { # Simple version of forest modelling
-  L_forest <- Forestry_CO2_loss_simple(core.dat)
+  L_forest <- Forestry_CO2_loss_simple(core.dat = core.dat)
 } else { # detailed version of forest modelling (3PG module)
-  L_forest <- Forestry_CO2_loss_detail(core.dat,
-                                       forestry.dat)
+  L_forest <- Forestry_CO2_loss_detail(core.dat = core.dat,
+                                       forestry.dat = forestry.dat)
 }
 
 ################################################################################
 ############################### Windspeed ratios ###############################
 ################################################################################
 
-R_windspeed <- Wind_speed_ratios(core.dat,
-                                 forestry.dat)
+# Wrong with changes to inputs suggesting that conditionals may be failing
+R_windspeed_all <- Wind_speed_ratios(core.dat = core.dat,
+                                     forestry.dat = forestry.dat)
 
 ################################################################################
 ########################### Calculate capacity factor ##########################
 ################################################################################
 
 if (core.dat$Windfarm$p_cap_in[1] == 2) { # capacity factor calculated from forestry module
-  p_cap <- 1 # placeholder for forestry module output
+
+  p_cap <- p_cap_forestry(core.dat = core.dat,
+                          forestry.dat = forestry.dat,
+                          R_windspeed_all = R_windspeed_all)
+  n_turb <- map(forestry.dat[grep("Area", names(forestry.dat))], .f = "n_turb")
+
 } else { # user input capacity factor
   p_cap <- core.dat$Windfarm$p_cap
+  n_turb <- core.dat$Windfarm$n_turb
 }
 
 
@@ -134,9 +141,27 @@ if (core.dat$Windfarm$p_cap_in[1] == 2) { # capacity factor calculated from fore
 
 ## Total Windfarm energy output
 e_out <- Windfarm_output(p_cap = p_cap,
-                         n_turb = core.dat$Windfarm$n_turb,
+                         n_turb = n_turb,
                          c_turb = core.dat$Windfarm$c_turb)
 
 S_fuel <- Windfarm_emissions_saving(e_out = e_out,
                                     E_mat = E_mat)
+
+################################################################################
+######################## Payback time and CO2 emissions ########################
+################################################################################
+
+e_out_wf <- e_out * core.dat$Windfarm$t_wf
+
+L_tot <- L_life + L_back + L_fix + L_soil + L_DPOC + L_forest
+
+L_improvement_tot <- colSums(bind_rows(L_improvement$L_improvement))
+
+L_tot_net <- L_tot - L_improvement_tot[c(1,3,2)] # re-order Min/Max
+
+B_payback_time <- matrix(rep(L_tot_net, each=3), 3, 3) / as.matrix(S_fuel[,-1])[,c(1,3,2)] # re-order Min/Max
+
+B_payback_time <- cbind(S_fuel$Fuel, data.frame(B_payback_time))
+
+r_CO2_to_pow <- (L_tot_net * 1000) / e_out_wf[c(1,3,2)] # re-order Min/Max
 

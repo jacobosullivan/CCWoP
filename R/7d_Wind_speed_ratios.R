@@ -11,17 +11,17 @@ Wind_speed_ratios <- function(core.dat,
   # THIS FUNCTION...
 
   # Extract and restructure data for easy access
-  t_wf_by_area <- list()
-  h_turb_by_area <- list()
+  t_wf <- list()
+  h_turb <- list()
 
   ii <- 1
   for (i in grep("Area", names(forestry.dat))) {
-    t_wf_by_area[[ii]] <- core.dat$Windfarm$t_wf
-    h_turb_by_area[[ii]] <- forestry.dat$Windfarm$H_turb
+    t_wf[[ii]] <- core.dat$Windfarm$t_wf
+    h_turb[[ii]] <- forestry.dat$Windfarm$H_turb
     ii <- ii + 1
   }
-  names(t_wf_by_area) <- grep("Area", names(forestry.dat), value = T)
-  names(h_turb_by_area) <- grep("Area", names(forestry.dat), value = T)
+  names(t_wf) <- grep("Area", names(forestry.dat), value = T)
+  names(h_turb) <- grep("Area", names(forestry.dat), value = T)
 
   # Width of felled forestry around turbine
   w_felled <- lapply(map(forestry.dat[grep("Area", names(forestry.dat))], .f = "A_harv_turb"),
@@ -34,7 +34,7 @@ Wind_speed_ratios <- function(core.dat,
                               FUN = function(x) growth_yield_tab(t = x[1:3], soil_type = x[4], species = 2)$avg_height)
 
   # Height of replanted forestry at decomissioning
-  avg_height_replant <- lapply(list_op(l1 = list_op(l1 = t_wf_by_area,
+  avg_height_replant <- lapply(list_op(l1 = list_op(l1 = t_wf,
                                                       l2 = map(forestry.dat[grep("Area", names(forestry.dat))], "t_seedling_replant"),
                                                       l3 = lapply(map(forestry.dat[grep("Area", names(forestry.dat))], "t_replant"), FUN = function(x) -x),
                                                       func = "+"),
@@ -45,7 +45,7 @@ Wind_speed_ratios <- function(core.dat,
   # Height of original forestry at decomissioning IF NOT FELLED (accounting for 50 year rotation)
   t_rotation <- 50
   t_harv_not_felled <- list_op(l1 = map(forestry.dat[grep("Area", names(forestry.dat))], "t_harv"),
-                               l2 = t_wf_by_area,
+                               l2 = t_wf,
                                func = "+")
 
   # If t > 50 dial back by 50, repeat until (while loop) in case t > 100 (unlikely)
@@ -97,14 +97,15 @@ Wind_speed_ratios <- function(core.dat,
 
 
   # Intermediate calculations
-  max_HBL <- 5000
-  von_karman <- 0.4
-  alpha <- 4
+  # These are set as function defaults
+  # max_HBL <- 5000
+  # von_karman <- 0.4
+  # alpha <- 4
 
   ## IBL forest
   h_IBL_forest <- getIBL(la = r_upstream,
                          lb = r_forest,
-                         lc = map(forestry.dat[grep("Area", names(forestry.dat))], .f = "A_harv_turb"),
+                         lc = map(forestry.dat[grep("Area", names(forestry.dat))], .f = "D_width"),
                          ld = zpd_forest)
 
   ## IBL felled forest
@@ -144,20 +145,20 @@ Wind_speed_ratios <- function(core.dat,
                                  zpd_forest = zpd_forest)
 
   # Windspeed at hub height upwind
-  ws_hub_upwind <- getWS_upwind(h1 = h_turb_by_area,
+  ws_hub_upwind <- getWS_upwind(h1 = h_turb,
                                 r_upstream = r_upstream)
 
   # Windspeed at hub height forest
-  ws_hub_forest <- getWS_forest(h1 = h_turb_by_area,
-                                h_IBL_forest = remMinMax(h_IBL_forest),
+  ws_hub_forest <- getWS_forest(h1 = h_turb,
+                                h_IBL_forest = remMinMax(h_IBL_forest), #
                                 avg_height_not_felled = remMinMax(avg_height_not_felled),
                                 r_upstream = remMinMax(r_upstream),
                                 r_forest = remMinMax(r_forest),
-                                ws_IBL_forest = remMinMax(ws_IBL_forest),
+                                ws_IBL_forest = remMinMax(ws_IBL_forest), #
                                 zpd_forest = remMinMax(zpd_forest))
 
   # Windspeed at hub height felled
-  ws_hub_felled <- getWS_felled(h1 = h_turb_by_area,
+  ws_hub_felled <- getWS_felled(h1 = h_turb,
                                 h_IBL_forest = remMinMax(h_IBL_forest),
                                 h_IBL_felled = remMinMax(h_IBL_felled),
                                 avg_height_not_felled = remMinMax(avg_height_not_felled),
@@ -168,7 +169,7 @@ Wind_speed_ratios <- function(core.dat,
                                 zpd_forest = remMinMax(zpd_forest))
 
   # Windspeed at hub height replanted
-  ws_hub_replant <- getWS_replant(h1 = h_turb_by_area,
+  ws_hub_replant <- getWS_replant(h1 = h_turb,
                                   h_IBL_forest = remMinMax(h_IBL_forest),
                                   h_IBL_felled = remMinMax(h_IBL_felled),
                                   h_IBL_replant = remMinMax(h_IBL_replant),

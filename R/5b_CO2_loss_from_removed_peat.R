@@ -8,9 +8,9 @@
 #' @return Hypothetical carbon fixation of drained/removed peat
 #' @export
 CO2_loss_removed <- function(core.dat,
-                              AV_direct,
-                              L_indirect,
-                              pCO2_lost = 100) {
+                             AV_direct,
+                             L_indirect,
+                             pCO2_lost = 100) {
 
   # THIS FUNCTION...
 

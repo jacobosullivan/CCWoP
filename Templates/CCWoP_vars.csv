@@ -123,6 +123,8 @@ Power curve - NOT USED!,NA,Area.1,forestry
 (In CORE INPUT DATA sheet you have selected ,NA,Area.1,forestry
  to input capacity factor directly. No need to select!),NA,Area.1,forestry
 Power curve,pow_curve,Area.1,forestry
+Slope (a),slope_pow_curve,Area.1,forestry
+Intercept (b),int_pow_curve,Area.1,forestry
 Major soil sub-group,soil_type,Area.1,forestry
 Species,species,Area.1,forestry
 Felled Forest Biomass used as biofuel?,felled_biofuel,Area.1,forestry
@@ -142,6 +144,8 @@ Power curve - NOT USED!,NA,Area.2,forestry
 (In CORE INPUT DATA sheet you have selected ,NA,Area.2,forestry
  to input capacity factor directly. No need to select!),NA,Area.2,forestry
 Power curve,pow_curve,Area.2,forestry
+Slope (a),slope_pow_curve,Area.2,forestry
+Intercept (b),int_pow_curve,Area.2,forestry
 Major soil sub-group,soil_type,Area.2,forestry
 Species,species,Area.2,forestry
 Felled Forest Biomass used as biofuel?,felled_biofuel,Area.2,forestry
@@ -161,6 +165,8 @@ Power curve - NOT USED!,NA,Area.3,forestry
 (In CORE INPUT DATA sheet you have selected ,NA,Area.3,forestry
  to input capacity factor directly. No need to select!),NA,Area.3,forestry
 Power curve,pow_curve,Area.3,forestry
+Slope (a),slope_pow_curve,Area.3,forestry
+Intercept (b),int_pow_curve,Area.3,forestry
 Major soil sub-group,soil_type,Area.3,forestry
 Species,species,Area.3,forestry
 Felled Forest Biomass used as biofuel?,felled_biofuel,Area.3,forestry
@@ -180,6 +186,8 @@ Power curve - NOT USED!,NA,Area.4,forestry
 (In CORE INPUT DATA sheet you have selected ,NA,Area.4,forestry
  to input capacity factor directly. No need to select!),NA,Area.4,forestry
 Power curve,pow_curve,Area.4,forestry
+Slope (a),slope_pow_curve,Area.4,forestry
+Intercept (b),int_pow_curve,Area.4,forestry
 Major soil sub-group,soil_type,Area.4,forestry
 Species,species,Area.4,forestry
 Felled Forest Biomass used as biofuel?,felled_biofuel,Area.4,forestry
@@ -199,6 +207,8 @@ Power curve - NOT USED!,NA,Area.5,forestry
 (In CORE INPUT DATA sheet you have selected ,NA,Area.5,forestry
  to input capacity factor directly. No need to select!),NA,Area.5,forestry
 Power curve,pow_curve,Area.5,forestry
+Slope (a),slope_pow_curve,Area.5,forestry
+Intercept (b),int_pow_curve,Area.5,forestry
 Major soil sub-group,soil_type,Area.5,forestry
 Species,species,Area.5,forestry
 Felled Forest Biomass used as biofuel?,felled_biofuel,Area.5,forestry

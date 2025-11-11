@@ -4,7 +4,7 @@
 \alias{Windfarm_output}
 \title{Windfarm_output}
 \usage{
-Windfarm_output(p_cap, n_turb, c_turb)
+Windfarm_output(p_cap, n_turb, c_turb, forestry.dat = NULL)
 }
 \arguments{
 \item{p_cap}{capcity factor}

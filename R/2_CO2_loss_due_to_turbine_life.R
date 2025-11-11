@@ -21,7 +21,7 @@ Lifetime_emissions <- function(core.dat,
 
     # Regression coefficients of L_life_turb ~ c_turb
     coefs <- data.frame(m=c(517.62,
-                            934.34),
+                            934.35),
                         c=c(-0.1788,
                             -467.55))
 

@@ -18,13 +18,17 @@ Backup_emissions <- function(core.dat,
   E_mat <- E_mat
   t_wf <- core.dat$Windfarm$t_wf
 
-  L_back_tot <- matrix((p_therm/100) * (24*365) * n_turb * c_turb * (p_back/100) * t_wf,
-                       nrow = nrow(E_mat),
-                       ncol = length(p_therm),
-                       byrow = T,
-                       dimnames = dimnames(E_mat))
+  if (0) {
+    L_back_tot <- matrix((p_therm/100) * (24*365) * n_turb * c_turb * (p_back/100) * t_wf,
+                         nrow = nrow(E_mat),
+                         ncol = length(p_therm),
+                         byrow = T,
+                         dimnames = dimnames(E_mat))
 
-  L_back <- L_back_tot * E_mat
+    L_back <- L_back_tot * E_mat
+  } else {
+    L_back <- (p_therm/100) * (24*365) * n_turb * c_turb * (p_back/100) * t_wf * E_mat["fossil_mix",]
+  }
 
   return(L_back)
 }
