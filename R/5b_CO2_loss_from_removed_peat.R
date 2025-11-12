@@ -17,9 +17,12 @@ CO2_loss_removed <- function(core.dat,
   # Extract input variables for easy access
   pC_dry_peat <- core.dat$Peatland$pC_dry_peat # Carbon content of dry peat
   BD_dry_soil <- core.dat$Peatland$BD_dry_soil # Dry soil bulk density
-  A_direct <- AV_direct$Total$a # Area peat removed
+  A_direct <- AV_direct$Total$a / 10000 # Area peat removed in ha
   V_direct <- AV_direct$Total$v # Volume peat removed
-  L_undrained_pa <- L_indirect$L_undrained$Tot / AV_indirect$Total$a # Emissions from undrained peat per unit area
+  A_indirect <- AV_indirect$Total$a / 10000 # Area peat drained in ha
+
+  # Here $Tot is NOT used since this may have been computed as (CO2_C / 100) * pC_dry_peat * BD_dry_soil * V_indirect
+  L_undrained_pa <- (L_indirect$L_undrained$CO2 + L_indirect$L_undrained$CH4) / A_indirect # Emissions from undrained peat per unit area
 
   CO2_C <- 3.667 # Molecular weight ratio C to CO2
 

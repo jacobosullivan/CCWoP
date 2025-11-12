@@ -94,12 +94,12 @@ CO2_loss_drained0 <- function(pC_dry_peat,
   if (any(restore_hab_in == 1 | restore_hydr_in == 1)) {
     # replace non-restored instances with results without restoration
     L_drained$Tot[restore_hab_in == 1 | restore_hydr_in == 1] <- L_drained_no_rest$Tot[restore_hab_in == 1 | restore_hydr_in == 1]
-    L_drained$CO2[restore_hab_in == 1 | restore_hydr_in == 1] <- 0
-    L_drained$CH4[restore_hab_in == 1 | restore_hydr_in == 1] <- 0
+    # L_drained$CO2[restore_hab_in == 1 | restore_hydr_in == 1] <- 0
+    # L_drained$CH4[restore_hab_in == 1 | restore_hydr_in == 1] <- 0
 
     L_undrained$Tot[restore_hab_in == 1 | restore_hydr_in == 1] <- L_undrained_no_rest$Tot[restore_hab_in == 1 | restore_hydr_in == 1]
-    L_undrained$CO2[restore_hab_in == 1 | restore_hydr_in == 1] <- 0
-    L_undrained$CH4[restore_hab_in == 1 | restore_hydr_in == 1] <- 0
+    # L_undrained$CO2[restore_hab_in == 1 | restore_hydr_in == 1] <- 0
+    # L_undrained$CH4[restore_hab_in == 1 | restore_hydr_in == 1] <- 0
   }
 
   return(list(L_drained = L_drained,

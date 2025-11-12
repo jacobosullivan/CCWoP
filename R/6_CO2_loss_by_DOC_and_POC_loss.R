@@ -21,7 +21,7 @@ CO2_loss_DOC_POC <- function(core.dat,
   # THIS FUNCTION...
 
   CO2_C <- 3.667 # Molecular weight ratio C to CO2
-  CH4_CO2 <- 30.67 # CH4 to CO2 conversion factor
+  CH4_CO2 <- 30.66667 # CH4 to CO2 conversion factor
   pC_CH4 <- 0.75 # proportion of molecular weight of CH4 that is Carbon (12/16)
 
   if (core.dat$Site.restoration$restore_hab_in[1] == 2 & core.dat$Site.restoration$restore_hydr_in[1] == 2) {

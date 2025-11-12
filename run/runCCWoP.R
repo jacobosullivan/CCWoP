@@ -1,6 +1,6 @@
-library(readxl) # read excel files (UI)
-library(tidyverse) # dataframe manipulations
-library(purrr) # nested list indexing
+# library(readxl) # read excel files (UI)
+# library(tidyverse) # dataframe manipulations
+# library(purrr) # nested list indexing
 devtools::document()
 
 ################################################################################
@@ -159,9 +159,70 @@ L_improvement_tot <- colSums(bind_rows(L_improvement$L_improvement))
 
 L_tot_net <- L_tot - L_improvement_tot[c(1,3,2)] # re-order Min/Max
 
-B_payback_time <- matrix(rep(L_tot_net, each=3), 3, 3) / as.matrix(S_fuel[,-1])[,c(1,3,2)] # re-order Min/Max
+C_payback_time_tot <- matrix(rep(L_tot_net, each=3), 3, 3) / as.matrix(S_fuel[,-1])[,c(1,3,2)] # re-order Min/Max
 
-B_payback_time <- cbind(S_fuel$Fuel, data.frame(B_payback_time))
+C_payback_time_tot <- cbind(S_fuel$Fuel, data.frame(C_payback_time_tot))
 
 r_CO2_to_pow <- (L_tot_net * 1000) / e_out_wf[c(1,3,2)] # re-order Min/Max
 
+PLOT_RES <- F # if FALSE, plot comparison between R version and Excel version
+
+if (PLOT_RES) {
+
+  ## Plotting
+
+  res <- cbind(source = c("L_life","L_back","L_fix","L_soil","L_DPOC","L_forest","L_improvement_tot"),
+               bind_rows(L_life,
+                         L_back,
+                         L_fix,
+                         L_soil,
+                         L_DPOC,
+                         L_forest,
+                         L_improvement_tot))
+
+  res$source <- factor(res$source, levels = c("L_life","L_back","L_fix","L_soil","L_DPOC","L_forest","L_improvement_tot"))
+
+  ggplot(res, aes(x = source, y = Exp)) +
+    geom_bar(stat = "identity") +
+    geom_errorbar(aes(y = Exp, ymin = Min, ymax = Max), width = 0.2) +
+    labs(y = "GH emissions (t CO2 eq.)") +
+    theme_bw()
+
+} else {
+  ## Compare to spreadsheet
+
+  L_ss <- read_excel(path_to_UI,
+                     sheet = "Payback Time and CO2 emissions",
+                     range = "B14:E19",
+                     col_names = c("source", "Exp","Min","Max"))
+  L_ss$source <- c("L_life","L_back","L_fix","L_soil","L_DPOC","L_forest")
+
+  G_improvement_ss <- -read_excel(path_to_UI,
+                                  sheet = "Payback Time and CO2 emissions",
+                                  range = "C26:E26",
+                                  col_names = c("Exp","Min","Max"))
+
+  G_improvement_ss <- cbind(data.frame(source = "L_improvement_tot"), G_improvement_ss)
+
+  res_ss <- rbind(L_ss,G_improvement_ss)
+
+  res_comp <- left_join(pivot_longer(res,
+                                     cols = c(Exp, Min, Max),
+                                     names_to = "estimate",
+                                     values_to = "val.R"),
+                        pivot_longer(res_ss,
+                                     cols = c(Exp, Min, Max),
+                                     names_to = "estimate",
+                                     values_to = "val.Excel"),
+                        by = c("source", "estimate"))
+
+  ggplot(res_comp, aes(x = paste(source, estimate), y = (val.R - val.Excel) / val.R)) +
+    geom_bar(stat = "identity") +
+    labs(x="") +
+    theme(axis.text.x = element_text(
+      angle = 90,
+      hjust = 1,
+      vjust = 1
+    ))
+
+}

@@ -146,7 +146,7 @@ CO_2_gain_site_improve0 <- function(T_air,
   # THIS FUNCTION...
 
   CO2_C <- 3.667 # Molecular weight ratio C to CO2
-  CH4_CO2 <- 30.67 # CH4 to CO2 conversion factor
+  CH4_CO2 <- 30.66667 # CH4 to CO2 conversion factor
 
   if (peat_type[1] == 1) { # Acid bog selected
     D_f <- 178
