@@ -10,6 +10,26 @@ Forestry_CO2_loss_detail <- function(core.dat,
   # THIS FUNCTION...
   CO2_C <- 3.667 # Molecular weight ratio C to CO2
 
+  # Proportion of biomass used in biofuel and long, medium and short lived wood products
+  # These may need to be area specific requiring different downstream implementation (i.e. using list_op)
+  rho_felled <- list(biofuel = 1, wp_long = 0, wp_med = 0, wp_short = 0) # THIS WILL NEED TO BE A USER INPUT
+  rho_replant <- list(biofuel = 1, wp_long = 0, wp_med = 0, wp_short = 0) # THIS WILL NEED TO BE A USER INPUT
+
+  # exponential decay rate of long, medium and short lived wood products
+  alpha_wp <- list(wp_long = c(Exp = 0.01, Min = 0.01, Max = 0.01),
+                   wp_med = c(Exp = 0.1, Min = 0.1, Max = 0.1),
+                   wp_short = c(Exp = 1, Min = 1, Max = 1)) # THIS COULD BE A USER INPUT OR COULD BE ESTIMATED FROM LITERATURE
+
+  # average transportation distances of long, medium and short lived wood products
+  D_wp <- list(wp_long = c(Exp = 100, Min = 100, Max = 100),
+               wp_med = c(Exp = 100, Min = 100, Max = 100),
+               wp_short = c(Exp = 100, Min = 100, Max = 100)) # THIS SHOULD BE A USER INPUT
+
+  # average transportation emissions factors of long, medium and short lived wood products
+  E_wp <- list(wp_long = c(Exp = 0.1, Min = 0.1, Max = 0.1),
+               wp_med = c(Exp = 0.1, Min = 0.1, Max = 0.1),
+               wp_short = c(Exp = 0.1, Min = 0.1, Max = 0.1)) # THIS COULD BE A USER INPUT OR COULD BE ESTIMATED FROM LITERATURE
+
   ## Loss of carbon sequestration due to felling of forestry for wind farm
   C_forestry <- C_sequest_in_trees(core.dat,
                                    forestry.dat)
@@ -98,21 +118,26 @@ Forestry_CO2_loss_detail <- function(core.dat,
                     func = "*")
 
   ## Savings from use of felled forestry as biofuel
-  B_felled <- list_op(l1 = A_felled,
-                      l2 = C_forestry$C_tot,
-                      l3 = lapply(map(forestry.dat[grep("Area", names(forestry.dat))], "r_CBiomass"),
+  W_felled <- list_op(l1 = list_op(l1 = A_felled,
+                                   l2 = C_forestry$C_tot,
+                                   func = "*"),
+                      l2 = lapply(map(forestry.dat[grep("Area", names(forestry.dat))], "r_CBiomass"),
                                   FUN = function(x) {
                                     x <- x[c(1,3,2)] # re-arrange Min, Max
                                     names(x) <- c("Exp", "Min", "Max")
-                                    return(x^-1)
+                                    return(x)
                                   }),
-                      func = "*")
+                      func = "/")
 
-  B_pow_val_felled <- list_op(l1 = B_felled,
+  W_felled_biofuel <- lapply(W_felled,
+                             FUN = function(x) x * rho_felled$biofuel)
+
+  W_pow_val_felled <- list_op(l1 = W_felled_biofuel,
                               l2 = map(forestry.dat[grep("Area", names(forestry.dat))], "e_felled_biofuel"),
                               func = "*")
 
   # Get 1/0 for Yes/No converting felled forestry to biofuel
+  # JDebug: this can be handled instead via rho_felled
   felled_biofuel <- lapply(map(forestry.dat[grep("Area", names(forestry.dat))], "felled_biofuel"),
                            FUN = function(x) {
                              if (x[1]==2) { # not used as biofuel
@@ -122,14 +147,14 @@ Forestry_CO2_loss_detail <- function(core.dat,
                              }
                            })
 
-  S_biofuel_felled <- list_op(l1 = B_pow_val_felled,
+  S_biofuel_felled <- list_op(l1 = W_pow_val_felled,
                               l2 = fossil_fuel_emissions_factor,
                               l3 = felled_biofuel,
                               func = "*")
 
   L_transp_felled <- list_op(l1 = dist_fuel_plant,
                              l2 = emissions_from_transport,
-                             l3 = B_felled,
+                             l3 = W_felled_biofuel,
                              func = "*")
 
   S_biofuel_felled <- list_op(l1 = S_biofuel_felled,
@@ -137,55 +162,118 @@ Forestry_CO2_loss_detail <- function(core.dat,
                               func = "-")
 
   ## Savings from use of replanted forestry as biofuel
-  B_replant <- list_op(l1 = A_replant,
-                       l2 = C_forestry$seq_pot_replant,
-                       l3 = lapply(map(forestry.dat[grep("Area", names(forestry.dat))], "r_CBiomass"),
+  W_replant <- list_op(l1 = list_op(l1 = A_replant,
+                                    l2 = C_forestry$seq_pot_replant,
+                                    func = "*"),
+                       l2 = lapply(map(forestry.dat[grep("Area", names(forestry.dat))], "r_CBiomass"),
                                    FUN = function(x) {
                                      x <- x[c(1,3,2)] # re-arrange Min, Max
                                      names(x) <- c("Exp", "Min", "Max")
-                                     return(x^-1)
+                                     return(x)
                                    }),
-                       func = "*")
+                       func = "/")
 
-  B_pow_val_replant <- list_op(l1 = B_replant,
+  W_replant_biofuel <- lapply(W_replant,
+                              FUN = function(x) x * rho_replant$biofuel)
+
+  W_pow_val_replant <- list_op(l1 = W_replant_biofuel,
                                l2 = map(forestry.dat[grep("Area", names(forestry.dat))], "e_felled_biofuel"),
                                func = "*")
 
-  # Assume that if harvested biomass converted to biofuel, so is replanted biomass ...
+  # Assume that if harvested biomass converted to biofuel, so is replanted biomass...
+  # This could instead be handled using rho_replant
   replant_biofuel <- felled_biofuel
 
-  S_biofuel_replant <- list_op(l1 = B_pow_val_replant,
+  S_biofuel_replant <- list_op(l1 = W_pow_val_replant,
                                l2 = fossil_fuel_emissions_factor,
                                l3 = replant_biofuel,
                                func = "*")
 
   L_transp_replant <- list_op(l1 = dist_fuel_plant,
                               l2 = emissions_from_transport,
-                              l3 = B_replant,
+                              l3 = W_replant_biofuel,
                               func = "*")
 
   S_biofuel_replant <- list_op(l1 = S_biofuel_replant,
                                l2 = L_transp_replant,
                                func = "-")
 
+  ## Wood product decay functions
+  ### Felled forestry
+  W_wp_long_felled <- lapply(W_felled,
+                             FUN = function(x) x * rho_replant$wp_long)
+
+  W_wp_med_felled <- lapply(W_felled,
+                             FUN = function(x) x * rho_replant$wp_med)
+
+  W_wp_short_felled <- lapply(W_felled,
+                             FUN = function(x) x * rho_replant$wp_short)
+
+  L_wp_long_felled <- lapply(W_wp_long_felled,
+                             FUN = function(x) x * (1 - exp(-alpha_wp$wp_long * core.dat$Windfarm$t_wf) + D_wp$wp_long * E_wp$wp_long))
+
+  L_wp_med_felled <- lapply(W_wp_med_felled,
+                             FUN = function(x) x * (1 - exp(-alpha_wp$wp_med * core.dat$Windfarm$t_wf) + D_wp$wp_med * E_wp$wp_med))
+
+  L_wp_short_felled <- lapply(W_wp_short_felled,
+                             FUN = function(x) x * (1 - exp(-alpha_wp$wp_short * core.dat$Windfarm$t_wf) + D_wp$wp_short * E_wp$wp_short))
+
+  L_wp_felled <- list_op(l1 = L_wp_long_felled,
+                         l2 = L_wp_med_felled,
+                         l3 = L_wp_short_felled,
+                         func = "+")
+
+  ### Replanted forestry
+  W_wp_long_replant <- lapply(W_replant,
+                              FUN = function(x) x * rho_replant$wp_long)
+
+  W_wp_med_replant <- lapply(W_replant,
+                             FUN = function(x) x * rho_replant$wp_med)
+
+  W_wp_short_replant <- lapply(W_replant,
+                               FUN = function(x) x * rho_replant$wp_short)
+
+  L_wp_long_replant <- lapply(W_wp_long_replant,
+                              FUN = function(x) x * (1 - exp(-alpha_wp$wp_long * core.dat$Windfarm$t_wf) + D_wp$wp_long * E_wp$wp_long))
+
+  L_wp_med_replant <- lapply(W_wp_med_replant,
+                             FUN = function(x) x * (1 - exp(-alpha_wp$wp_med * core.dat$Windfarm$t_wf) + D_wp$wp_med * E_wp$wp_med))
+
+  L_wp_short_replant <- lapply(W_wp_short_replant,
+                               FUN = function(x) x * (1 - exp(-alpha_wp$wp_short * core.dat$Windfarm$t_wf) + D_wp$wp_short * E_wp$wp_short))
+
+  L_wp_replant <- list_op(l1 = L_wp_long_replant,
+                          l2 = L_wp_med_replant,
+                          l3 = L_wp_short_replant,
+                          func = "+")
   ## Totals
-  L_forestry <- list_op(l1 = list_op(l1 = C_seq_loss_felled,
-                                     l2 = L_floor,
-                                     l3 = L_harv,
-                                     func = "+"),
-                        l2 = list_op(l1 = lapply(S_biofuel_felled,
-                                                 FUN = function(x) {
-                                                   x <- x[c(1,3,2)] # re-arrange Min, Max
-                                                   names(x) <- c("Exp", "Min", "Max")
-                                                   return(x)
-                                                 }),
-                                     l2 = lapply(S_biofuel_replant,
-                                                 FUN = function(x) {
-                                                   x <- x[c(1,3,2)] # re-arrange Min, Max
-                                                   names(x) <- c("Exp", "Min", "Max")
-                                                   return(x)
-                                                 }),
-                                     func = "+"),
+  ### Emissions
+  L_tot <- list_op(l1 = list_op(l1 = C_seq_loss_felled,
+                                l2 = L_floor,
+                                l3 = L_harv,
+                                func = "+"),
+                   l2 = list_op(l1 = L_wp_felled,
+                                l2 = L_wp_replant,
+                                func = "+"),
+                   func = "+")
+
+  ### Savings (biofuel)
+  S_tot <- list_op(l1 = lapply(S_biofuel_felled,
+                               FUN = function(x) {
+                                 x <- x[c(1,3,2)] # re-arrange Min, Max
+                                 names(x) <- c("Exp", "Min", "Max")
+                                 return(x)
+                               }),
+                   l2 = lapply(S_biofuel_replant,
+                               FUN = function(x) {
+                                 x <- x[c(1,3,2)] # re-arrange Min, Max
+                                 names(x) <- c("Exp", "Min", "Max")
+                                 return(x)
+                               }),
+                   func = "+")
+
+  L_forestry <- list_op(l1 = L_tot,
+                        l2 = S_tot,
                         func = "-")
 
   L_forestry_tot <- colSums(bind_rows(L_forestry))
